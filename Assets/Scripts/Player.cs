@@ -19,6 +19,7 @@ public class Player : MonoSingleton<Player>
         characterLocomotion = GetComponent<CharacterLocomotion>();
         InitSpeed();
         InitRunwayBackgroundEnvironmentManager();
+        InitRunwayBackgroundEnvironment();
     }
 
     private void FixedUpdate()
@@ -140,10 +141,18 @@ public class Player : MonoSingleton<Player>
     {
         characterLocomotion.WalkSpeed = startrationRate;
     }
-    public void InitRunwayBackgroundEnvironmentManager()
+    private void InitRunwayBackgroundEnvironmentManager()
     {
         runwayBackgroundEnvironmentManager =
             new RunwayBackgroundEnvironmentManager(GameObject.Find("FirstLeftRunwayBackgroundEnvironmentPos"), GameObject.Find("FirstRightRunwayBackgroundEnvironmentPos"));
+    }
+    private void InitRunwayBackgroundEnvironment()
+    {
+        runwayBackgroundEnvironmentManager.CreateNewRunwayBackgroundEnvironment();
+        for (int i = 0; i < 5; i++)
+        {
+            
+        }
     }
     private void CreatNewRunWay()
     {

@@ -1,4 +1,5 @@
 using Manager;
+using Struct;
 using UnityEngine.UI;
 
 namespace Module.RunningPanelModule
@@ -10,14 +11,11 @@ namespace Module.RunningPanelModule
         {
             slider = slider1;
             slider.value = 0;
-            SumJourneyLength = QuestionController.Instance.QuestionAmount * 60 *RunwayManager.RUNWAY_LENGTH_MAGNIFICATION+30;//最后加上终点的偏移
         }
-        
-        private float SumJourneyLength;
 
         public void SetBar()
         {
-            float fixedValue = (Player.Instance.transform.position.z - 30) / SumJourneyLength;//减去起点的偏移
+            float fixedValue = (Player.Instance.transform.position.z - 30) / GameStaticData.SumJourneyLength;//需要减去起点的偏移
             slider.value = fixedValue<0?0:fixedValue;
         }
     }

@@ -170,7 +170,6 @@ public class QuestionController : MonoSingleton<QuestionController>
         if (hasGetData)
         {
             TimeTool.Instance.Delay(0.5f, NextQuestion );
-            RunwayManager.Instance.InitRunways();
             hasGetData = false;
         }
     }

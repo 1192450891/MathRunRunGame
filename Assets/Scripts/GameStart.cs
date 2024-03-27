@@ -30,6 +30,7 @@ public class GameStart : MonoSingleton<GameStart>
         Player.Instance.SetHasEnd(false);
         ScoreManager.Instance.ReStart();
         
+        RunwayManager.Instance.InitRunways();
         RunwayManager.Instance.DestoryFinishLine();
     }
     public void GameReStart()//ReStart里面重置参数
@@ -44,11 +45,22 @@ public class GameStart : MonoSingleton<GameStart>
         Player.Instance.SetHasStart(true);
         Player.Instance.SetHasEnd(false);
         
+        RunwayManager.Instance.InitRunways();
         RunwayManager.Instance.DestoryFinishLine();
     }
     private void InitQuestionController()
     {
-        LoadManager.Instance.LoadAndShowPrefabAsync("QuestionController", "Assets/Prebs/UI/QuestionController.prefab");
+        LoadManager.Instance.LoadAndShowPrefabAsync("QuestionController", "Assets/Prebs/UI/QuestionController.prefab",null,
+            (o =>
+            {
+                RunwayManager.Instance.InitRunways();
+                GameStaticDataInit();
+            }));
+    }
+
+    private void GameStaticDataInit()
+    {
+        
     }
     private void InitSpawnAndCharacter()
     {

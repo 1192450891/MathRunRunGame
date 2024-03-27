@@ -11,11 +11,14 @@ public class Player : MonoSingleton<Player>
     [Tooltip("已通过关卡计数")] public int hasPassedNum;
     private QuestionController questionController=>QuestionController.Instance;
     private CharacterLocomotion characterLocomotion;
+    private RunwayBackgroundEnvironmentManager runwayBackgroundEnvironmentManager;
+    
 
     private void Start()
     {
         characterLocomotion = GetComponent<CharacterLocomotion>();
         InitSpeed();
+        InitRunwayBackgroundEnvironmentManager();
     }
 
     private void FixedUpdate()
@@ -69,9 +72,13 @@ public class Player : MonoSingleton<Player>
     {
         string tag = other.tag;
         LayerMask layer = other.gameObject.layer;
-        if (tag == "loadRunway" && !questionController.IsAllQuestionDone())
+        if (tag == "loadRunway")
         {
-            CreatNewRunWay();
+            runwayBackgroundEnvironmentManager.CreateNewRunwayBackgroundEnvironment();
+            if (!questionController.IsAllQuestionDone())
+            {
+                CreatNewRunWay();
+            }
         }
 
         if (layer.value - 10 == 0 || layer.value - 10 == 1)
@@ -133,6 +140,11 @@ public class Player : MonoSingleton<Player>
     {
         characterLocomotion.WalkSpeed = startrationRate;
     }
+    public void InitRunwayBackgroundEnvironmentManager()
+    {
+        runwayBackgroundEnvironmentManager =
+            new RunwayBackgroundEnvironmentManager(GameObject.Find("FirstLeftRunwayBackgroundEnvironmentPos"), GameObject.Find("FirstRightRunwayBackgroundEnvironmentPos"));
+    }
     private void CreatNewRunWay()
     {
         RunwayManager.Instance.CreateNewRunway();
@@ -141,7 +153,7 @@ public class Player : MonoSingleton<Player>
     {
         hasPassedNum = 0;
         InitSpeed();
-        SetPos(Vector3.zero);
+        SetPos(GameObject.Find("PlayerPos").transform.position);
 
     }
 }

@@ -23,6 +23,8 @@ namespace Manager
         public GameObject FinishLine;//终点线preb实例
 
 
+
+
         public void InitRunways()
         {
             if (runWays != null)//点击了重新开始游戏 需要销毁前一局的跑道

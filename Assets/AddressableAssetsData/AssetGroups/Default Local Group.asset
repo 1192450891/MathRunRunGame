@@ -142,6 +142,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e17071fcfe5fa8f46a0796ae6fbd3393
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b85f5b803bf20d45917c77b2bfbdafc
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 35e84590a99a71948bea196e60367b02, type: 2}
   m_SchemaSet:

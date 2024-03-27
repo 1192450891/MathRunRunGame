@@ -81,7 +81,7 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
             MovementAndRotation();
         }
         else{
-            characterController.Move(new Vector3(0,-1f,0));//gravity when idle
+            characterController.Move(new Vector3(0,0,0));//gravity when idle
         }
         if(animator != null){
             if(canStrafe){
@@ -148,7 +148,7 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
             upMovement = fwd * walkSpeed * Time.deltaTime * moveJoystick.Vertical;
         }
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement); //final movement vector
-        heading.y = -9.8f;//gravity while moving
+        heading.y = -0.1f;//gravity while moving
         characterController.Move(heading * walkSpeed*Time.deltaTime);//move
         if(lookToMovementDirection){
             characterVisual.forward = new Vector3(heading.x,characterVisual.forward.y,heading.z);

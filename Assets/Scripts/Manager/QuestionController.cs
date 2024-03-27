@@ -215,6 +215,7 @@ public class QuestionController : MonoSingleton<QuestionController>
     public void ReStart()
     {
         GetData();//重新读表获取问题
+        currentPanelQuestionIndex = 0;
         hasEndLine = false;
         
     }

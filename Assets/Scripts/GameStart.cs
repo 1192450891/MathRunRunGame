@@ -1,4 +1,5 @@
-﻿using Manager;
+﻿using System.IO;
+using Manager;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -7,6 +8,7 @@ public class GameStart : MonoSingleton<GameStart>
     private void Awake()
     {
         GameStartFun();
+        test();
     }
     private void GameStartFun()
     {
@@ -24,6 +26,8 @@ public class GameStart : MonoSingleton<GameStart>
         
         QuestionController.Instance.ReStart();//重置参数
         Player.Instance.ReStart();
+        Player.Instance.SetHasStart(false);
+        Player.Instance.SetHasEnd(false);
         ScoreManager.Instance.ReStart();
         
         RunwayManager.Instance.DestoryFinishLine();
@@ -75,5 +79,10 @@ public class GameStart : MonoSingleton<GameStart>
     private void InitUIManager()
     {
         LoadManager.Instance.LoadAndShowPrefabAsync("UIManager", "Assets/Prebs/Manager/UIManager.prefab");
+    }
+
+    private void test()
+    {
+
     }
 }

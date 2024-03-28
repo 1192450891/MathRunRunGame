@@ -149,10 +149,6 @@ public class Player : MonoSingleton<Player>
     private void InitRunwayBackgroundEnvironment()
     {
         runwayBackgroundEnvironmentManager.CreateNewRunwayBackgroundEnvironment();
-        for (int i = 0; i < 5; i++)
-        {
-            
-        }
     }
     private void CreatNewRunWay()
     {

@@ -142,13 +142,53 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e17071fcfe5fa8f46a0796ae6fbd3393
-    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left1.prefab
+  - m_GUID: 511fabe49747df242a5e18b76c0df757
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left2.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6b85f5b803bf20d45917c77b2bfbdafc
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: efcf41c8c80f6764cad395dca3d24f0f
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 331b5a93e2b17e84f93963e17896097e
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6db20e5bbeff96847b4541c96eb430b1
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d1d028d66456e34d94385a412718d86
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left5.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f9509d423794f3459c1a929722e7b4c
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left6.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e0329cf86665e1428f22680b8185365
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left7.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2acae493a1e80ec45b9c80cd9d77a674
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50c39b346e5ad2245b3475974f5979bf
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right3.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

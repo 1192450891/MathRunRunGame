@@ -35,6 +35,7 @@ public class MainPanel:PanelBase
     {
         UIManager.Instance.HidePanel<MainPanel>();
         UIManager.Instance.ShowPanel<RunningPanel>();
+        Player.Instance.SetHasStart(true);
         QuestionController.Instance.ManualStart();
     }
 }

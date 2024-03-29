@@ -35,7 +35,7 @@ namespace BrokenVector.LowPolyFencePack
             }
         }
         /// <returns>
-        /// returns wether the door is currently open or closed
+        /// returns whether the door is currently open or closed
         /// </returns>
         public bool IsDoorOpen { get { return CurrentState == DoorState.Open; } }
         /// <returns>
@@ -44,7 +44,7 @@ namespace BrokenVector.LowPolyFencePack
         public bool IsDoorClosed { get { return CurrentState == DoorState.Closed; } }
 
         public DoorState InitialState = DoorState.Closed;
-        public float AnimationSpeed = 1;
+        public float AnimationSpeed;
 
         [SerializeField]
         private AnimationClip openAnimation;
@@ -78,7 +78,7 @@ namespace BrokenVector.LowPolyFencePack
             // a little hack, to set the initial state
             currentState = InitialState;
             var clip = GetCurrentAnimation();
-            animator[clip].speed = 9999;
+            animator[clip].speed = AnimationSpeed;
             animator.Play(clip);
         }
 
@@ -118,7 +118,6 @@ namespace BrokenVector.LowPolyFencePack
         private void Animate()
         {
             var clip = GetCurrentAnimation();
-            animator[clip].speed = AnimationSpeed;
             animator.Play(clip);
         }
 

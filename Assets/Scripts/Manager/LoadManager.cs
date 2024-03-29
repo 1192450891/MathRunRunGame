@@ -12,7 +12,7 @@ public class LoadManager:MonoSingleton<LoadManager>
         {  
             obj = Instantiate(obj, Vector3.zero, Quaternion.identity);  
             obj.name = ObjName;  
-            obj.transform.parent = ObjParentTransform;  
+            obj.transform.SetParent(ObjParentTransform,false);
             callback?.Invoke(obj);  
         });  
     }

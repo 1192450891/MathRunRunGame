@@ -26,7 +26,6 @@ public class GameStart : MonoSingleton<GameStart>
         
         QuestionController.Instance.ReStart();//重置参数
         Player.Instance.ReStart();
-        Player.Instance.SetHasStart(false);
         Player.Instance.SetHasEnd(false);
         ScoreManager.Instance.ReStart();
         

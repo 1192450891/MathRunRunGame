@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Struct;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace Manager
     public class RunwayBackgroundEnvironmentManager
     {
         private GameObject root;//根物体 生成的背景都在里面
+
+        private Dictionary<string, float> boundLengthDic;//存储计算过的Z轴长度 避免重复运算
 
         private Transform leftPos;
         private Transform rightPos;
@@ -26,6 +29,7 @@ namespace Manager
         public RunwayBackgroundEnvironmentManager(GameObject left,GameObject right)
         {
             root=new GameObject("RunwayBackgroundEnvironmentRoot");
+            boundLengthDic = new Dictionary<string, float>();
             leftPos = left.transform;
             rightPos = right.transform;
             leftCount = GetBackgroundEnvironmentCount(LEFT_PATH);
@@ -47,9 +51,10 @@ namespace Manager
             LoadManager.Instance.LoadAndShowPrefabAsync("LeftBackgroundEnvironment",filePath+"/Left"+i.ToString()+".prefab",root.transform,
                     o =>
                     {
-                        o.transform.position = pos;
-                        o.transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
-                        leftPosZOffest += CalculateObjZLength(o.transform);//加上此次生成的背景物体的z长度 作为新的偏移
+                        float selfZOffest=CalculateObjZLength(o.transform,"Left"+i.ToString());//自身带来的偏移长度
+                        o.transform.position = new Vector3(pos.x,0,pos.z+selfZOffest/2);//找到生成中心点
+                        leftPosZOffest += selfZOffest;//加上此次生成的背景物体的z长度 作为新的偏移
+                        leftPosZOffest -= 2;
                         if (leftPosZOffest-playerZPos < Generate_Lower_Distance_Limit_Z)//不断补齐到设定的下限距离
                         {
                             CreateLeft(GetRandomNum(leftCount),LEFT_PATH,new Vector3(leftPos.position.x,0,leftPosZOffest),playerZPos);
@@ -63,8 +68,8 @@ namespace Manager
                 o =>
                 {
                     o.transform.position = pos;
-                    o.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                    rightPosZOffest += CalculateObjZLength(o.transform);//加上此次生成的背景物体的z长度 作为新的偏移
+                    rightPosZOffest += CalculateObjZLength(o.transform,"Right"+i.ToString());//加上此次生成的背景物体的z长度 作为新的偏移
+                    rightPosZOffest -= 2;
                     if (rightPosZOffest-playerZPos < Generate_Lower_Distance_Limit_Z)
                     {
                         CreateRight(GetRandomNum(rightCount),RIGHT_PATH,new Vector3(rightPos.position.x,0,rightPosZOffest),playerZPos);
@@ -72,8 +77,9 @@ namespace Manager
                 });
         }
 
-        private float CalculateObjZLength(Transform transform)
+        private float CalculateObjZLength(Transform transform,string objName)
         {
+            if (boundLengthDic.ContainsKey(objName)) return boundLengthDic[objName];
             // 获取当前物体的边界框
             Bounds bounds=new Bounds(transform.position,Vector3.zero);
             Renderer[] renderers = transform.GetComponentsInChildren<Renderer>();
@@ -84,6 +90,7 @@ namespace Manager
 
             // 计算边界框在Z轴上的长度
             float zLength = bounds.max.z - bounds.min.z;
+            boundLengthDic[objName] = zLength;
             return zLength;
         }
 

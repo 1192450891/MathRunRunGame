@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Wx;
 using Object = UnityEngine.Object;
@@ -22,8 +23,8 @@ namespace Manager
         
         public GameObject FinishLine;//终点线preb实例
 
-
-
+        private static string TwoAnswerFenceAssetablePath ="Assets/Prebs/Environment/Fence/2AnswerFence.prefab" ;
+        private static string ThreeAnswerFenceAssetablePath = "Assets/Prebs/Environment/Fence/3AnswerFence.prefab";
 
         public void InitRunways()
         {
@@ -56,15 +57,15 @@ namespace Manager
             var curQuestionType = curQuestionLevelData.questionType;
             if (curQuestionType == QuestionTypeEnum.TrueOrFalse)
             {
-                objPath = "Assets/Prebs/Environment/2AnswerFence.prefab";
+                objPath = TwoAnswerFenceAssetablePath;
             }
             else if (curQuestionType == QuestionTypeEnum.TwoAnswerQuestion)
             {
-                objPath = "Assets/Prebs/Environment/2AnswerFence.prefab";
+                objPath = TwoAnswerFenceAssetablePath;
             }
             else if (curQuestionType == QuestionTypeEnum.ThreeAnswerQuestion)
             {
-                objPath = "Assets/Prebs/Environment/3AnswerFence.prefab";
+                objPath = ThreeAnswerFenceAssetablePath;
             }
 
             LoadManager.Instance.LoadAndShowPrefabAsync("Runways", "Assets/Prebs/Environment/Runway.prefab",
@@ -78,18 +79,18 @@ namespace Manager
                         fence =>
                         {
                             fence.transform.position = FencePos.position;
-                            InitFence(fence, curQuestionLevelData);
+                            InitFence(fence.transform, curQuestionLevelData);
                         });
                     runWays.Enqueue(obj);
                 });
             questionKeyData.Add(curQuestionLevelData.questionKey);
         }
 
-        private void InitFence(GameObject gameObject, QuestionController.LevelData runwayData)
+        private void InitFence(Transform transform, QuestionController.LevelData runwayData)
         {
             int correctWay = runwayData.way; //正确的答案 从左往右 从0开始 每次交换0号和目标位置的木板
-            Transform zeroText = gameObject.transform.Find("0 Text");
-            Transform targetText = gameObject.transform.Find($"{correctWay} Text");
+            Transform zeroText = TransformUtil.Find(transform,"0 Text");
+            Transform targetText = TransformUtil.Find(transform,"{correctWay} Text");
             if (runwayData.questionType != QuestionTypeEnum.TrueOrFalse) //判断题的T在位置0 F在位置1
             {
                 if (correctWay != 0)
@@ -103,8 +104,9 @@ namespace Manager
 
             for (int i = 0; i < runwayData.answers.Count; i++)
             {
-                Transform curTransform = gameObject.transform.Find($"{i} Text");
-                TextMesh curTextMesh = curTransform.GetComponent<TextMesh>();
+                
+                Transform curTransform = TransformUtil.Find(transform,$"{i} Text");
+                var curTextMesh = curTransform.GetComponent<TMP_Text>();
                 curTextMesh.text = runwayData.answers[i];
             }
         }

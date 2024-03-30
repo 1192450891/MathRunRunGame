@@ -1,4 +1,5 @@
-﻿using Manager;
+﻿using BrokenVector.LowPolyFencePack;
+using Manager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,11 +41,13 @@ public class Player : MonoSingleton<Player>
 
     private void OnTriggerEnterFence(LayerMask layer, Collider other)
     {
-        if (layer.value - 10 == 0 || layer.value - 10 == 1)
+        int layerValue = layer.value - 10;
+        if (layerValue == 0 || layerValue == 1)
         {
-            if (layer.value - 10 == questionController.levelData[hasPassedNum].way)
+            if (layerValue == questionController.levelData[hasPassedNum].way)
             {
                 ChangeSpeed(1); //加速
+                PlayFenceAni(other);
                 ChangeFenceColor(other, 1);
                 ScoreManager.Instance.AddScore(hasPassedNum);
                 questionController.NextQuestion();
@@ -52,6 +55,7 @@ public class Player : MonoSingleton<Player>
             else
             {
                 ChangeSpeed(0); //減速
+                PlayFenceAni(other);
                 ChangeFenceColor(other, 0);
                 questionController.NextQuestion();
             }
@@ -105,6 +109,10 @@ public class Player : MonoSingleton<Player>
         SetHasStart(true);
     }
 
+    private void PlayFenceAni(Collider other)
+    {
+        other.transform.GetComponentInParent<DoorController>().OpenDoor();
+    }
     private void ChangeFenceColor(Collider other, int num)
     {
         Renderer renderer = other.gameObject.GetComponent<Renderer>();

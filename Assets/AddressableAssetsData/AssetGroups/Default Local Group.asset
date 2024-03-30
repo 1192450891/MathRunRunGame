@@ -103,12 +103,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5d1176c0a844cf74981a91d9e6fc1279
-    m_Address: Assets/Prebs/Environment/3AnswerFence.prefab
+    m_Address: Assets/Prebs/Environment/Fence/3AnswerFence.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2dd406342d68e5440995dabcb74665ea
-    m_Address: Assets/Prebs/Environment/2AnswerFence.prefab
+    m_Address: Assets/Prebs/Environment/Fence/2AnswerFence.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

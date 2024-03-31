@@ -1,5 +1,7 @@
 using Framework.Core;
+using GameBase;
 using Manager;
+using Struct;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,15 +25,17 @@ public class GameOverPanel : PanelBase
         numText.GetComponent<TextMeshProUGUI>().text = ScoreManager.Instance.Score.ToString();
     }
 
-    private void ReStartButtonOnClick()
+    private void ReStartButtonOnClick()//直接开始游戏
     {
-        UIManager.Instance.HideAllPanel();
-        GameStart.Instance.GameReStart();
+        GameOverClass.Instance.GameOver();
+        GameStaticData.GameHasStart = true;
+        UIManager.Instance.ShowPanel<RunningPanel>();
     }
     private void HomeButtonOnClick()
     {
-        UIManager.Instance.HideAllPanel();
-        GameStart.Instance.BackToMainPanel();
+        GameOverClass.Instance.GameOver();
+        UIManager.Instance.ShowPanel<MainPanel>();
+
     }
 
     private void ExitButtonOnClick()

@@ -1,4 +1,5 @@
 using Framework.Core;
+using Struct;
 using UnityEngine;
 
 public class MainPanel:PanelBase
@@ -35,7 +36,7 @@ public class MainPanel:PanelBase
     {
         UIManager.Instance.HidePanel<MainPanel>();
         UIManager.Instance.ShowPanel<RunningPanel>();
-        Player.Instance.SetHasStart(true);
+        GameStaticData.GameHasStart = true;
         QuestionController.Instance.ManualStart();
     }
 }

@@ -101,7 +101,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5416846447447871883}
-  - component: {fileID: 5416846447447871880}
   - component: {fileID: 5416846447447871881}
   - component: {fileID: 5416846447447871886}
   - component: {fileID: 4631413807411911833}
@@ -132,32 +131,6 @@ Transform:
   - {fileID: 6391513262259317179}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5416846447447871880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5416846447447871887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 203e19c444bd0d246b0da549e5ccfee0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 6482495309393472031}
-  characterController: {fileID: 5416846447447871881}
-  minwalkSpeed: 20
-  maxwalkSpeed: 300
-  canOperate: 0
-  characterVisual: {fileID: 6391513262259317179}
-  lookToMovementDirection: 1
-  moveJoystick: {fileID: 0}
-  movementThreshold: 0.1
-  canStrafe: 0
-  forwardAnimationVar: Forward
-  strafeAnimationVar: Strafe
-  hasStart: 0
-  hasEnd: 0
 --- !u!143 &5416846447447871881
 CharacterController:
   m_ObjectHideFlags: 0
@@ -219,10 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58521c71c8da1142abe0a40802dc92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startrationRate: 20
-  accelerationRate: 2
-  dccelerationRate: 5
-  Natural_deceleration_rate: 1000
   hasPassedNum: 0
 --- !u!54 &47975722
 Rigidbody:
@@ -479,10 +448,5 @@ PrefabInstance:
 --- !u!4 &6391513262259317179 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4849538730314234, guid: 54de615829da4d247825dfb01e75e08f, type: 3}
-  m_PrefabInstance: {fileID: 6386682425739731009}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &6482495309393472031 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 95841064056441438, guid: 54de615829da4d247825dfb01e75e08f, type: 3}
   m_PrefabInstance: {fileID: 6386682425739731009}
   m_PrefabAsset: {fileID: 0}

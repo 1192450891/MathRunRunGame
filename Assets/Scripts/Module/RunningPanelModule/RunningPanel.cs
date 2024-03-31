@@ -1,5 +1,6 @@
 ﻿using Framework.Core;
 using Module.RunningPanelModule;
+using Struct;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,13 +19,13 @@ public class RunningPanel : PanelBase
         EventManager.Instance.AddEvent<int>(ClientEvent.RunningPanel_ScoreChange, SetScoreNumText);
         EventManager.Instance.AddEvent<float>(ClientEvent.RunningPanel_SpeedChange, SetSpeedNumText);
         
-        CharacterLocomotion.Instance.moveJoystick=TransformUtil.Find(PanelObj.transform, "Joystick").transform.GetComponent<FixedJoystick>();
-        CharacterLocomotion.Instance.canOperate = true;
+        Player.Instance.characterLocomotion.moveJoystick=TransformUtil.Find(PanelObj.transform, "Joystick").transform.GetComponent<Joystick>();
+        GameStaticData.CanOperate = true;
 
         QuestionController.Instance.questionText = TransformUtil.Find(PanelObj.transform, "QuestionText").gameObject;
 
         SetScoreNumText(0);
-        SetSpeedNumText(Player.Instance.startrationRate);
+        SetSpeedNumText(GameStaticData.InitSpeedNum);
 
         barCountdownTimeIndex=TimeTool.Instance.Countdown(0.1f, () => SetJourneyProgressBar());
     }
@@ -47,7 +48,7 @@ public class RunningPanel : PanelBase
 
     public override void Hide()
     {
-        CharacterLocomotion.Instance.canOperate = false;
+        GameStaticData.CanOperate = false;
         EventManager.Instance.RemoveEvent<int>(ClientEvent.RunningPanel_ScoreChange, SetScoreNumText);
         EventManager.Instance.RemoveEvent<float>(ClientEvent.RunningPanel_SpeedChange, SetSpeedNumText);
         

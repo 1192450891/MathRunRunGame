@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Struct;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
+public class CharacterLocomotion
 {
     [Tooltip("Assign animator if you would like. We are using 2d blendtree")]
     [SerializeField] Animator animator;
@@ -15,23 +16,23 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
     [Tooltip("how fast the player walks")]
     
     private float walkSpeed;
-    public float minwalkSpeed;
-    public float maxwalkSpeed;
-    public bool canOperate;//是否能进行操作
+
     public float WalkSpeed
     {
         get { return walkSpeed; }
         set { 
-        walkSpeed = Mathf.Clamp(value,minwalkSpeed,maxwalkSpeed);
+        walkSpeed = Mathf.Clamp(value,GameStaticData.MinWalkSpeed,GameStaticData.MaxWalkSpeed);
         EventManager.Instance.TriggerEvent<float>(ClientEvent.RunningPanel_SpeedChange,walkSpeed);
         }
     }
+
+    private Transform playerTransform;
     [Tooltip("if you would like separate visual from player assign something else here")]
     [SerializeField] Transform characterVisual;//if you would like separate visual from player assign something else here
     [Tooltip("Turn this off if you want to separate movement and aiming")]
     [SerializeField] bool lookToMovementDirection = true;//turn this off if you want to separate movement and aiming
     [Tooltip("Feel free to assign other joysticks here")]
-    public FixedJoystick moveJoystick;//assign joystick here
+    public Joystick moveJoystick;//assign joystick here
     [Tooltip("Self explanatory. After this magnitude player will move ")]
     [SerializeField] float movementThreshold = 0.1f;// self explanatory. After this magnitude player will move 
     [Header("Animation variables")]
@@ -46,28 +47,38 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
     Vector3 fwd,right; //camera fwd,right
     Vector3 input,move;//input for animations
     Vector3 cameraForward;
-    public bool hasStart;
-    public bool hasEnd;
     float forward,strafe;//we will use them in animation variables
-    void Awake()
+    
+    [Tooltip("加速率")] public float accelerationRate = 2f;
+    [Tooltip("減速率")] public float dccelerationRate = 5f;
+    [Tooltip("自然減速率")] public float Natural_deceleration_rate = 1000;
+
+    public void Init(CharacterController controller,Transform transform)
     {
-        if(characterController == null){
-            characterController = GetComponent<CharacterController>();
-            //getting the characterController component
-        }
-        if(characterVisual == null){
-            characterVisual = transform;
-        }
+        characterController = controller;
+        WalkSpeed = GameStaticData.InitSpeedNum;
+        playerTransform = transform;
+        characterVisual = transform;
+        lookToMovementDirection = false;
         camTransform = Camera.main.transform;
-    }
-    void Start(){
         characterController.detectCollisions = false; //we don't want character controller to detect collisions
         RecalculateCameraGaming();
         // RecalculateCamera(Camera.main);//we should know where camera is looking at. Call this method each time camera angle changes
         //also consider caching the camera
     }
-    void Update(){
-        if(!canOperate) return;
+    // void Awake()
+    // {
+    //     if(characterController == null){
+    //         characterController = GetComponent<CharacterController>();
+    //         //getting the characterController component
+    //     }
+    //     if(characterVisual == null){
+    //         characterVisual = transform;
+    //     }
+    //     camTransform = Camera.main.transform;
+    // }
+    public void Update(){
+        if(!GameStaticData.CanOperate) return;
 
         mag = Mathf.Clamp01(new Vector2(moveJoystick.Horizontal, moveJoystick.Vertical).sqrMagnitude);
         if(canStrafe){
@@ -76,7 +87,7 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
             //use strafe when you look at certain object(target) for instance
         }
         //getting the magnitude
-        if (mag >= movementThreshold || PlayerIsPlaying()) 
+        if (mag >= movementThreshold || GameStaticData.PlayerIsPlaying()) 
         {
             MovementAndRotation();
         }
@@ -88,10 +99,43 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
                 RelativeAnimations();
             }
             else{
-                if(PlayerIsPlaying()) mag=1;
+                if(GameStaticData.PlayerIsPlaying()) mag=1;
                 animator.SetFloat(forwardAnimationVar,mag);
             }
         }
+    }
+
+    public void FixUpdate()
+    {
+        if (GameStaticData.PlayerIsPlaying())
+        {
+            WalkSpeed -= dccelerationRate * Mathf.Log10(WalkSpeed) /
+                                             Natural_deceleration_rate;
+        }
+    }
+
+    public void InitSpeed()
+    {
+        WalkSpeed = GameStaticData.InitSpeedNum;
+    }
+    
+    public void SetSpeed(float speed)
+    {
+        WalkSpeed = speed;
+    }
+    
+    public void ChangeSpeed(int mode)
+    {
+        switch (mode)
+        {
+            case 0:
+                WalkSpeed -= dccelerationRate * Mathf.Log10(WalkSpeed);
+                break;
+            case 1:
+                WalkSpeed += accelerationRate * Mathf.Log(WalkSpeed);
+                break;
+        }
+        GameStaticData.GameHasStart = true;
     }
    
     void RelativeAnimations(){
@@ -114,7 +158,7 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
     }
     void MoveAnims(Vector3 move){
         this.input = move;
-        Vector3 localMove = transform.InverseTransformDirection(input);//inversing local move from the input
+        Vector3 localMove = playerTransform.InverseTransformDirection(input);//inversing local move from the input
         strafe = localMove.x;//x is right input relative to camera 
         forward = localMove.z;//z is forward joystick input relative to camera
         animator.SetFloat(forwardAnimationVar, forward*2f, 0.01f, Time.deltaTime);//setting animator floats
@@ -139,7 +183,7 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
         Vector3 direction = new Vector3(moveJoystick.Horizontal, 0, moveJoystick.Vertical);//joystick direction
         Vector3 rightMovement = right * walkSpeed * Time.deltaTime * moveJoystick.Horizontal;//getting right movement out of joystick(relative to camera)
         Vector3 upMovement;
-        if(PlayerIsPlaying())
+        if(GameStaticData.PlayerIsPlaying())
         {
             upMovement = fwd * walkSpeed * Time.deltaTime; //getting up movement out of joystick(relative to camera)
         }
@@ -155,8 +199,5 @@ public class CharacterLocomotion : MonoSingleton<CharacterLocomotion>
             //look to movement direction
         }
     }
-    public bool PlayerIsPlaying()//检测玩家是否正在跑道上闯关
-    {
-        return hasStart&&!hasEnd;
-    }
+
 }

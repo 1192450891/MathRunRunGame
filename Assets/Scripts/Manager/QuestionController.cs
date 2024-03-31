@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using Wx;
 
-public class QuestionController : MonoSingleton<QuestionController>
+public class QuestionController : Singleton<QuestionController>
 {
     public GameObject questionText;
     
@@ -40,7 +40,7 @@ public class QuestionController : MonoSingleton<QuestionController>
         public int score;//分数奖励
     }
 
-    void Awake()
+    new void Awake()
     {
         GetData();
     }

@@ -101,7 +101,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5416846447447871883}
-  - component: {fileID: 5416846447447871880}
   - component: {fileID: 5416846447447871881}
   - component: {fileID: 5416846447447871886}
   - component: {fileID: 4631413807411911833}
@@ -133,32 +132,6 @@ Transform:
   - {fileID: 6431140321709176328}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5416846447447871880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5416846447447871887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 203e19c444bd0d246b0da549e5ccfee0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 6349081873086568230}
-  characterController: {fileID: 5416846447447871881}
-  minwalkSpeed: 20
-  maxwalkSpeed: 300
-  canOperate: 0
-  characterVisual: {fileID: 6431140321709176328}
-  lookToMovementDirection: 1
-  moveJoystick: {fileID: 0}
-  movementThreshold: 0.1
-  canStrafe: 0
-  forwardAnimationVar: Forward
-  strafeAnimationVar: Strafe
-  hasStart: 0
-  hasEnd: 0
 --- !u!143 &5416846447447871881
 CharacterController:
   m_ObjectHideFlags: 0
@@ -220,10 +193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58521c71c8da1142abe0a40802dc92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startrationRate: 20
-  accelerationRate: 2
-  dccelerationRate: 5
-  Natural_deceleration_rate: 1000
   hasPassedNum: 0
 --- !u!54 &47975722
 Rigidbody:
@@ -506,11 +475,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1260f48d2b90931418ebfa559a36e29f, type: 3}
---- !u!95 &6349081873086568230 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 95389170962898660, guid: 1260f48d2b90931418ebfa559a36e29f, type: 3}
-  m_PrefabInstance: {fileID: 6435252033579370946}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6431140321709176328 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4111819248598986, guid: 1260f48d2b90931418ebfa559a36e29f, type: 3}

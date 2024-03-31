@@ -1,35 +1,40 @@
-﻿using BrokenVector.LowPolyFencePack;
+﻿using System;
+using BrokenVector.LowPolyFencePack;
 using Manager;
+using Struct;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoSingleton<Player>
 {
-    [Tooltip("开局速度")] public float startrationRate;
-    [Tooltip("加速率")] public float accelerationRate = 2f;
-    [Tooltip("減速率")] public float dccelerationRate = 5f;
-    [Tooltip("自然減速率")] public float Natural_deceleration_rate = 1000;
     [Tooltip("已通过关卡计数")] public int hasPassedNum;
     private QuestionController questionController=>QuestionController.Instance;
-    private CharacterLocomotion characterLocomotion;
+    public CharacterLocomotion characterLocomotion;
     private RunwayBackgroundEnvironmentManager runwayBackgroundEnvironmentManager;
     
 
     private void Start()
     {
-        characterLocomotion = GetComponent<CharacterLocomotion>();
-        InitSpeed();
+        InitCharacterLocomotion();
         InitRunwayBackgroundEnvironmentManager();
         InitRunwayBackgroundEnvironment();
     }
 
+    private void InitCharacterLocomotion()
+    {
+        characterLocomotion = new CharacterLocomotion();
+        characterLocomotion.Init(transform.GetComponent<CharacterController>(),transform);
+    }
+
+    private void Update()
+    {
+        characterLocomotion.Update();
+    }
+
     private void FixedUpdate()
     {
-        if (characterLocomotion.PlayerIsPlaying())
-        {
-            characterLocomotion.WalkSpeed -= dccelerationRate * Mathf.Log10(characterLocomotion.WalkSpeed) /
-                                             Natural_deceleration_rate;
-        }
+        characterLocomotion.FixUpdate();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,7 +51,7 @@ public class Player : MonoSingleton<Player>
         {
             if (layerValue == questionController.levelData[hasPassedNum].way)
             {
-                ChangeSpeed(1); //加速
+                characterLocomotion.ChangeSpeed(1);//加速
                 PlayFenceAni(other);
                 ChangeFenceColor(other, 1);
                 ScoreManager.Instance.AddScore(hasPassedNum);
@@ -54,7 +59,7 @@ public class Player : MonoSingleton<Player>
             }
             else
             {
-                ChangeSpeed(0); //減速
+                characterLocomotion.ChangeSpeed(0); //減速
                 PlayFenceAni(other);
                 ChangeFenceColor(other, 0);
                 questionController.NextQuestion();
@@ -64,12 +69,12 @@ public class Player : MonoSingleton<Player>
 
     private void OnTriggerEnterFinishLine(LayerMask layer)
     {
-        if (layer.value - 10 == 2 && !characterLocomotion.hasEnd)
+        if (layer.value - 10 == 2 && !GameStaticData.GameHasEnd)
         {
             questionController.ClearQuestion();
             UIManager.Instance.HideAllPanel();
             UIManager.Instance.ShowPanel<GameOverPanel>();
-            SetHasEnd(true);
+            GameStaticData.GameHasEnd = true;
         }
     }
 
@@ -93,22 +98,6 @@ public class Player : MonoSingleton<Player>
     }
 
 
-    private void ChangeSpeed(int num)
-    {
-        float currentSpeed = characterLocomotion.WalkSpeed;
-        switch (num)
-        {
-            case 0:
-                characterLocomotion.WalkSpeed -= dccelerationRate * Mathf.Log10(currentSpeed);
-                break;
-            case 1:
-                characterLocomotion.WalkSpeed += accelerationRate * Mathf.Log(currentSpeed);
-                break;
-        }
-
-        SetHasStart(true);
-    }
-
     private void PlayFenceAni(Collider other)
     {
         other.transform.GetComponentInParent<DoorController>().OpenDoor();
@@ -129,25 +118,13 @@ public class Player : MonoSingleton<Player>
 
     public void SetPos(Vector3 vector3)
     {
-        characterLocomotion.enabled = false;
+        GameStaticData.CanOperate = false;
         transform.position = vector3;
         TimeTool.Instance.Delay(0.3f, () =>
         {
-            characterLocomotion.enabled = true;
+            GameStaticData.CanOperate = true;
         }
         );
-    }
-    public void SetHasStart(bool isStart)
-    {
-        characterLocomotion.hasStart = isStart;
-    }
-    public void SetHasEnd(bool isEnd)
-    {
-        characterLocomotion.hasEnd = isEnd;
-    }
-    private void InitSpeed()
-    {
-        characterLocomotion.WalkSpeed = startrationRate;
     }
     private void InitRunwayBackgroundEnvironmentManager()
     {
@@ -165,7 +142,7 @@ public class Player : MonoSingleton<Player>
     public void ReStart()
     {
         hasPassedNum = 0;
-        InitSpeed();
+        characterLocomotion.InitSpeed();
         SetPos(GameObject.Find("PlayerPos").transform.position);
 
     }

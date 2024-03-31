@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 
 public class GameStart : MonoSingleton<GameStart>
 {
-    private void Awake()
+    private new void Awake()
     {
         GameStartFun();
         test();
@@ -20,47 +20,13 @@ public class GameStart : MonoSingleton<GameStart>
 
 
 
-    public void BackToMainPanel()
-    {
-        UIManager.Instance.ShowPanel<MainPanel>();
-        
-        QuestionController.Instance.ReStart();//重置参数
-        Player.Instance.ReStart();
-        Player.Instance.SetHasEnd(false);
-        ScoreManager.Instance.ReStart();
-        
-        RunwayManager.Instance.InitRunways();
-        RunwayManager.Instance.DestoryFinishLine();
-    }
-    public void GameReStart()//ReStart里面重置参数
-    {
-        UIManager.Instance.ShowPanel<RunningPanel>();
-        
-        QuestionController.Instance.ReStart();//重置参数
-        Player.Instance.ReStart();
-        ScoreManager.Instance.ReStart();
-        
-        QuestionController.Instance.ManualStart();
-        Player.Instance.SetHasStart(true);
-        Player.Instance.SetHasEnd(false);
-        
-        RunwayManager.Instance.InitRunways();
-        RunwayManager.Instance.DestoryFinishLine();
-    }
+
     private void InitQuestionController()
     {
-        LoadManager.Instance.LoadAndShowPrefabAsync("QuestionController", "Assets/Prebs/UI/QuestionController.prefab",null,
-            (o =>
-            {
-                RunwayManager.Instance.InitRunways();
-                GameStaticDataInit();
-            }));
+        QuestionController.Instance.GetData();
+        RunwayManager.Instance.InitRunways();
     }
 
-    private void GameStaticDataInit()
-    {
-        
-    }
     private void InitSpawnAndCharacter()
     {
         LoadManager.Instance.LoadAndShowPrefabAsync("Spawn", "Assets/Prebs/Environment/Spawn.prefab",null,

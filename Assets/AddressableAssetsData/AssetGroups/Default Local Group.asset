@@ -57,11 +57,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 12ddda4f4131c7d41a4646df051fc1e6
-    m_Address: Assets/Prebs/Environment/Runways.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38246f7888f8ad5429adc196dd78f81d
     m_Address: Assets/Prebs/UI/MainPanel/MainPanel.prefab
     m_ReadOnly: 0

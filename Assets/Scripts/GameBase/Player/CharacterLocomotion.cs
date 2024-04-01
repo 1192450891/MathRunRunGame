@@ -53,6 +53,9 @@ public class CharacterLocomotion
     [Tooltip("減速率")] public float dccelerationRate = 5f;
     [Tooltip("自然減速率")] public float Natural_deceleration_rate = 1000;
 
+    private bool needSetpos;
+    private Vector3 setpos;
+
     public void Init(CharacterController controller,Transform transform)
     {
         characterController = controller;
@@ -66,18 +69,54 @@ public class CharacterLocomotion
         // RecalculateCamera(Camera.main);//we should know where camera is looking at. Call this method each time camera angle changes
         //also consider caching the camera
     }
-    // void Awake()
-    // {
-    //     if(characterController == null){
-    //         characterController = GetComponent<CharacterController>();
-    //         //getting the characterController component
-    //     }
-    //     if(characterVisual == null){
-    //         characterVisual = transform;
-    //     }
-    //     camTransform = Camera.main.transform;
-    // }
+
     public void Update(){
+        // if (needSetpos)
+        // {
+        //     playerTransform.position = setpos;
+        //     needSetpos = false;
+        //     return;
+        // }
+        // if(!GameStaticData.CanOperate) return;
+        //
+        // mag = Mathf.Clamp01(new Vector2(moveJoystick.Horizontal, moveJoystick.Vertical).sqrMagnitude);
+        // if(canStrafe){
+        //     lookToMovementDirection = false;
+        //     //I turn it off because player needs to strafe to it's forward.
+        //     //use strafe when you look at certain object(target) for instance
+        // }
+        // //getting the magnitude
+        // if (mag >= movementThreshold || GameStaticData.PlayerIsPlaying()) 
+        // {
+        //     MovementAndRotation();
+        // }
+        // else{
+        //     characterController.Move(new Vector3(0,0,0));//gravity when idle
+        // }
+        // if(animator != null){
+        //     if(canStrafe){
+        //         RelativeAnimations();
+        //     }
+        //     else{
+        //         if(GameStaticData.PlayerIsPlaying()) mag=1;
+        //         animator.SetFloat(forwardAnimationVar,mag);
+        //     }
+        // }
+    }
+
+    public void FixUpdate()
+    {
+        if (GameStaticData.PlayerIsPlaying())
+        {
+            WalkSpeed -= dccelerationRate * Mathf.Log10(WalkSpeed) /
+                                             Natural_deceleration_rate;
+        }
+        if (needSetpos)
+        {
+            playerTransform.position = setpos;
+            needSetpos = false;
+            return;
+        }
         if(!GameStaticData.CanOperate) return;
 
         mag = Mathf.Clamp01(new Vector2(moveJoystick.Horizontal, moveJoystick.Vertical).sqrMagnitude);
@@ -105,15 +144,6 @@ public class CharacterLocomotion
         }
     }
 
-    public void FixUpdate()
-    {
-        if (GameStaticData.PlayerIsPlaying())
-        {
-            WalkSpeed -= dccelerationRate * Mathf.Log10(WalkSpeed) /
-                                             Natural_deceleration_rate;
-        }
-    }
-
     public void InitSpeed()
     {
         WalkSpeed = GameStaticData.InitSpeedNum;
@@ -135,6 +165,7 @@ public class CharacterLocomotion
                 WalkSpeed += accelerationRate * Mathf.Log(WalkSpeed);
                 break;
         }
+        GameStaticData.HistoryMaxWalkSpeed = WalkSpeed;
         GameStaticData.GameHasStart = true;
     }
    
@@ -192,12 +223,17 @@ public class CharacterLocomotion
             upMovement = fwd * walkSpeed * Time.deltaTime * moveJoystick.Vertical;
         }
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement); //final movement vector
-        heading.y = -0.1f;//gravity while moving
+        heading.y = -1f;//gravity while moving
         characterController.Move(heading * walkSpeed*Time.deltaTime);//move
         if(lookToMovementDirection){
             characterVisual.forward = new Vector3(heading.x,characterVisual.forward.y,heading.z);
             //look to movement direction
         }
+    }
+    public void SetPos(Vector3 vector3)
+    {
+        needSetpos = true;
+        setpos = vector3;
     }
 
 }

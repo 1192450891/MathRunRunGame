@@ -1576,7 +1576,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5416846447447871883}
-  - component: {fileID: 5416846447447871880}
   - component: {fileID: 5416846447447871881}
   - component: {fileID: 5416846447447871886}
   - component: {fileID: 4631413807411911833}
@@ -1607,32 +1606,6 @@ Transform:
   - {fileID: 2940161240943544549}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5416846447447871880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5416846447447871887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 203e19c444bd0d246b0da549e5ccfee0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 9092101097353515679}
-  characterController: {fileID: 5416846447447871881}
-  minwalkSpeed: 20
-  maxwalkSpeed: 300
-  canOperate: 0
-  characterVisual: {fileID: 2940161240943544549}
-  lookToMovementDirection: 1
-  moveJoystick: {fileID: 0}
-  movementThreshold: 0.1
-  canStrafe: 0
-  forwardAnimationVar: Forward
-  strafeAnimationVar: Strafe
-  hasStart: 0
-  hasEnd: 0
 --- !u!143 &5416846447447871881
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1694,11 +1667,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58521c71c8da1142abe0a40802dc92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startrationRate: 20
-  accelerationRate: 2
-  dccelerationRate: 5
-  Natural_deceleration_rate: 1000
-  hasPassedNum: 0
 --- !u!54 &47975722
 Rigidbody:
   m_ObjectHideFlags: 0

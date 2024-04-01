@@ -1,3 +1,4 @@
+using System;
 using Manager;
 
 namespace Struct
@@ -26,12 +27,34 @@ namespace Struct
             }
         }
         
-        public static bool CanOperate;//玩家当前是否能进行操作
+        public static bool CanOperate=false;//玩家当前是否能进行操作
         
-        public static float InitSpeedNum=20;//玩家开局初始速度
+        public static float InitSpeedNum=40;//玩家开局初始速度
         
-        public static float MinWalkSpeed=20;
-        public static float MaxWalkSpeed=100;
+        public static float MinWalkSpeed=40;//速度下限
+        public static float MaxWalkSpeed=100;//速度上限
 
+        private static float historyMaxWalkSpeed;
+        public static float HistoryMaxWalkSpeed{
+            get => historyMaxWalkSpeed;
+            set => historyMaxWalkSpeed = Math.Max(value, historyMaxWalkSpeed);
+        }//本局游戏达到的最高速度
+        
+        public static int HasPassedNum;//玩家本局已通过关卡计数
+        public static int HasCorrectNum;//玩家本局已答对关卡计数
+
+        public static void ReStart()
+        {
+            GameHasStart = false;
+            GameHasEnd = false;
+            sumJourneyLength = 0;
+            CanOperate = false;
+            InitSpeedNum = 40;
+            MinWalkSpeed = 40;
+            MaxWalkSpeed = 100;
+            historyMaxWalkSpeed = 0;
+            HasPassedNum = 0;
+            HasCorrectNum = 0;
+        }
     }
 }

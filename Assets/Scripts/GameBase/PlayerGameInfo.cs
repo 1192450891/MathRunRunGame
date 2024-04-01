@@ -5,6 +5,8 @@ namespace GameBase
         public string PlayerID { get; set; }
         public int Score { get; set; }
         public float MaxSpeed{ get; set; }
+        
+        public int CorrectNum{ get; set; }
         public string Difficulty { get; set; }
     }
 }

@@ -36,6 +36,7 @@ namespace Manager
             rightCount = GetBackgroundEnvironmentCount(RIGHT_PATH);
             leftPosZOffest = leftPos.position.z;
             rightPosZOffest = rightPos.position.z;
+            CreateNewRunwayBackgroundEnvironment();
         }
 
         public void CreateNewRunwayBackgroundEnvironment()

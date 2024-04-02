@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Framework.Core;
 using Struct;
 using UnityEngine;
 
@@ -52,7 +53,7 @@ namespace Manager
             LoadManager.Instance.LoadAndShowPrefabAsync("LeftBackgroundEnvironment",filePath+"/Left"+i.ToString()+".prefab",root.transform,
                     o =>
                     {
-                        float selfZOffest=CalculateObjZLength(o.transform,"Left"+i.ToString());//自身带来的偏移长度
+                        float selfZOffest=GetObjZLength(o.transform,"Left"+i.ToString());//自身带来的偏移长度
                         o.transform.position = new Vector3(pos.x,0,pos.z+selfZOffest/2);//找到生成中心点
                         leftPosZOffest += selfZOffest;//加上此次生成的背景物体的z长度 作为新的偏移
                         leftPosZOffest -= 2;
@@ -68,8 +69,9 @@ namespace Manager
             LoadManager.Instance.LoadAndShowPrefabAsync("RightBackgroundEnvironment",filePath+"/Right"+i.ToString()+".prefab",root.transform,
                 o =>
                 {
-                    o.transform.position = pos;
-                    rightPosZOffest += CalculateObjZLength(o.transform,"Right"+i.ToString());//加上此次生成的背景物体的z长度 作为新的偏移
+                    float selfZOffest=GetObjZLength(o.transform,"Right"+i.ToString());//自身带来的偏移长度
+                    o.transform.position = new Vector3(pos.x,0,pos.z+selfZOffest/2);
+                    rightPosZOffest += selfZOffest;//加上此次生成的背景物体的z长度 作为新的偏移
                     rightPosZOffest -= 2;
                     if (rightPosZOffest-playerZPos < Generate_Lower_Distance_Limit_Z)
                     {
@@ -78,19 +80,10 @@ namespace Manager
                 });
         }
 
-        private float CalculateObjZLength(Transform transform,string objName)
+        private float GetObjZLength(Transform transform,string objName)
         {
             if (boundLengthDic.ContainsKey(objName)) return boundLengthDic[objName];
-            // 获取当前物体的边界框
-            Bounds bounds=new Bounds(transform.position,Vector3.zero);
-            Renderer[] renderers = transform.GetComponentsInChildren<Renderer>();
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                bounds.Encapsulate(renderers[i].bounds);
-            }
-
-            // 计算边界框在Z轴上的长度
-            float zLength = bounds.max.z - bounds.min.z;
+            float zLength = Util.Instance.CalculateObjZLength(transform);
             boundLengthDic[objName] = zLength;
             return zLength;
         }

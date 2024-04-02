@@ -10,6 +10,11 @@ public class MainPanel:PanelBase
     private GameObject _settingButton;
     public override void Show()
     {
+        Bind();
+    }
+
+    public override void Bind()
+    {
         OnClick("StartButton", StartButtonOnClick);
         OnClick("ShareButton", ShareButtonOnClick);
         OnClick("SettingButton", SettingButtonOnClick);

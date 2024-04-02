@@ -5,6 +5,11 @@ public class SettingPanel : PanelBase
 {
     public override void Show()
     {
+        Bind();
+    }
+
+    public override void Bind()
+    {
         OnClick("ExitButton", ExitButtonOnClick);
     }
     private void ReStartButtonOnClick()

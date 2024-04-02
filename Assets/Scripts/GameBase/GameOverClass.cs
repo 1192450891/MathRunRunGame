@@ -24,9 +24,11 @@ namespace GameBase
             {
                 PlayerID = null,
                 Score = ScoreManager.Instance.Score,
-                MaxSpeed = 0,
+                MaxSpeed = GameStaticData.MaxWalkSpeed,
                 CorrectNum=GameStaticData.HasCorrectNum,
-                Difficulty = null
+                Difficulty = null,
+                CorrectQuestionIdList=GameStaticData.CorrectQuestionIdList,
+                WrongQuestionIdList= GameStaticData.WrongQuestionIdList,
             };
         }
     }

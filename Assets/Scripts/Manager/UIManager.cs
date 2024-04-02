@@ -52,6 +52,7 @@ public class UIManager : MonoSingleton<UIManager>
     {
         if (_panelDic.TryGetValue(panelType, out var panel))
         {
+            panel.BeforeHide();
             panel.PanelObj.SetActive(false);
             Destroy(panel.PanelObj);
             _panelDic[panelType] = null;
@@ -62,6 +63,7 @@ public class UIManager : MonoSingleton<UIManager>
     {
         foreach (var (key, value) in _panelDic)
         {
+            value.BeforeHide();
             value.PanelObj.SetActive(false);
             Destroy(value.PanelObj);
         }

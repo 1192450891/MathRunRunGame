@@ -19,12 +19,19 @@ namespace Framework.Core
         {
             // PanelObj.transform.position = Vector2.zero;
         }
+        public virtual void Bind()
+        {
+            
+        }
         public virtual void Show()
         {
             
         }
-        
-        public virtual void Hide()
+        public virtual void BeforeHide()//关闭面板前做的事
+        {
+            
+        }
+        public void Hide()//关闭自己
         {
             UIManager.Instance.HidePanel(GetType());
         }

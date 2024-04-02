@@ -12,12 +12,15 @@ public class GameOverPanel : PanelBase
     public override void Show()
     {
         SetFinalScoreNumText();
+        Bind();
+    }
+    public override void Bind()
+    {
         OnClick("ReStartButton", ReStartButtonOnClick);
         OnClick("HomeButton", HomeButtonOnClick);
         OnClick("ExitButton", ExitButtonOnClick);
         OnClick("QuestionKeyButton", QuestionKeyButtonOnClick);
     }
-
     private void SetFinalScoreNumText()
     {
         var numText=GameObject.Find("Background/ScoreText/ScoreNumText");
@@ -29,6 +32,7 @@ public class GameOverPanel : PanelBase
     {
         GameOverClass.Instance.GameOver();
         GameStaticData.GameHasStart = true;
+        QuestionController.Instance.ManualStart();
         UIManager.Instance.ShowPanel<RunningPanel>();
     }
     private void HomeButtonOnClick()

@@ -11,9 +11,14 @@ public class QuestionKeyPanel  : PanelBase
     private GameObject content;//滚动条内容obj
     public override void Show()
     {
+        Bind();
+        InitKeyCells();
+    }
+    
+    public override void Bind()
+    {
         content = PanelObj.transform.Find("Scroll/Content").gameObject;
         OnClick("ExitButton", ExitButtonOnClick);
-        InitKeyCells();
     }
 
     private void InitKeyCells()

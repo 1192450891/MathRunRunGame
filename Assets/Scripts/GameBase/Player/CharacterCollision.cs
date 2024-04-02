@@ -25,22 +25,35 @@ using UnityEngine;
                 int mode = -1;
                 if (layerValue == QuestionController.Instance.levelData[GameStaticData.HasPassedNum].way)
                 {
+                    
                     mode = 1;//加速
-                    PlayFenceAni(other);
-                    // ChangeFenceColor(other, 1);
-                    GameStaticData.HasCorrectNum++;
-                    ScoreManager.Instance.AddScore(GameStaticData.HasPassedNum);
+                    ChooseCorrectWay();
                 }
                 else
                 {
                     mode = 0;//減速
-                    PlayFenceAni(other);
-                    // ChangeFenceColor(other, 0);
+                    ChooseWrongWay();
                 }
                 player.characterLocomotion.ChangeSpeed(mode);
                 QuestionController.Instance.NextQuestion();
             }
+            void ChooseCorrectWay()
+            {
+                PlayFenceAni(other);
+                // ChangeFenceColor(other, 1);
+                GameStaticData.HasCorrectNum++;
+                ScoreManager.Instance.AddScore(GameStaticData.HasPassedNum);
+                GameStaticData.CorrectQuestionIdList.Add(QuestionController.Instance.levelData[GameStaticData.HasPassedNum].id);
+            }
+
+            void ChooseWrongWay()
+            {
+                PlayFenceAni(other);
+                GameStaticData.WrongQuestionIdList.Add(QuestionController.Instance.levelData[GameStaticData.HasPassedNum].id);
+                // ChangeFenceColor(other, 0);
+            }
         }
+        
         private void PlayFenceAni(Collider other)
         {
             other.transform.GetComponentInParent<DoorController>().OpenDoor();

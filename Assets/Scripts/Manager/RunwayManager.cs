@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Framework.Core;
+using Struct;
 using TMPro;
 using UnityEngine;
 using Wx;
@@ -23,6 +25,8 @@ namespace Manager
         
         public GameObject FinishLine;//终点线preb实例
 
+        private static string RunwayAssetablePath = "Assets/Prebs/Environment/Runway.prefab";
+        private static string FinishLineAssetablePath =     "Assets/Prebs/Environment/Finish Line.prefab";
         private static string TwoAnswerFenceAssetablePath ="Assets/Prebs/Environment/Fence/2AnswerFence.prefab" ;
         private static string ThreeAnswerFenceAssetablePath = "Assets/Prebs/Environment/Fence/3AnswerFence.prefab";
 
@@ -68,7 +72,7 @@ namespace Manager
                 objPath = ThreeAnswerFenceAssetablePath;
             }
 
-            LoadManager.Instance.LoadAndShowPrefabAsync("Runways", "Assets/Prebs/Environment/Runway.prefab",
+            LoadManager.Instance.LoadAndShowPrefabAsync("Runways", RunwayAssetablePath,
                 runwaysGameObjectRoot.transform,
                 obj =>
                 {
@@ -86,25 +90,24 @@ namespace Manager
             questionKeyData.Add(curQuestionLevelData.questionKey);
         }
 
-        private void InitFence(Transform transform, QuestionController.LevelData runwayData)
+        private void InitFence(Transform transform, LevelData runwayData)
         {
+            if (runwayData.questionType == QuestionTypeEnum.TrueOrFalse) return;
+            //判断题的T在位置0 F在位置1
             int correctWay = runwayData.way; //正确的答案 从左往右 从0开始 每次交换0号和目标位置的木板
             Transform zeroText = TransformUtil.Find(transform,"0 Text");
-            Transform targetText = TransformUtil.Find(transform,"{correctWay} Text");
-            if (runwayData.questionType != QuestionTypeEnum.TrueOrFalse) //判断题的T在位置0 F在位置1
+            Transform targetText = TransformUtil.Find(transform,$"{correctWay} Text");
+            if (correctWay != 0)
             {
-                if (correctWay != 0)
-                {
-                    var transform1 = targetText.transform;
-                    var transform2 = zeroText.transform;
-                    (transform1.position, transform2.position) =
-                        (transform2.position, transform1.position);
-                }
-            }
+                var transform1 = targetText.transform;
+                var transform2 = zeroText.transform;
+                Util.Instance.SwapParent(transform1,transform2);
 
+                (transform1.position, transform2.position) =
+                    (transform2.position, transform1.position);
+            }
             for (int i = 0; i < runwayData.answers.Count; i++)
             {
-                
                 Transform curTransform = TransformUtil.Find(transform,$"{i} Text");
                 var curTextMesh = curTransform.GetComponent<TMP_Text>();
                 curTextMesh.text = runwayData.answers[i];
@@ -113,7 +116,7 @@ namespace Manager
 
         public void CreateFinishLine()
         {
-            LoadManager.Instance.LoadAndShowPrefabAsync("FinishLine", "Assets/Prebs/Environment/Finish Line.prefab",runwaysGameObjectRoot.transform,
+            LoadManager.Instance.LoadAndShowPrefabAsync("FinishLine", FinishLineAssetablePath,runwaysGameObjectRoot.transform,
                 (o =>
                 {
                     o.transform.position = new Vector3(0, 0,

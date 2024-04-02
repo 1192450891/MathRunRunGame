@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Framework.Core;
 using Manager;
+using Struct;
 using TMPro;
 using UnityEngine;
 using Wx;
 
 public class QuestionController : Singleton<QuestionController>
 {
-    public GameObject questionText;
-    
     public int QuestionAmount;//各类型问题数量总和 即玩家过关需要通过的问题数量
     
     [HideInInspector] public int currentPanelQuestionIndex; //用于切换画面上显示的问题
 
-    private ListNode head;
+    private ListNodeUtil.ListNode head;
 
     // [Tooltip("栅栏透明材质球")] [SerializeField] public Material FenceFade;
     private bool firstTime; //第一次不更新跑道
@@ -25,25 +25,7 @@ public class QuestionController : Singleton<QuestionController>
     
     private QuestionConfig questionConfig;
 
-
-    
     public LevelData[] levelData;
-
-    public struct LevelData
-    {
-        public QuestionTypeEnum questionType;//题目题型   1：判断题 2:2选1 3:3选1
-        public string _id;
-        public List<string> answers; //显示在门上的答案
-        public string question; //显示在屏幕上的问题
-        public int way; //实际左右的答案数组 取值0/1;
-        public string questionKey;//问题题解
-        public int score;//分数奖励
-    }
-
-    new void Awake()
-    {
-        GetData();
-    }
 
     public void GetData()
     {
@@ -125,7 +107,7 @@ public class QuestionController : Singleton<QuestionController>
     private void GetALlQuestionData()
     {
         levelData = new LevelData[QuestionAmount];
-        head = GenerateRandomLinkedList(QuestionAmount - 1);
+        head = ListNodeUtil.Instance.GenerateRandomLinkedList(QuestionAmount - 1);
         GetQuestionData(Application.dataPath+"/CSVData/TrueOrFalseQuestionData.csv",questionConfig.TrueOrFalseQuestionCount,QuestionTypeEnum.TrueOrFalse);//判断题
         GetQuestionData(Application.dataPath+"/CSVData/TwoAnswerQuestionData.csv",questionConfig.TwoAnswerQuestionCount,QuestionTypeEnum.TwoAnswerQuestion);//2选1题
         GetQuestionData(Application.dataPath+"/CSVData/ThreeAnswerQuestionData.csv",questionConfig.ThreeAnswerQuestionCount,QuestionTypeEnum.ThreeAnswerQuestion);//3选1题
@@ -145,17 +127,19 @@ public class QuestionController : Singleton<QuestionController>
         int m = i;
         for (; i < m+questionCount; i++)
         {
+            int j = 0;//列数下标
             levelData[i].questionType = questionType;
-            levelData[i].question = dt.Rows[head.val][0].ToString();//第一列题干
-            levelData[i].way = int.Parse(dt.Rows[head.val][1].ToString());//第二列正确答案位置
-            levelData[i].score=int.Parse(dt.Rows[head.val][2].ToString());//第三列分数
-            levelData[i].questionKey = dt.Rows[head.val][3].ToString();//第四列题解内容
+            levelData[i].id = dt.Rows[head.val][j++].ToString();//题目Id
+            levelData[i].question = dt.Rows[head.val][j++].ToString();//题干
+            levelData[i].way = int.Parse(dt.Rows[head.val][j++].ToString());//正确答案位置
+            levelData[i].score=int.Parse(dt.Rows[head.val][j++].ToString());//分数
+            levelData[i].questionKey = dt.Rows[head.val][j++].ToString();//题解内容
             levelData[i].answers = new List<string>();
-            int start = 4;
-            while (start<dt.Rows[head.val].ItemArray.Length)
+            
+            while (j<dt.Rows[head.val].ItemArray.Length)
             {
-                levelData[i].answers.Add(dt.Rows[head.val][start].ToString());//start下标是正确答案 后面是错误答案
-                start++;
+                levelData[i].answers.Add(dt.Rows[head.val][j].ToString());//第一个是正确答案 后面是错误答案
+                j++;
             }
             head = head.next;
         }
@@ -169,7 +153,7 @@ public class QuestionController : Singleton<QuestionController>
     {
         if (hasGetData)
         {
-            TimeTool.Instance.Delay(0.5f, NextQuestion );
+            TimeTool.Instance.Delay(0.2f, NextQuestion );
             hasGetData = false;
         }
     }
@@ -180,18 +164,13 @@ public class QuestionController : Singleton<QuestionController>
 
     public void NextQuestion()
     {
-        if (currentPanelQuestionIndex >= QuestionAmount)
-        {
-            questionText.GetComponent<TextMeshProUGUI>().text = "";
-            return;
-        }
-        
-        questionText.GetComponent<TextMeshProUGUI>().text = levelData[currentPanelQuestionIndex++].question;
+        if (currentPanelQuestionIndex >= QuestionAmount)return;
+        EventManager.Instance.TriggerEvent<LevelData>(ClientEvent.QuestionController_NextQuestion,levelData[currentPanelQuestionIndex++]);
     }
 
     public void ClearQuestion()
     {
-        questionText.GetComponent<TextMeshProUGUI>().text = "";
+        EventManager.Instance.TriggerEvent(ClientEvent.QuestionController_AllQuestionDone);
     }
 
 
@@ -218,62 +197,9 @@ public class QuestionController : Singleton<QuestionController>
         hasEndLine = false;
         
     }
-    
-    public struct QuestionConfig
-    {
-        public int TrueOrFalseQuestionCount;
-        public int TwoAnswerQuestionCount;
-        public int ThreeAnswerQuestionCount;
-        // public int FourAnswerQuestionCount;
-    }
 
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
 
-        public ListNode(int val = 0, ListNode next = null)
-        {
-            this.val = val;
-            this.next = next;
-        }
-    }
 
-    public ListNode GenerateRandomLinkedList(int upperLimit)
-    {
-        // 创建链表并填充数字
-        ListNode head = null;
-        ListNode current = null;
-        List<int> numbers = new List<int>();
 
-        for (int i = 0; i <= upperLimit; i++)
-        {
-            numbers.Add(i);
-        }
 
-        // 使用 Fisher-Yates 洗牌算法打乱数字顺序
-        System.Random random = new System.Random();
-        for (int i = numbers.Count - 1; i > 0; i--)
-        {
-            int j = random.Next(i + 1);
-            (numbers[i], numbers[j]) = (numbers[j], numbers[i]);
-        }
-
-        // 将打乱后的数字填充到链表中
-        foreach (int number in numbers)
-        {
-            if (head == null)
-            {
-                head = new ListNode(number);
-                current = head;
-            }
-            else
-            {
-                current.next = new ListNode(number);
-                current = current.next;
-            }
-        }
-
-        return head;
-    }
 }

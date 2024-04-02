@@ -1,35 +1,34 @@
+using GameBase;
+using GameBase.Player;
 using Manager;
 using Struct;
 
-namespace GameBase
+public class GameOverClass : Singleton<GameOverClass>
 {
-    public class GameOverClass : Singleton<GameOverClass>
+    public void GameOver()//点击返回主页或重新开始 一局游戏才真正结束了
     {
-        public void GameOver()//点击返回主页或重新开始 一局游戏才真正结束了
-        {
-            InitGameInfo();//创建玩家本局游戏信息记录
-            UIManager.Instance.HideAllPanel();
-            QuestionController.Instance.ReStart();//重置参数
-            Player.Instance.ReStart();
-            GameStaticData.ReStart();
-            ScoreManager.Instance.ReStart();
+        InitGameInfo();//创建玩家本局游戏信息记录
+        UIManager.Instance.HideAllPanel();
+        QuestionController.Instance.ReStart();//重置参数
+        Player.Instance.ReStart();
+        GameStaticData.ReStart();
+        ScoreManager.Instance.ReStart();
         
-            RunwayManager.Instance.InitRunways();
-            RunwayManager.Instance.DestoryFinishLine();
-        }
+        RunwayManager.Instance.InitRunways();
+        RunwayManager.Instance.DestroyFinishLine();
+    }
 
-        private void InitGameInfo()
+    private void InitGameInfo()
+    {
+        var info =new PlayerGameInfo
         {
-            var info =new PlayerGameInfo
-            {
-                PlayerID = null,
-                Score = ScoreManager.Instance.Score,
-                MaxSpeed = GameStaticData.MaxWalkSpeed,
-                CorrectNum=GameStaticData.HasCorrectNum,
-                Difficulty = null,
-                CorrectQuestionIdList=GameStaticData.CorrectQuestionIdList,
-                WrongQuestionIdList= GameStaticData.WrongQuestionIdList,
-            };
-        }
+            PlayerID = null,
+            Score = ScoreManager.Instance.Score,
+            MaxSpeed = GameStaticData.MaxWalkSpeed,
+            CorrectNum=GameStaticData.HasCorrectNum,
+            Difficulty = null,
+            CorrectQuestionIdList=GameStaticData.CorrectQuestionIdList,
+            WrongQuestionIdList= GameStaticData.WrongQuestionIdList,
+        };
     }
 }

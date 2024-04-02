@@ -270,6 +270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 2 Fence Type1 Door
       objectReference: {fileID: 0}
+    - target: {fileID: 6613242038785209756, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 8011686347289901293, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.25
@@ -318,6 +322,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8860600121260229134, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
+      propertyPath: m_Name
+      value: 2 RawImage
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -339,6 +347,10 @@ PrefabInstance:
     - target: {fileID: 6613242038785209756, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
       propertyPath: m_Name
       value: 0 Fence Type1 Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613242038785209756, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8011686347289901293, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
       propertyPath: m_LocalScale.x
@@ -388,6 +400,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8860600121260229134, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
+      propertyPath: m_Name
+      value: 0 RawImage
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -417,6 +433,10 @@ PrefabInstance:
     - target: {fileID: 6613242038785209756, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
       propertyPath: m_Name
       value: 1 Fence Type1 Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613242038785209756, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8011686347289901293, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
       propertyPath: m_LocalScale.x
@@ -465,6 +485,10 @@ PrefabInstance:
     - target: {fileID: 8011686347289901293, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8860600121260229134, guid: f5d0615591d9cef428583629f1acf1ba, type: 3}
+      propertyPath: m_Name
+      value: 1 RawImage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

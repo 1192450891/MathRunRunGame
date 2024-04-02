@@ -23,7 +23,7 @@ public class QuestionKeyPanel  : PanelBase
 
     private void InitKeyCells()
     {
-        foreach (var questionKey in RunwayManager.Instance.questionKeyData)
+        foreach (var questionKey in RunwayManager.Instance.QuestionKeyData)
         {
             LoadManager.Instance.LoadAndShowPrefabAsync("KeyCell", "Assets/Prebs/UI/QuestionKeyPanel/KeyCell.prefab", content.transform,
                 cell =>

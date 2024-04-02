@@ -6,13 +6,13 @@ using UnityEngine.AddressableAssets;
 
 public class LoadManager:MonoSingleton<LoadManager>
 {
-    public void LoadAndShowPrefabAsync(string ObjName, string ObjPath, Transform ObjParentTransform = null, Action<GameObject> callback = null)  
+    public void LoadAndShowPrefabAsync(string objName, string objPath, Transform objParentTransform = null, Action<GameObject> callback = null)  
     {  
-        Addressables.LoadAssetsAsync<GameObject>(ObjPath, obj =>  
+        Addressables.LoadAssetsAsync<GameObject>(objPath, obj =>  
         {  
             obj = Instantiate(obj, Vector3.zero, Quaternion.identity);  
-            obj.name = ObjName;  
-            obj.transform.SetParent(ObjParentTransform,false);
+            obj.name = objName;  
+            obj.transform.SetParent(objParentTransform,false);
             callback?.Invoke(obj);  
         });  
     }

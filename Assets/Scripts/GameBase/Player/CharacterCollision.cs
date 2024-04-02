@@ -1,4 +1,5 @@
 using BrokenVector.LowPolyFencePack;
+using GameBase.Player;
 using Manager;
 using Struct;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 
     public class CharacterCollision
     {
-        private Player player;
+        private readonly Player player;
         public CharacterCollision(Player p)
         {
             player = p;
@@ -34,7 +35,7 @@ using UnityEngine;
                     mode = 0;//減速
                     ChooseWrongWay();
                 }
-                player.characterLocomotion.ChangeSpeed(mode);
+                player.ChangeSpeed(mode);
                 QuestionController.Instance.NextQuestion();
             }
             void ChooseCorrectWay()
@@ -75,7 +76,7 @@ using UnityEngine;
             LayerMask layer = other.gameObject.layer;
             if (tag == "loadRunway")
             {
-                player.runwayBackgroundEnvironmentManager.CreateNewRunwayBackgroundEnvironment();
+                player.CreateNewRunwayBackgroundEnvironment();
                 if (!QuestionController.Instance.IsAllQuestionDone())
                 {
                     RunwayManager.Instance.CreateNewRunway();

@@ -6,9 +6,9 @@ namespace Struct
 {
     public struct GameStaticData
     {
-        public static bool GameHasStart=false;
+        public static bool GameHasStart;
         
-        public static bool GameHasEnd=false;
+        public static bool GameHasEnd;
         
         public static bool PlayerIsPlaying()//检测玩家是否正在跑道上闯关
         {
@@ -44,9 +44,9 @@ namespace Struct
         public static int HasPassedNum;//玩家本局已通过关卡计数
         public static int HasCorrectNum;//玩家本局已答对关卡计数
 
-        private static int ListCapacity = 20;
-        public static List<string> CorrectQuestionIdList=new List<string>(ListCapacity);//本局答对的题目ID列表
-        public static List<string> WrongQuestionIdList=new List<string>(ListCapacity);//本局答错的题目ID列表
+        private const int listCapacity = 20;
+        public static List<string> CorrectQuestionIdList=new(listCapacity);//本局答对的题目ID列表
+        public static List<string> WrongQuestionIdList=new(listCapacity);//本局答错的题目ID列表
         
         public static void ReStart()
         {
@@ -60,8 +60,8 @@ namespace Struct
             historyMaxWalkSpeed = 0;
             HasPassedNum = 0;
             HasCorrectNum = 0;
-            CorrectQuestionIdList = new List<string>(ListCapacity);
-            WrongQuestionIdList = new List<string>(ListCapacity);
+            CorrectQuestionIdList = new List<string>(listCapacity);
+            WrongQuestionIdList = new List<string>(listCapacity);
         }
     }
 }

@@ -1,3 +1,4 @@
+using GameBase.Player;
 using Manager;
 using Struct;
 using UnityEngine.UI;

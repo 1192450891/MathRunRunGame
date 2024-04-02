@@ -32,33 +32,37 @@ public class CharacterLocomotion
     [Tooltip("Turn this off if you want to separate movement and aiming")]
     [SerializeField] bool lookToMovementDirection = true;//turn this off if you want to separate movement and aiming
     [Tooltip("Feel free to assign other joysticks here")]
-    public Joystick moveJoystick;//assign joystick here
-    [Tooltip("Self explanatory. After this magnitude player will move ")]
-    [SerializeField] float movementThreshold = 0.1f;// self explanatory. After this magnitude player will move 
-    [Header("Animation variables")]
-    [Tooltip("This will turn rotation towards the joystick direction")]
-    [SerializeField] bool canStrafe = false;
-    [Tooltip("Animation variables for blendtrees")]
-    [SerializeField] string forwardAnimationVar = "Forward";
-    [Tooltip("Animation variables for blendtrees")]
-    [SerializeField] string strafeAnimationVar = "Strafe";
-    float mag; // maginutde
-    Transform camTransform;
-    Vector3 fwd,right; //camera fwd,right
-    Vector3 input,move;//input for animations
-    Vector3 cameraForward;
-    float forward,strafe;//we will use them in animation variables
-    
-    [Tooltip("加速率")] public float accelerationRate = 2f;
-    [Tooltip("減速率")] public float dccelerationRate = 5f;
-    [Tooltip("自然減速率")] public float Natural_deceleration_rate = 1000;
+    public Joystick MoveJoystick;//assign joystick here
+
+    [Tooltip("Self explanatory. After this magnitude player will move ")] [SerializeField]
+    private const float movementThreshold = 0.1f; // self explanatory. After this magnitude player will move 
+
+    [Header("Animation variables")] [Tooltip("This will turn rotation towards the joystick direction")] [SerializeField]
+    private const bool canStrafe = false;
+
+    [Tooltip("Animation variables for blendtrees")] [SerializeField]
+    private const string forwardAnimationVar = "Forward";
+
+    [Tooltip("Animation variables for blendtrees")] [SerializeField]
+    private const string strafeAnimationVar = "Strafe";
+
+    private float mag; // maginutde
+    private Transform camTransform;
+    private Vector3 fwd,right; //camera fwd,right
+    private Vector3 input,move;//input for animations
+    private Vector3 cameraForward;
+    private float forward,strafe;//we will use them in animation variables
+
+    [Tooltip("加速率")] private const float accelerationRate = 2f;
+    [Tooltip("減速率")] private const float decelerationRate = 5f;
+    [Tooltip("自然減速率")] private const float naturalDecelerationRate = 1000;
 
     private bool needSetpos;
-    private Vector3 setpos;
+    private Vector3 setPos;
 
-    public void Init(CharacterController controller,Transform transform)
+    public void Init(Transform transform)
     {
-        characterController = controller;
+        characterController = transform.GetComponent<CharacterController>();
         WalkSpeed = GameStaticData.InitSpeedNum;
         playerTransform = transform;
         characterVisual = transform;
@@ -71,55 +75,25 @@ public class CharacterLocomotion
     }
 
     public void Update(){
-        // if (needSetpos)
-        // {
-        //     playerTransform.position = setpos;
-        //     needSetpos = false;
-        //     return;
-        // }
-        // if(!GameStaticData.CanOperate) return;
-        //
-        // mag = Mathf.Clamp01(new Vector2(moveJoystick.Horizontal, moveJoystick.Vertical).sqrMagnitude);
-        // if(canStrafe){
-        //     lookToMovementDirection = false;
-        //     //I turn it off because player needs to strafe to it's forward.
-        //     //use strafe when you look at certain object(target) for instance
-        // }
-        // //getting the magnitude
-        // if (mag >= movementThreshold || GameStaticData.PlayerIsPlaying()) 
-        // {
-        //     MovementAndRotation();
-        // }
-        // else{
-        //     characterController.Move(new Vector3(0,0,0));//gravity when idle
-        // }
-        // if(animator != null){
-        //     if(canStrafe){
-        //         RelativeAnimations();
-        //     }
-        //     else{
-        //         if(GameStaticData.PlayerIsPlaying()) mag=1;
-        //         animator.SetFloat(forwardAnimationVar,mag);
-        //     }
-        // }
+
     }
 
     public void FixUpdate()
     {
         if (GameStaticData.PlayerIsPlaying())
         {
-            WalkSpeed -= dccelerationRate * Mathf.Log10(WalkSpeed) /
-                                             Natural_deceleration_rate;
+            WalkSpeed -= decelerationRate * Mathf.Log10(WalkSpeed) /
+                                             naturalDecelerationRate;
         }
         if (needSetpos)
         {
-            playerTransform.position = setpos;
+            playerTransform.position = setPos;
             needSetpos = false;
             return;
         }
         if(!GameStaticData.CanOperate) return;
 
-        mag = Mathf.Clamp01(new Vector2(moveJoystick.Horizontal, moveJoystick.Vertical).sqrMagnitude);
+        mag = Mathf.Clamp01(new Vector2(MoveJoystick.Horizontal, MoveJoystick.Vertical).sqrMagnitude);
         if(canStrafe){
             lookToMovementDirection = false;
             //I turn it off because player needs to strafe to it's forward.
@@ -159,7 +133,7 @@ public class CharacterLocomotion
         switch (mode)
         {
             case 0:
-                WalkSpeed -= dccelerationRate * Mathf.Log10(WalkSpeed);
+                WalkSpeed -= decelerationRate * Mathf.Log10(WalkSpeed);
                 break;
             case 1:
                 WalkSpeed += accelerationRate * Mathf.Log(WalkSpeed);
@@ -173,12 +147,12 @@ public class CharacterLocomotion
         if (camTransform != null)
         {
             cameraForward = Vector3.Scale(camTransform.up, new Vector3(1, 0, 1)).normalized; //camera forwad
-            move = moveJoystick.Vertical * cameraForward + moveJoystick.Horizontal * camTransform.right;//relative 
+            move = MoveJoystick.Vertical * cameraForward + MoveJoystick.Horizontal * camTransform.right;//relative 
             //vector to camera forward and right
         }
         else
         {
-            move = moveJoystick.Vertical * Vector3.forward + moveJoystick.Horizontal * Vector3.right;
+            move = MoveJoystick.Vertical * Vector3.forward + MoveJoystick.Horizontal * Vector3.right;
             //if there is no camera transform(for any reason then we use joystick forward and right)
         }
         if (move.magnitude > 1)
@@ -211,8 +185,8 @@ public class CharacterLocomotion
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * fwd; //camera right
     }
     void MovementAndRotation(){
-        Vector3 direction = new Vector3(moveJoystick.Horizontal, 0, moveJoystick.Vertical);//joystick direction
-        Vector3 rightMovement = right * walkSpeed * Time.deltaTime * moveJoystick.Horizontal;//getting right movement out of joystick(relative to camera)
+        Vector3 direction = new Vector3(MoveJoystick.Horizontal, 0, MoveJoystick.Vertical);//joystick direction
+        Vector3 rightMovement = right * walkSpeed * Time.deltaTime * MoveJoystick.Horizontal;//getting right movement out of joystick(relative to camera)
         Vector3 upMovement;
         if(GameStaticData.PlayerIsPlaying())
         {
@@ -220,7 +194,7 @@ public class CharacterLocomotion
         }
         else
         {
-            upMovement = fwd * walkSpeed * Time.deltaTime * moveJoystick.Vertical;
+            upMovement = fwd * walkSpeed * Time.deltaTime * MoveJoystick.Vertical;
         }
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement); //final movement vector
         heading.y = -1f;//gravity while moving
@@ -233,7 +207,7 @@ public class CharacterLocomotion
     public void SetPos(Vector3 vector3)
     {
         needSetpos = true;
-        setpos = vector3;
+        setPos = vector3;
     }
 
 }

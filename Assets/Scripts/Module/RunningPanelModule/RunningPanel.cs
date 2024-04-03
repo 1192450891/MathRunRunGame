@@ -2,6 +2,7 @@
 using System.IO;
 using Framework.Core;
 using GameBase.Player;
+using Module.Enum;
 using Module.RunningPanelModule;
 using Struct;
 using TMPro;
@@ -15,6 +16,7 @@ public class RunningPanel : PanelBase
     private GameObject questionImage;
     private GameObject scoreNumText;
     private GameObject speedNumText;
+    private GameObject answerTipText;
     private JourneyProgressBar bar;
     private int barCountdownTimeIndex=-1;
     public override void Show()
@@ -24,9 +26,9 @@ public class RunningPanel : PanelBase
         SetScoreNumText(0);
         SetSpeedNumText(GameStaticData.InitSpeedNum);
 
-        barCountdownTimeIndex=TimeTool.Instance.Countdown(0.1f, () => SetJourneyProgressBar());
+        barCountdownTimeIndex=TimeTool.Instance.Countdown(0.1f, SetJourneyProgressBar);
     }
-    
+
     public override void Bind()
     {
         questionText = TransformUtil.Find(PanelObj.transform, "QuestionText").gameObject;
@@ -34,6 +36,7 @@ public class RunningPanel : PanelBase
         scoreNumText = GameObject.Find("ScoreSquare/Square/NumText");
         speedNumText = GameObject.Find("SpeedSquare/Square/NumText");
         bar = new JourneyProgressBar(GameObject.Find("JourneyProgressBar/Slider").GetComponent<Slider>());
+        SetAnswerTipSquare();
         
         EventManager.Instance.AddEvent<LevelData>(ClientEvent.QuestionController_NextQuestion, NextQuestionRefresh);
         EventManager.Instance.AddEvent(ClientEvent.QuestionController_AllQuestionDone, ClearQuestion);
@@ -43,6 +46,8 @@ public class RunningPanel : PanelBase
         Player.Instance.SetJoyStick(TransformUtil.Find(PanelObj.transform, "Joystick").transform.GetComponent<Joystick>());
         GameStaticData.CanOperate = true;
     }
+
+
 
     private void SetJourneyProgressBar()
     {
@@ -71,7 +76,7 @@ public class RunningPanel : PanelBase
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            SetQuestionImage(Application.dataPath+"/CSVData/"+str+$"/{levelData.id}.jpeg");
+            SetQuestionImage(StaticString.CsvDataPath+str+$"/{levelData.id}.jpeg");
         }
         else//文字类型
         {
@@ -79,6 +84,8 @@ public class RunningPanel : PanelBase
             questionImage.SetActive(false);
             SetQuestionText(questionStr);
         }
+
+        SetAnswerTip(levelData.way);
     }
     void SetQuestionText(string str)
     {
@@ -97,6 +104,10 @@ public class RunningPanel : PanelBase
     {
         questionText.SetActive(false);
         questionImage.SetActive(false);
+        if (answerTipText)
+        {
+            answerTipText.SetActive(false);
+        }
     }
     void SetScoreNumText(int score)
     {
@@ -108,7 +119,24 @@ public class RunningPanel : PanelBase
         if(speedNumText==null)return;
         speedNumText.GetComponent<TextMeshProUGUI>().text = walkSpeed.ToString();
     }
-
+    private void SetAnswerTip(int index)
+    {
+        if (!GameStart.Instance.DevelopToggle)return;
+        answerTipText.GetComponent<TextMeshProUGUI>().text = $"正确道路：{index}";
+    }
+    private void SetAnswerTipSquare()
+    {
+        var squarePanel=TransformUtil.Find(PanelObj.transform, "AnswerTipSquare").gameObject;
+        if (GameStart.Instance.DevelopToggle)
+        {
+            
+            answerTipText=TransformUtil.Find(squarePanel.transform, "AnswerTipText").gameObject;
+        }
+        else
+        {
+            squarePanel.SetActive(false);
+        }
+    }
     public override void BeforeHide()
     {
         GameStaticData.CanOperate = false;

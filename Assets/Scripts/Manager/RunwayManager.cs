@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Framework.Core;
+using Module.Enum;
 using Struct;
 using TMPro;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Manager
     {
         private Queue<GameObject> runWays; //存储跑道 入队列时创建对应的栅栏 需要销毁时按出列顺序销毁
 
-        public int LevelDataIndex; //用于创建新跑道时的指针下标
+        private int LevelDataIndex; //用于创建新跑道时的指针下标
 
         private const int gameStartInitRunwaysCount = 4; //初始化游戏时创建的跑道数量
 
@@ -25,6 +26,8 @@ namespace Manager
         public static float RUNWAY_LENGTH_MAGNIFICATION;//跑道长度倍率 （用于调整回答问题时间的大小）
 
         private GameObject finishLine;//终点线preb实例
+        
+        private bool hasEndLine;//是否已经生成终点
 
         private const string runwayAddressablePath = "Assets/Prebs/Environment/Runway.prefab";
         private const string finishLineAddressablePath =     "Assets/Prebs/Environment/Finish Line.prefab";
@@ -35,6 +38,7 @@ namespace Manager
         {
             if (runWays != null)//点击了重新开始游戏 需要销毁前一局的跑道
             {
+                hasEndLine = false;
                 while (runWays.Count!=0)
                 {
                    Object.Destroy(runWays.Dequeue().gameObject);
@@ -58,7 +62,7 @@ namespace Manager
             string objPath = ""; //这次的栅栏类型
             int index = LevelDataIndex;
             LevelDataIndex++;
-            var curQuestionLevelData = QuestionController.Instance.levelData[index];
+            var curQuestionLevelData = QuestionController.Instance.LevelData[index];
             var curQuestionType = curQuestionLevelData.questionType;
             if (curQuestionType == QuestionTypeEnum.TrueOrFalse)
             {
@@ -94,7 +98,7 @@ namespace Manager
         private void InitFence(Transform transform, LevelData runwayData)
         {
             FillFenceAnswer(transform,runwayData);
-            if (runwayData.questionType == QuestionTypeEnum.TrueOrFalse)return;//判断题不需要调整位置
+            if (runwayData.questionType == QuestionTypeEnum.TrueOrFalse)return;//判断题不需要调整答案位置
             AdjustAnswerPosition(transform,runwayData);
         }
 
@@ -124,16 +128,22 @@ namespace Manager
         {
             //判断题的T在位置0 F在位置1
             int correctWay = runwayData.way; //正确的答案 从左往右 从0开始 每次交换0号和目标位置的木板
-            Transform zeroText = TransformUtil.Find(transform,"0 Text");
-            Transform targetText = TransformUtil.Find(transform,$"{correctWay} Text");
+            
             if (correctWay != 0)
             {
-                var transform1 = targetText.transform;
-                var transform2 = zeroText.transform;
-                Util.Instance.SwapParent(transform1,transform2);
+                var zeroTextTransform = TransformUtil.Find(transform,"0 Text").transform;
+                var targetTextTransform = TransformUtil.Find(transform,$"{correctWay} Text").transform;
+                Util.Instance.SwapParent(zeroTextTransform,targetTextTransform);
 
-                (transform1.position, transform2.position) =
-                    (transform2.position, transform1.position);
+                (zeroTextTransform.position, targetTextTransform.position) =
+                    (targetTextTransform.position, zeroTextTransform.position);
+                
+                var zeroRawImageTransform = TransformUtil.Find(transform,"0 RawImage").transform;
+                var targetRawImageTransform = TransformUtil.Find(transform,$"{correctWay} RawImage").transform;
+                Util.Instance.SwapParent(zeroRawImageTransform,targetRawImageTransform);
+
+                (zeroRawImageTransform.position, targetRawImageTransform.position) =
+                    (targetRawImageTransform.position, zeroRawImageTransform.position);
             }
         }
         
@@ -168,9 +178,23 @@ namespace Manager
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            return Application.dataPath + "/CSVData/" + typeStr + $"/{levelData.id + suffix}.jpeg";
+            return StaticString.CsvDataPath + typeStr + $"/{levelData.id + suffix}.jpeg";
         }
+        public bool IsAllQuestionHasCreated()
+        {
+            if (LevelDataIndex<QuestionController.Instance.QuestionAmount)
+            {
+                return false;
+            }
 
+            if (hasEndLine == false)
+            {
+                CreateFinishLine();
+                hasEndLine = true;
+            }
+
+            return true;
+        }
         public void CreateFinishLine()
         {
             LoadManager.Instance.LoadAndShowPrefabAsync("FinishLine", finishLineAddressablePath,runwaysGameObjectRoot.transform,

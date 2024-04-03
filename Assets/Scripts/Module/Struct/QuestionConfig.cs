@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Module.Enum;
 using Wx;
 
 namespace Struct

@@ -1,10 +1,12 @@
 ﻿using System.IO;
 using Manager;
+using Struct;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 public class GameStart : MonoSingleton<GameStart>
 {
+    [SerializeField]public bool DevelopToggle;
     private new void Awake()
     {
         GameStartFun();

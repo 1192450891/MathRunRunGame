@@ -1,4 +1,4 @@
-namespace Wx
+namespace Module.Enum
 {
     public enum QuestionTypeEnum//题目题型
     {

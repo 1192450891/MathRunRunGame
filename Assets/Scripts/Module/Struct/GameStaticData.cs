@@ -28,7 +28,7 @@ namespace Struct
             }
         }
         
-        public static bool CanOperate=false;//玩家当前是否能进行操作
+        public static bool CanOperate;//玩家当前是否能进行操作
         
         public static float InitSpeedNum=40;//玩家开局初始速度
         

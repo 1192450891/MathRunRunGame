@@ -24,7 +24,7 @@ using UnityEngine;
             if (layerValue == 0 || layerValue == 1)
             {
                 int mode = -1;
-                if (layerValue == QuestionController.Instance.levelData[GameStaticData.HasPassedNum].way)
+                if (layerValue == QuestionController.Instance.CurLevelData.way)
                 {
                     
                     mode = 1;//加速
@@ -36,21 +36,21 @@ using UnityEngine;
                     ChooseWrongWay();
                 }
                 player.ChangeSpeed(mode);
-                QuestionController.Instance.NextQuestion();
+                QuestionController.Instance.NextQuestion();//最后去切换问题
             }
             void ChooseCorrectWay()
             {
                 PlayFenceAni(other);
                 // ChangeFenceColor(other, 1);
                 GameStaticData.HasCorrectNum++;
-                ScoreManager.Instance.AddScore(GameStaticData.HasPassedNum);
-                GameStaticData.CorrectQuestionIdList.Add(QuestionController.Instance.levelData[GameStaticData.HasPassedNum].id);
+                ScoreManager.Instance.AddScore();
+                GameStaticData.CorrectQuestionIdList.Add(QuestionController.Instance.CurLevelData.id);
             }
 
             void ChooseWrongWay()
             {
                 PlayFenceAni(other);
-                GameStaticData.WrongQuestionIdList.Add(QuestionController.Instance.levelData[GameStaticData.HasPassedNum].id);
+                GameStaticData.WrongQuestionIdList.Add(QuestionController.Instance.CurLevelData.id);
                 // ChangeFenceColor(other, 0);
             }
         }
@@ -63,7 +63,6 @@ using UnityEngine;
         {
             if (layer.value - 10 == 2 && !GameStaticData.GameHasEnd)
             {
-                QuestionController.Instance.ClearQuestion();
                 UIManager.Instance.HideAllPanel();
                 UIManager.Instance.ShowPanel<GameOverPanel>();
                 GameStaticData.GameHasEnd = true;
@@ -77,7 +76,7 @@ using UnityEngine;
             if (tag == "loadRunway")
             {
                 player.CreateNewRunwayBackgroundEnvironment();
-                if (!QuestionController.Instance.IsAllQuestionDone())
+                if (!RunwayManager.Instance.IsAllQuestionHasCreated())
                 {
                     RunwayManager.Instance.CreateNewRunway();
                 }

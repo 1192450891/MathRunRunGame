@@ -14,9 +14,9 @@ namespace Manager
         } 
 
 
-        public void AddScore(int questionIndex)
+        public void AddScore()
         {
-            Score += QuestionController.Instance.levelData[questionIndex].score;
+            Score += QuestionController.Instance.CurLevelData.score;
         }
 
         public void ReStart()

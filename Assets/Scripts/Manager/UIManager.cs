@@ -80,6 +80,5 @@ public class UIManager : MonoSingleton<UIManager>
     private void Start()
     {
         ShowPanel<MainPanel>();
-        // ShowPanel<QuestionKeyPanel>();
     }
 }

@@ -35,12 +35,12 @@ using UnityEngine;
                     mode = 0;//減速
                     ChooseWrongWay();
                 }
+                PlayFenceAni(other);
                 player.ChangeSpeed(mode);
                 QuestionController.Instance.NextQuestion();//最后去切换问题
             }
             void ChooseCorrectWay()
             {
-                PlayFenceAni(other);
                 // ChangeFenceColor(other, 1);
                 GameStaticData.HasCorrectNum++;
                 ScoreManager.Instance.AddScore();
@@ -49,7 +49,6 @@ using UnityEngine;
 
             void ChooseWrongWay()
             {
-                PlayFenceAni(other);
                 GameStaticData.WrongQuestionIdList.Add(QuestionController.Instance.CurLevelData.id);
                 // ChangeFenceColor(other, 0);
             }

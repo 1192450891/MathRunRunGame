@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using GameBase.Player;
 using Manager;
 using Struct;
 using UnityEngine;
@@ -7,6 +8,9 @@ using UnityEngine.AddressableAssets;
 public class GameStart : MonoSingleton<GameStart>
 {
     [SerializeField]public bool DevelopToggle;
+    private QuestionController questionController;
+    private Player player;
+    private UIManager uiManager;
     private new void Awake()
     {
         GameStartFun();
@@ -25,6 +29,7 @@ public class GameStart : MonoSingleton<GameStart>
 
     private void InitQuestionController()
     {
+        questionController = new QuestionController();
         QuestionController.Instance.GetData();
         RunwayManager.Instance.InitRunways();
     }

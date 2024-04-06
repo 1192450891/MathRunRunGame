@@ -10,6 +10,7 @@ namespace Manager
     public class RunwayBackgroundEnvironmentManager
     {
         private GameObject root;//根物体 生成的背景都在里面
+        private Queue<GameObject> backgroundQueue;
 
         private Dictionary<string, float> boundLengthDic;//存储计算过的Z轴长度 避免重复运算
 
@@ -25,7 +26,7 @@ namespace Manager
         private static string LEFT_PATH="Assets/Prebs/Environment/BackgroundEnvironment/Left";
         private static string RIGHT_PATH="Assets/Prebs/Environment/BackgroundEnvironment/Right";
 
-        private static int Generate_Lower_Distance_Limit_Z = 340;//Z轴生成距离下限  生成距离大于终点距离则不生成
+        private static float Generate_Lower_Distance_Limit_Z = 340*RunwayManager.RUNWAY_LENGTH_MAGNIFICATION;//Z轴生成距离下限  生成距离大于终点距离则不生成
         
         //控制闯关时跑道旁背景的生成
         public RunwayBackgroundEnvironmentManager(GameObject left,GameObject right)
@@ -38,6 +39,7 @@ namespace Manager
             rightCount = GetBackgroundEnvironmentCount(RIGHT_PATH);
             leftPosZOffest = leftPos.position.z;
             rightPosZOffest = rightPos.position.z;
+            backgroundQueue = new Queue<GameObject>();
             CreateNewRunwayBackgroundEnvironment();
         }
 
@@ -62,6 +64,7 @@ namespace Manager
                         {
                             CreateLeft(GetRandomNum(leftCount),LEFT_PATH,new Vector3(leftPos.position.x,0,leftPosZOffest),playerZPos);
                         }
+                        backgroundQueue.Enqueue(o);
                     });
         }
         private void CreateRight(int i,string filePath,Vector3 pos,float playerZPos)
@@ -78,6 +81,7 @@ namespace Manager
                     {
                         CreateRight(GetRandomNum(rightCount),RIGHT_PATH,new Vector3(rightPos.position.x,0,rightPosZOffest),playerZPos);
                     }
+                    backgroundQueue.Enqueue(o);
                 });
         }
 
@@ -98,6 +102,17 @@ namespace Manager
         {
             System.Random random = new System.Random();
             return random.Next(1, maxValue + 1);
+        }
+
+        public void ReStart()
+        {
+            leftPosZOffest = leftPos.position.z;
+            rightPosZOffest = rightPos.position.z;
+            while (backgroundQueue.Count!=0)
+            {
+                Object.Destroy(backgroundQueue.Dequeue());
+            }
+            CreateNewRunwayBackgroundEnvironment();
         }
     }
 }

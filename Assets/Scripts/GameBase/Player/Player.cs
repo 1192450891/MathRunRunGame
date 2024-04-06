@@ -56,6 +56,8 @@ namespace GameBase.Player
         {
             characterLocomotion.InitSpeed();
             characterLocomotion.SetPos(GameObject.Find("PlayerPos").transform.position);
+
+            runwayBackgroundEnvironmentManager.ReStart();
         }
 
         public void SetJoyStick(Joystick joystickComponent)

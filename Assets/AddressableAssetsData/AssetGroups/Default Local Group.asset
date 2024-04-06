@@ -37,11 +37,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e695783108a4e30449a0489e018eb037
-    m_Address: Assets/Prebs/UI/QuestionController.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: aaa2c939c0359ac4dbce3f49e8b90252
     m_Address: Assets/Conquerror/TopDownController/Joystick Pack/Prefabs/Fixed Joystick.prefab
     m_ReadOnly: 0

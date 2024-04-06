@@ -31,6 +31,7 @@ namespace Struct
         public static bool CanOperate;//玩家当前是否能进行操作
         
         public static float InitSpeedNum=40;//玩家开局初始速度
+        public static float CurSpeedNum;//玩家当前速度
         
         public static float MinWalkSpeed=40;//速度下限
         public static float MaxWalkSpeed=100;//速度上限

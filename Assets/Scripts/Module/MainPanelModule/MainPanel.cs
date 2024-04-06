@@ -1,13 +1,8 @@
 using Framework.Core;
 using Struct;
-using UnityEngine;
 
 public class MainPanel:PanelBase
 {
-    private GameObject _startButton;
-    private GameObject _shareButton;
-    private GameObject _rankButton;
-    private GameObject _settingButton;
     public override void Show()
     {
         Bind();
@@ -23,7 +18,7 @@ public class MainPanel:PanelBase
 
     private void RankButtonOnClick()
     {
-        UIManager.Instance.HidePanel<MainPanel>();
+        Hide();
         UIManager.Instance.ShowPanel<RankPanel>();
     }
 
@@ -39,7 +34,7 @@ public class MainPanel:PanelBase
 
     private void StartButtonOnClick()
     {
-        UIManager.Instance.HidePanel<MainPanel>();
+        Hide();
         UIManager.Instance.ShowPanel<RunningPanel>();
         GameStaticData.GameHasStart = true;
         QuestionController.Instance.ManualStart();

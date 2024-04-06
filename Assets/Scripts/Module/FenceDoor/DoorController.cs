@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using GameBase.Player;
+using Struct;
+using UnityEngine;
 
 namespace BrokenVector.LowPolyFencePack
 {
@@ -45,7 +47,15 @@ namespace BrokenVector.LowPolyFencePack
 
         public DoorState InitialState;
         public float InitAnimationSpeed=9999;
-        public float AnimationSpeed=1;
+        private float animationSpeed = 1;
+        public float AnimationSpeed
+        {
+            get
+            {
+                animationSpeed = GameStaticData.CurSpeedNum/40;
+                return animationSpeed;
+            }
+        }
 
         [SerializeField]
         private AnimationClip openAnimation;

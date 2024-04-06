@@ -98,7 +98,26 @@ public class RunningPanel : PanelBase
         var texture=Util.Instance.LoadPNG(imagePath);
         var rawImageComponent = questionImage.GetComponent<RawImage>();
         rawImageComponent.texture = texture;
-        rawImageComponent.SetNativeSize();
+
+        // 获取图片的原始尺寸
+        int originalWidth = rawImageComponent.texture.width;
+        int originalHeight = rawImageComponent.texture.height;
+
+        // 判断是否超过最大宽度
+        if (originalWidth > RunningPanelStaticData.ImageWidth)
+        {
+            // 计算新的高度以保持宽高比
+            float ratio = (float)originalHeight / originalWidth;
+            int newHeight = Mathf.RoundToInt(RunningPanelStaticData.ImageWidth * ratio);
+
+            // 设置RawImage的尺寸
+            rawImageComponent.rectTransform.sizeDelta = new Vector2(RunningPanelStaticData.ImageWidth, newHeight);
+        }
+        else
+        {
+            // 如果宽度小于或等于最大宽度，则保留原始尺寸
+            rawImageComponent.rectTransform.sizeDelta = new Vector2(originalWidth, originalHeight);
+        }
     }
     private void ClearQuestion()
     {

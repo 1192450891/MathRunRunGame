@@ -22,6 +22,7 @@ public class CharacterLocomotion
         get { return walkSpeed; }
         set { 
         walkSpeed = Mathf.Clamp(value,GameStaticData.MinWalkSpeed,GameStaticData.MaxWalkSpeed);
+        GameStaticData.CurSpeedNum = walkSpeed;
         EventManager.Instance.TriggerEvent<float>(ClientEvent.RunningPanel_SpeedChange,walkSpeed);
         }
     }

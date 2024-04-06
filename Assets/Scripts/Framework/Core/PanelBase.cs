@@ -17,7 +17,6 @@ namespace Framework.Core
 
         public void Init()
         {
-            // PanelObj.transform.position = Vector2.zero;
         }
         public virtual void Bind()
         {

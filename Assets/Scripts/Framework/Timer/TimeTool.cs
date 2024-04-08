@@ -102,4 +102,15 @@ using System.Collections.Generic;
             t.Stop();
             _timeDict.Remove(index);
         }
+        
+        public void RemoveAllTimeEvent()
+        {
+            foreach (var (index, t) in _timeDict)
+            {
+                if (t == null) return;
+                t.Stop();
+                _timeDict.Remove(index);
+            }
+            _timeDict = new Dictionary<int, TeaTime>();
+        }
     }

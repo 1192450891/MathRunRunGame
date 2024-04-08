@@ -15,13 +15,11 @@ namespace Manager
     {
         private Queue<GameObject> runWays; //存储跑道 入队列时创建对应的栅栏 需要销毁时按出列顺序销毁
 
-        private int LevelDataIndex; //用于创建新跑道时的指针下标
+        private int levelDataIndex; //用于创建新跑道时的指针下标
 
         private const int gameStartInitRunwaysCount = 4; //初始化游戏时创建的跑道数量
 
         private GameObject runwaysGameObjectRoot; //跑道根节点
-
-        public List<string> QuestionKeyData;//题解内容存储
 
         public static float RUNWAY_LENGTH_MAGNIFICATION;//跑道长度倍率 （用于调整回答问题时间的大小）
 
@@ -49,8 +47,7 @@ namespace Manager
                 runwaysGameObjectRoot = new GameObject("RunwaysGameObjectRoot");
             }
             runWays = new Queue<GameObject>();
-            QuestionKeyData = new List<string>();
-            LevelDataIndex = 0;
+            levelDataIndex = 0;
             for (int i = 0; i < gameStartInitRunwaysCount; i++)
             {
                 CreateNewRunway();
@@ -60,8 +57,8 @@ namespace Manager
         public void CreateNewRunway()
         {
             string objPath = ""; //这次的栅栏类型
-            int index = LevelDataIndex;
-            LevelDataIndex++;
+            int index = levelDataIndex;
+            levelDataIndex++;
             var curQuestionLevelData = QuestionController.Instance.LevelData[index];
             var curQuestionType = curQuestionLevelData.questionType;
             if (curQuestionType == QuestionTypeEnum.TrueOrFalse)
@@ -92,7 +89,6 @@ namespace Manager
                         });
                     runWays.Enqueue(obj);
                 });
-            QuestionKeyData.Add(curQuestionLevelData.questionKey);
         }
 
         private void InitFence(Transform transform, LevelData runwayData)
@@ -182,7 +178,7 @@ namespace Manager
         }
         public bool IsAllQuestionHasCreated()
         {
-            if (LevelDataIndex<QuestionController.Instance.QuestionAmount)
+            if (levelDataIndex<QuestionController.Instance.QuestionAmount)
             {
                 return false;
             }
@@ -201,7 +197,7 @@ namespace Manager
                 (o =>
                 {
                     o.transform.position = new Vector3(0, 0,
-                        QuestionKeyData.Count * 60 * RunwayManager.RUNWAY_LENGTH_MAGNIFICATION + 60);
+                        levelDataIndex * 60 * RunwayManager.RUNWAY_LENGTH_MAGNIFICATION + 60);
                     finishLine = o;
                 }));
         }

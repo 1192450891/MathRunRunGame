@@ -25,7 +25,7 @@ namespace BrokenVector.LowPolyFencePack
         /// <returns>
         /// returns and sets the current door state
         /// </returns>
-        public DoorState CurrentState {
+        private DoorState CurrentState {
             get
             {
                 return currentState;
@@ -39,16 +39,17 @@ namespace BrokenVector.LowPolyFencePack
         /// <returns>
         /// returns whether the door is currently open or closed
         /// </returns>
-        public bool IsDoorOpen { get { return CurrentState == DoorState.Open; } }
+        private bool IsDoorOpen { get { return CurrentState == DoorState.Open; } }
         /// <returns>
         /// returns wether the door is currently open or closed
         /// </returns>
-        public bool IsDoorClosed { get { return CurrentState == DoorState.Closed; } }
+        private bool IsDoorClosed { get { return CurrentState == DoorState.Closed; } }
 
         public DoorState InitialState;
         public float InitAnimationSpeed=9999;
         private float animationSpeed = 1;
-        public float AnimationSpeed
+
+        private float AnimationSpeed
         {
             get
             {

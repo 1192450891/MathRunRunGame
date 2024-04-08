@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using GameBase.Player;
 using Manager;
 using Struct;
@@ -14,7 +15,7 @@ public class GameStart : MonoSingleton<GameStart>
     private new void Awake()
     {
         GameStartFun();
-        test();
+        awakeTest();
     }
     private void GameStartFun()
     {
@@ -24,7 +25,10 @@ public class GameStart : MonoSingleton<GameStart>
         InitUIManager();
     }
 
-
+    private void Update()
+    {
+        updateTest();
+    }
 
 
     private void InitQuestionController()
@@ -65,8 +69,15 @@ public class GameStart : MonoSingleton<GameStart>
         LoadManager.Instance.LoadAndShowPrefabAsync("UIManager", "Assets/Prebs/Manager/UIManager.prefab");
     }
 
-    private void test()
+    private void awakeTest()
     {
-
+        
+    }
+    private void updateTest()
+    {
+        if (Input.GetKey(KeyCode.T))
+        {
+            UIManager.Instance.ShowPanel<QuestionKeyPanel>();
+        }
     }
 }

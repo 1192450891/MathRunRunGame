@@ -32,11 +32,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 27f7a4bd19939894588704862c2a206a
-    m_Address: Assets/Prebs/UI/QuestionPanel.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: aaa2c939c0359ac4dbce3f49e8b90252
     m_Address: Assets/Conquerror/TopDownController/Joystick Pack/Prefabs/Fixed Joystick.prefab
     m_ReadOnly: 0
@@ -179,6 +174,26 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 50c39b346e5ad2245b3475974f5979bf
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea92b12534db8634cb7818a3a1e9a807
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5232fe2359ff02e4884e88f82d237c9c
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right7.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5816198c5eaa9af44bf8b972af1981e2
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right5.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dba7687617fab424480ba729952701d4
+    m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right6.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

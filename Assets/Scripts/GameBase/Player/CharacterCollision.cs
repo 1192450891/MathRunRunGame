@@ -24,7 +24,7 @@ using UnityEngine;
             if (layerValue == 0 || layerValue == 1)
             {
                 int mode = -1;
-                if (layerValue == QuestionController.Instance.CurLevelData.way)
+                if (layerValue == QuestionController.Instance.CurLevelData.Way)
                 {
                     
                     mode = 1;//加速
@@ -44,12 +44,12 @@ using UnityEngine;
                 // ChangeFenceColor(other, 1);
                 GameStaticData.HasCorrectNum++;
                 ScoreManager.Instance.AddScore();
-                GameStaticData.CorrectQuestionIdList.Add(QuestionController.Instance.CurLevelData.id);
+                GameStaticData.CorrectQuestionIdList.Add(QuestionController.Instance.CurLevelData.ID);
             }
 
             void ChooseWrongWay()
             {
-                GameStaticData.WrongQuestionIdList.Add(QuestionController.Instance.CurLevelData.id);
+                GameStaticData.WrongQuestionIdList.Add(QuestionController.Instance.CurLevelData.ID);
                 // ChangeFenceColor(other, 0);
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Framework.Core;
 using Manager;
 using Module.Enum;
@@ -68,6 +69,56 @@ public class QuestionController : Singleton<QuestionController>
         GetQuestionData(StaticString.CsvDataPath+"ThreeAnswerQuestionData.csv",questionConfig.ThreeAnswerQuestionCount,QuestionTypeEnum.ThreeAnswerQuestion);//3选1题
     }
 
+    // private void GetQuestionData(string path,int questionCount,QuestionTypeEnum questionType)
+    // {
+    //     ListNodeUtil.ListNode head = ListNodeUtil.Instance.GenerateRandomLinkedList(questionCount - 1);
+    //     DataTable dt = CSVController.CSVHelper.ReadCSV(path);
+    //     while (head!=null)//已经把当前题型所需数量遍历了一遍
+    //     {
+    //         int val = CurrentPanelQuestionIndexHead.val;
+    //         int j = 0;//列数下标
+    //         var curLevelData = LevelData[val];
+    //         curLevelData.questionType = questionType;
+    //         curLevelData.id = dt.Rows[head.val][j++].ToString();//题目Id
+    //         curLevelData.question = dt.Rows[head.val][j++].ToString();//题干
+    //
+    //         string str = null;
+    //         switch (curLevelData.questionType)
+    //         {
+    //             case QuestionTypeEnum.TrueOrFalse:
+    //                 str = StaticString.TrueOrFalseQuestionImage;
+    //                 break;
+    //             case QuestionTypeEnum.TwoAnswerQuestion:
+    //                 str = StaticString.TwoAnswerQuestionImage;
+    //                 break;
+    //             case QuestionTypeEnum.ThreeAnswerQuestion:
+    //                 str = StaticString.ThreeAnswerQuestionImage;
+    //                 break;
+    //             default:
+    //                 throw new ArgumentOutOfRangeException();
+    //         }
+    //         if (curLevelData.question==StaticString.NullStr)
+    //         {
+    //             curLevelData.questionImagePath = StaticString.CsvDataPath + str + $"/{curLevelData.id}.jpeg";
+    //         }
+    //         
+    //         curLevelData.way = int.Parse(dt.Rows[head.val][j++].ToString());//正确答案位置
+    //         curLevelData.score=int.Parse(dt.Rows[head.val][j++].ToString());//分数
+    //         curLevelData.questionKey = dt.Rows[head.val][j++].ToString();//题解内容
+    //         curLevelData.answers = new List<string>();
+    //         
+    //         while (j<dt.Rows[head.val].ItemArray.Length)
+    //         {
+    //             curLevelData.answers.Add(dt.Rows[head.val][j].ToString());//第一个是正确答案 后面是错误答案
+    //             j++;
+    //         }
+    //
+    //         LevelData[val] = curLevelData;
+    //         CurrentPanelQuestionIndexHead = CurrentPanelQuestionIndexHead.next;
+    //         head = head.next;
+    //     }
+    //     
+    // }
     private void GetQuestionData(string path,int questionCount,QuestionTypeEnum questionType)
     {
         ListNodeUtil.ListNode head = ListNodeUtil.Instance.GenerateRandomLinkedList(questionCount - 1);
@@ -76,26 +127,20 @@ public class QuestionController : Singleton<QuestionController>
         {
             int val = CurrentPanelQuestionIndexHead.val;
             int j = 0;//列数下标
-            LevelData[val].questionType = questionType;
-            LevelData[val].id = dt.Rows[head.val][j++].ToString();//题目Id
-            LevelData[val].question = dt.Rows[head.val][j++].ToString();//题干
-            LevelData[val].way = int.Parse(dt.Rows[head.val][j++].ToString());//正确答案位置
-            LevelData[val].score=int.Parse(dt.Rows[head.val][j++].ToString());//分数
-            LevelData[val].questionKey = dt.Rows[head.val][j++].ToString();//题解内容
-            LevelData[val].answers = new List<string>();
-            
-            while (j<dt.Rows[head.val].ItemArray.Length)
-            {
-                LevelData[val].answers.Add(dt.Rows[head.val][j].ToString());//第一个是正确答案 后面是错误答案
-                j++;
-            }
-
+            LevelData[val] = new LevelData(
+                questionType,
+                dt.Rows[head.val][j++].ToString(),
+                dt.Rows[head.val][j++].ToString(),
+                int.Parse(dt.Rows[head.val][j++].ToString()),
+                int.Parse(dt.Rows[head.val][j++].ToString()),
+                dt.Rows[head.val][j++].ToString(),
+                dt.Rows[head.val].ItemArray.ToArray().Skip(j).Cast<string>().ToList()
+            );
             CurrentPanelQuestionIndexHead = CurrentPanelQuestionIndexHead.next;
             head = head.next;
         }
         
     }
-
     public void ManualStart()
     {
         if (hasGetData)

@@ -1,5 +1,8 @@
+using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace Framework.Core
 {
@@ -42,6 +45,60 @@ namespace Framework.Core
             }
  
             return texture;
+        }
+
+        public enum WidthMode
+        {
+            MaxWidth,
+            MinWidth,
+            CertainWidth
+        }
+        public void SetImageWithWidth(RawImage rawImage,string imagePath,int width,WidthMode mode)
+        {
+            if(rawImage==null)return;
+            var texture=LoadPNG(imagePath);
+            rawImage.texture = texture;
+
+            // 获取图片的原始尺寸
+            int originalWidth = rawImage.texture.width;
+            int originalHeight = rawImage.texture.height;
+
+            float ratio;//宽高比
+            int newHeight=0;
+            switch (mode)
+            {
+                case WidthMode.MaxWidth:
+                    // 判断是否超过设定宽度
+                    if (originalWidth > width)
+                    {
+                        // 计算新的高度以保持宽高比
+                        ratio = (float)originalHeight / originalWidth;
+                        newHeight = Mathf.RoundToInt(width * ratio);
+                    }
+                    else
+                    {
+                        newHeight = originalHeight;
+                    }
+                    break;
+                case WidthMode.MinWidth:
+                    // 判断是否小于设定宽度
+                    if (originalWidth < width)
+                    {
+                        ratio = (float)originalHeight / originalWidth;
+                        newHeight = Mathf.RoundToInt(width * ratio);
+                    }
+                    else
+                    {
+                        newHeight = originalHeight;
+                    }
+                    break;
+                case WidthMode.CertainWidth:
+                    newHeight = originalHeight;
+                    break;
+            }
+            rawImage.rectTransform.sizeDelta = new Vector2(width, newHeight);
+
+
         }
     }
 }

@@ -60,7 +60,7 @@ namespace Manager
             int index = levelDataIndex;
             levelDataIndex++;
             var curQuestionLevelData = QuestionController.Instance.LevelData[index];
-            var curQuestionType = curQuestionLevelData.questionType;
+            var curQuestionType = curQuestionLevelData.QuestionType;
             if (curQuestionType == QuestionTypeEnum.TrueOrFalse)
             {
                 objPath = twoAnswerFenceAddressablePath;
@@ -94,15 +94,15 @@ namespace Manager
         private void InitFence(Transform transform, LevelData runwayData)
         {
             FillFenceAnswer(transform,runwayData);
-            if (runwayData.questionType == QuestionTypeEnum.TrueOrFalse)return;//判断题不需要调整答案位置
+            if (runwayData.QuestionType == QuestionTypeEnum.TrueOrFalse)return;//判断题不需要调整答案位置
             AdjustAnswerPosition(transform,runwayData);
         }
 
         private void FillFenceAnswer(Transform transform,LevelData runwayData)
         {
-            for (int i = 0; i < runwayData.answers.Count; i++)
+            for (int i = 0; i < runwayData.Answers.Count; i++)
             {
-                if (runwayData.answers[i] == "null")//图片类型
+                if (runwayData.Answers[i] == "null")//图片类型
                 {
 
                     Transform canvasTransform = TransformUtil.Find(transform,$"{i} RawImage");
@@ -115,7 +115,7 @@ namespace Manager
                     Transform textTransform = TransformUtil.Find(transform,$"{i} Text");
                     textTransform.gameObject.SetActive(true);
                     var textMeshComponent = textTransform.GetComponent<TMP_Text>();
-                    textMeshComponent.text = runwayData.answers[i];
+                    textMeshComponent.text = runwayData.Answers[i];
                 }
             }
         }
@@ -123,7 +123,7 @@ namespace Manager
         private void AdjustAnswerPosition(Transform transform,LevelData runwayData)
         {
             //判断题的T在位置0 F在位置1
-            int correctWay = runwayData.way; //正确的答案 从左往右 从0开始 每次交换0号和目标位置的木板
+            int correctWay = runwayData.Way; //正确的答案 从左往右 从0开始 每次交换0号和目标位置的木板
             
             if (correctWay != 0)
             {
@@ -160,7 +160,7 @@ namespace Manager
             }
 
             string typeStr;
-            switch (levelData.questionType)
+            switch (levelData.QuestionType)
             {
                 case QuestionTypeEnum.TrueOrFalse:
                     typeStr = StaticString.TrueOrFalseQuestionImage;
@@ -174,7 +174,7 @@ namespace Manager
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            return StaticString.CsvDataPath + typeStr + $"/{levelData.id + suffix}.jpeg";
+            return StaticString.CsvDataPath + typeStr + $"/{levelData.ID + suffix}.jpeg";
         }
         public bool IsAllQuestionHasCreated()
         {

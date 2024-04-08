@@ -14,18 +14,20 @@ public class RunningPanel : PanelBase
 {
     private GameObject questionText;
     private GameObject questionImage;
+    private GameObject questionBackground;
     private GameObject scoreNumText;
     private GameObject speedNumText;
     private GameObject answerTipText;
     private JourneyProgressBar bar;
     private int barCountdownTimeIndex=-1;
+    
+    private const int imageWidth=400;
     public override void Show()
     {
         Bind();
-
+        questionBackground.SetActive(true);
         SetScoreNumText(0);
         SetSpeedNumText(GameStaticData.InitSpeedNum);
-
         barCountdownTimeIndex=TimeTool.Instance.Countdown(0.1f, SetJourneyProgressBar);
     }
 
@@ -33,6 +35,7 @@ public class RunningPanel : PanelBase
     {
         questionText = TransformUtil.Find(PanelObj.transform, "QuestionText").gameObject;
         questionImage =TransformUtil.Find(PanelObj.transform, "QuestionImage").gameObject;
+        questionBackground =TransformUtil.Find(PanelObj.transform, "QuestionBackground").gameObject;
         scoreNumText = GameObject.Find("ScoreSquare/Square/NumText");
         speedNumText = GameObject.Find("SpeedSquare/Square/NumText");
         bar = new JourneyProgressBar(GameObject.Find("JourneyProgressBar/Slider").GetComponent<Slider>());
@@ -56,27 +59,12 @@ public class RunningPanel : PanelBase
 
     void NextQuestionRefresh(LevelData levelData)
     {
-        string questionStr = levelData.question;
-        if (questionStr =="null")
+        string questionStr = levelData.Question;
+        if (questionStr ==StaticString.NullStr)
         {
             questionText.SetActive(false);
             questionImage.SetActive(true);
-            string str = null;
-            switch (levelData.questionType)
-            {
-                case QuestionTypeEnum.TrueOrFalse:
-                    str = StaticString.TrueOrFalseQuestionImage;
-                    break;
-                case QuestionTypeEnum.TwoAnswerQuestion:
-                    str = StaticString.TwoAnswerQuestionImage;
-                    break;
-                case QuestionTypeEnum.ThreeAnswerQuestion:
-                    str = StaticString.ThreeAnswerQuestionImage;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            SetQuestionImage(StaticString.CsvDataPath+str+$"/{levelData.id}.jpeg");
+            Util.Instance.SetImageWithWidth(questionImage.GetComponent<RawImage>(),levelData.QuestionImagePath,imageWidth,Util.WidthMode.MaxWidth);
         }
         else//文字类型
         {
@@ -85,44 +73,19 @@ public class RunningPanel : PanelBase
             SetQuestionText(questionStr);
         }
 
-        SetAnswerTip(levelData.way);
+        SetAnswerTip(levelData.Way);
     }
     void SetQuestionText(string str)
     {
         if(questionText==null)return;
         questionText.GetComponent<TextMeshProUGUI>().text = str;
     }
-    void SetQuestionImage(string imagePath)
-    {
-        if(questionImage==null)return;
-        var texture=Util.Instance.LoadPNG(imagePath);
-        var rawImageComponent = questionImage.GetComponent<RawImage>();
-        rawImageComponent.texture = texture;
 
-        // 获取图片的原始尺寸
-        int originalWidth = rawImageComponent.texture.width;
-        int originalHeight = rawImageComponent.texture.height;
-
-        // 判断是否超过最大宽度
-        if (originalWidth > RunningPanelStaticData.ImageWidth)
-        {
-            // 计算新的高度以保持宽高比
-            float ratio = (float)originalHeight / originalWidth;
-            int newHeight = Mathf.RoundToInt(RunningPanelStaticData.ImageWidth * ratio);
-
-            // 设置RawImage的尺寸
-            rawImageComponent.rectTransform.sizeDelta = new Vector2(RunningPanelStaticData.ImageWidth, newHeight);
-        }
-        else
-        {
-            // 如果宽度小于或等于最大宽度，则保留原始尺寸
-            rawImageComponent.rectTransform.sizeDelta = new Vector2(originalWidth, originalHeight);
-        }
-    }
     private void ClearQuestion()
     {
         questionText.SetActive(false);
         questionImage.SetActive(false);
+        questionBackground.SetActive(false);
         if (answerTipText)
         {
             answerTipText.SetActive(false);

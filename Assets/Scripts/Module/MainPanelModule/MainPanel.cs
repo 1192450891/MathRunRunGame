@@ -13,7 +13,7 @@ public class MainPanel:PanelBase
         OnClick("StartButton", StartButtonOnClick);
         OnClick("ShareButton", ShareButtonOnClick);
         OnClick("SettingButton", SettingButtonOnClick);
-        OnClick("RankButton", RankButtonOnClick);
+        // OnClick("RankButton", RankButtonOnClick);
     }
 
     private void RankButtonOnClick()
@@ -35,6 +35,7 @@ public class MainPanel:PanelBase
     private void StartButtonOnClick()
     {
         Hide();
+        UIManager.Instance.HideAllPanel();
         UIManager.Instance.ShowPanel<RunningPanel>();
         GameStaticData.GameHasStart = true;
         QuestionController.Instance.ManualStart();

@@ -35,8 +35,8 @@ namespace Manager
             boundLengthDic = new Dictionary<string, float>();
             leftPos = left.transform;
             rightPos = right.transform;
-            leftCount = GetBackgroundEnvironmentCount(LEFT_PATH);
-            rightCount = GetBackgroundEnvironmentCount(RIGHT_PATH);
+            leftCount = Util.Instance.GetFilesCount(LEFT_PATH);
+            rightCount = Util.Instance.GetFilesCount(RIGHT_PATH);
             leftPosZOffest = leftPos.position.z;
             rightPosZOffest = rightPos.position.z;
             backgroundQueue = new Queue<GameObject>();
@@ -46,8 +46,8 @@ namespace Manager
         public void CreateNewRunwayBackgroundEnvironment()
         {
             float playerZPos = Player.Instance.transform.position.z;
-            CreateLeft(GetRandomNum(leftCount),LEFT_PATH,new Vector3(leftPos.position.x,0,leftPosZOffest),playerZPos);
-            CreateRight(GetRandomNum(rightCount),RIGHT_PATH,new Vector3(rightPos.position.x,0,rightPosZOffest),playerZPos);
+            CreateLeft(Util.Instance.GetRandomNum(leftCount),LEFT_PATH,new Vector3(leftPos.position.x,0,leftPosZOffest),playerZPos);
+            CreateRight(Util.Instance.GetRandomNum(rightCount),RIGHT_PATH,new Vector3(rightPos.position.x,0,rightPosZOffest),playerZPos);
         }
 
         private void CreateLeft(int i,string filePath,Vector3 pos,float playerZPos)
@@ -62,7 +62,7 @@ namespace Manager
                         leftPosZOffest -= 2;
                         if (leftPosZOffest-playerZPos < Generate_Lower_Distance_Limit_Z)//不断补齐到设定的下限距离
                         {
-                            CreateLeft(GetRandomNum(leftCount),LEFT_PATH,new Vector3(leftPos.position.x,0,leftPosZOffest),playerZPos);
+                            CreateLeft(Util.Instance.GetRandomNum(leftCount),LEFT_PATH,new Vector3(leftPos.position.x,0,leftPosZOffest),playerZPos);
                         }
                         backgroundQueue.Enqueue(o);
                     });
@@ -79,7 +79,7 @@ namespace Manager
                     rightPosZOffest -= 2;
                     if (rightPosZOffest-playerZPos < Generate_Lower_Distance_Limit_Z)
                     {
-                        CreateRight(GetRandomNum(rightCount),RIGHT_PATH,new Vector3(rightPos.position.x,0,rightPosZOffest),playerZPos);
+                        CreateRight(Util.Instance.GetRandomNum(rightCount),RIGHT_PATH,new Vector3(rightPos.position.x,0,rightPosZOffest),playerZPos);
                     }
                     backgroundQueue.Enqueue(o);
                 });
@@ -93,16 +93,16 @@ namespace Manager
             return zLength;
         }
 
-        private int GetBackgroundEnvironmentCount(string path)//获取素材数量 /2代表减去对应的.meta文件的数量
-        {
-            string[] fileEntries = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
-            return fileEntries.Length/2;
-        }
-        private int GetRandomNum(int maxValue)
-        {
-            System.Random random = new System.Random();
-            return random.Next(1, maxValue + 1);
-        }
+        // private int GetBackgroundEnvironmentCount(string path)//获取素材数量 /2代表减去对应的.meta文件的数量
+        // {
+        //     string[] fileEntries = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+        //     return fileEntries.Length/2;
+        // }
+        // private int GetRandomNum(int maxValue)
+        // {
+        //     System.Random random = new System.Random();
+        //     return random.Next(1, maxValue + 1);
+        // }
 
         public void ReStart()
         {

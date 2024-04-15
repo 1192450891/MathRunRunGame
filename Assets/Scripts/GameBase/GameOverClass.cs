@@ -2,12 +2,15 @@ using GameBase;
 using GameBase.Player;
 using Manager;
 using Struct;
+using Wx;
 
 public class GameOverClass : Singleton<GameOverClass>
 {
     public void GameOver()//点击返回主页或重新开始 一局游戏才真正结束了
     {
-        InitGameInfo();//创建玩家本局游戏信息记录
+        CreateGameInfo();//创建玩家本局游戏信息记录
+        WxClass.GameOverUpload();
+        
         UIManager.Instance.HideAllPanel();
         QuestionController.Instance.ReStart();//重置参数
         Player.Instance.ReStart();
@@ -18,7 +21,7 @@ public class GameOverClass : Singleton<GameOverClass>
         RunwayManager.Instance.DestroyFinishLine();
     }
 
-    private void InitGameInfo()
+    private void CreateGameInfo()
     {
         var info =new PlayerGameInfo
         {
@@ -31,4 +34,5 @@ public class GameOverClass : Singleton<GameOverClass>
             WrongQuestionIdList= GameStaticData.WrongQuestionIdList,
         };
     }
+
 }

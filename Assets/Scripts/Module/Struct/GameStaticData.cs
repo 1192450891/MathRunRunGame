@@ -9,6 +9,8 @@ namespace Struct
         public static bool GameHasStart;
         
         public static bool GameHasEnd;
+
+        public static bool isFreeMoving;
         
         public static bool PlayerIsPlaying()//检测玩家是否正在跑道上闯关
         {

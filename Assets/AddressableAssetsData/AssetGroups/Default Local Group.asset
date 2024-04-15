@@ -112,8 +112,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 62e87288681f4264a9a0520f7162326b
-    m_Address: Assets/Prebs/Environment/Finish Line.prefab
+  - m_GUID: 8c699616821493343833c64e6d3fa0f5
+    m_Address: Assets/Prebs/Environment/FinishLine/FinishLine1.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -194,6 +194,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dba7687617fab424480ba729952701d4
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right6.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27cb864c84c64f54c8361e666ca03632
+    m_Address: Assets/Prebs/UI/FreeMovePanel/FreeMovePanel.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62e87288681f4264a9a0520f7162326b
+    m_Address: Assets/Prebs/Environment/FinishLine/FinishLine2.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

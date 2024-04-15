@@ -101,7 +101,7 @@ public class CharacterLocomotion
             //use strafe when you look at certain object(target) for instance
         }
         //getting the magnitude
-        if (mag >= movementThreshold || GameStaticData.PlayerIsPlaying()) 
+        if (mag >= movementThreshold || GameStaticData.PlayerIsPlaying() || GameStaticData.isFreeMoving) 
         {
             MovementAndRotation();
         }
@@ -187,19 +187,19 @@ public class CharacterLocomotion
     }
     void MovementAndRotation(){
         Vector3 direction = new Vector3(MoveJoystick.Horizontal, 0, MoveJoystick.Vertical);//joystick direction
-        Vector3 rightMovement = right * walkSpeed * Time.deltaTime * MoveJoystick.Horizontal;//getting right movement out of joystick(relative to camera)
+        Vector3 rightMovement = right * (walkSpeed * Time.deltaTime * MoveJoystick.Horizontal);//getting right movement out of joystick(relative to camera)
         Vector3 upMovement;
         if(GameStaticData.PlayerIsPlaying())
         {
-            upMovement = fwd * walkSpeed * Time.deltaTime; //getting up movement out of joystick(relative to camera)
+            upMovement = fwd * (walkSpeed * Time.deltaTime); //getting up movement out of joystick(relative to camera)
         }
         else
         {
-            upMovement = fwd * walkSpeed * Time.deltaTime * MoveJoystick.Vertical;
+            upMovement = fwd * (walkSpeed * Time.deltaTime * MoveJoystick.Vertical);
         }
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement); //final movement vector
         heading.y = -1f;//gravity while moving
-        characterController.Move(heading * walkSpeed*Time.deltaTime);//move
+        characterController.Move(heading * (walkSpeed * Time.deltaTime));//move
         if(lookToMovementDirection){
             characterVisual.forward = new Vector3(heading.x,characterVisual.forward.y,heading.z);
             //look to movement direction

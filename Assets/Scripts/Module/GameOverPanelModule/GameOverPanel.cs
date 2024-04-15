@@ -45,6 +45,7 @@ public class GameOverPanel : PanelBase
     private void ExitButtonOnClick()
     {
         Hide();
+        UIManager.Instance.ShowPanel<FreeMovePanel>();
     }
     private void QuestionKeyButtonOnClick()
     {

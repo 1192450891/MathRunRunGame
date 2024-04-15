@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Framework.Core;
 using Module.Enum;
 using Struct;
@@ -31,6 +32,8 @@ namespace Manager
         private const string finishLineAddressablePath =     "Assets/Prebs/Environment/Finish Line.prefab";
         private const string twoAnswerFenceAddressablePath ="Assets/Prebs/Environment/Fence/2AnswerFence.prefab" ;
         private const string threeAnswerFenceAddressablePath = "Assets/Prebs/Environment/Fence/3AnswerFence.prefab";
+        
+        private static string finishLine_PATH="Assets/Prebs/Environment/FinishLine";
 
         public void InitRunways()
         {
@@ -191,9 +194,13 @@ namespace Manager
 
             return true;
         }
-        public void CreateFinishLine()
+
+        private void CreateFinishLine()
         {
-            LoadManager.Instance.LoadAndShowPrefabAsync("FinishLine", finishLineAddressablePath,runwaysGameObjectRoot.transform,
+            int count = Util.Instance.GetFilesCount(finishLine_PATH);
+            int index = Util.Instance.GetRandomNum(count);
+            var str = finishLine_PATH+$"/FinishLine{index}.prefab";
+            LoadManager.Instance.LoadAndShowPrefabAsync("FinishLine",str ,runwaysGameObjectRoot.transform,
                 (o =>
                 {
                     o.transform.position = new Vector3(0, 0,

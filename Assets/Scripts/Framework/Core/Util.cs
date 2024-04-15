@@ -8,6 +8,18 @@ namespace Framework.Core
 {
     public class Util:Singleton<Util>
     {
+        System.Random random = new System.Random();
+        public int GetRandomNum(int maxValue)
+        {
+            return random.Next(1, maxValue + 1);
+        }
+        
+        public int GetFilesCount(string path)//获取素材数量 /2代表减去对应的.meta文件的数量
+        {
+            string[] fileEntries = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+            return fileEntries.Length/2;
+        }
+        
         public void SwapParent(Transform transform1,Transform transform2)
         {
             var transform1Parent = transform1.parent;

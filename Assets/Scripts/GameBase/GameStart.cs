@@ -5,6 +5,7 @@ using Manager;
 using Struct;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Wx;
 
 public class GameStart : MonoSingleton<GameStart>
 {
@@ -15,8 +16,10 @@ public class GameStart : MonoSingleton<GameStart>
     private new void Awake()
     {
         GameStartFun();
+        WxInit();
         awakeTest();
     }
+
     private void GameStartFun()
     {
         InitQuestionController();
@@ -24,12 +27,18 @@ public class GameStart : MonoSingleton<GameStart>
         //InitCamera();
         InitUIManager();
     }
-
+    
+    private void WxInit()
+    {
+#if !UNITY_EDITOR
+        WxClass.InitSDK();
+#endif
+    }
+    
     private void Update()
     {
         updateTest();
     }
-
 
     private void InitQuestionController()
     {
@@ -67,6 +76,7 @@ public class GameStart : MonoSingleton<GameStart>
     private void InitUIManager()
     {
         LoadManager.Instance.LoadAndShowPrefabAsync("UIManager", "Assets/Prebs/Manager/UIManager.prefab");
+        
     }
 
     private void awakeTest()
@@ -75,9 +85,9 @@ public class GameStart : MonoSingleton<GameStart>
     }
     private void updateTest()
     {
-        if (Input.GetKey(KeyCode.T))
+        if (Input.GetKey(KeyCode.K))
         {
-            UIManager.Instance.ShowPanel<QuestionKeyPanel>();
+            UIManager.Instance.ShowPanel<FreeMovePanel>();
         }
     }
 }

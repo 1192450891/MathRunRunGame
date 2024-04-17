@@ -110,9 +110,6 @@ WX_GetInferenceEnvInfo:function(conf, callbackId) {
 WX_GetLocalIPAddress:function(conf, callbackId) {
     window.WXWASMSDK.WX_GetLocalIPAddress(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
-WX_GetLocation:function(conf, callbackId) {
-    window.WXWASMSDK.WX_GetLocation(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
-},
 WX_GetNetworkType:function(conf, callbackId) {
     window.WXWASMSDK.WX_GetNetworkType(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
@@ -121,6 +118,9 @@ WX_GetPrivacySetting:function(conf, callbackId) {
 },
 WX_GetScreenBrightness:function(conf, callbackId) {
     window.WXWASMSDK.WX_GetScreenBrightness(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
+},
+WX_GetScreenRecordingState:function(conf, callbackId) {
+    window.WXWASMSDK.WX_GetScreenRecordingState(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
 WX_GetSetting:function(conf, callbackId) {
     window.WXWASMSDK.WX_GetSetting(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
@@ -293,6 +293,9 @@ WX_SetStatusBarStyle:function(conf, callbackId) {
 WX_SetUserCloudStorage:function(conf, callbackId) {
     window.WXWASMSDK.WX_SetUserCloudStorage(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
+WX_SetVisualEffectOnCapture:function(conf, callbackId) {
+    window.WXWASMSDK.WX_SetVisualEffectOnCapture(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
+},
 WX_ShowActionSheet:function(conf, callbackId) {
     window.WXWASMSDK.WX_ShowActionSheet(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
@@ -329,9 +332,6 @@ WX_StartCompass:function(conf, callbackId) {
 WX_StartDeviceMotionListening:function(conf, callbackId) {
     window.WXWASMSDK.WX_StartDeviceMotionListening(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
-WX_StartGyroscope:function(conf, callbackId) {
-    window.WXWASMSDK.WX_StartGyroscope(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
-},
 WX_StopAccelerometer:function(conf, callbackId) {
     window.WXWASMSDK.WX_StopAccelerometer(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
@@ -349,9 +349,6 @@ WX_StopDeviceMotionListening:function(conf, callbackId) {
 },
 WX_StopFaceDetect:function(conf, callbackId) {
     window.WXWASMSDK.WX_StopFaceDetect(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
-},
-WX_StopGyroscope:function(conf, callbackId) {
-    window.WXWASMSDK.WX_StopGyroscope(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
 WX_UpdateKeyboard:function(conf, callbackId) {
     window.WXWASMSDK.WX_UpdateKeyboard(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
@@ -401,7 +398,13 @@ WX_RequestMidasPaymentGameItem:function(conf, callbackId) {
 WX_RequestSubscribeLiveActivity:function(conf, callbackId) {
     window.WXWASMSDK.WX_RequestSubscribeLiveActivity(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 },
+WX_OpenBusinessView:function(conf, callbackId) {
+    window.WXWASMSDK.WX_OpenBusinessView(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
+},
 
+WX_ExitPointerLock:function() {
+    window.WXWASMSDK.WX_ExitPointerLock();
+},
 WX_OperateGameRecorderVideo:function(option){
     window.WXWASMSDK.WX_OperateGameRecorderVideo(_WXPointer_stringify_adaptor(option));
 },
@@ -419,6 +422,9 @@ WX_ReportPerformance:function(id, value, dimensions){
 },
 WX_ReportUserBehaviorBranchAnalytics:function(option){
     window.WXWASMSDK.WX_ReportUserBehaviorBranchAnalytics(_WXPointer_stringify_adaptor(option));
+},
+WX_RequestPointerLock:function() {
+    window.WXWASMSDK.WX_RequestPointerLock();
 },
 WX_ReserveChannelsLive:function(option){
     window.WXWASMSDK.WX_ReserveChannelsLive(_WXPointer_stringify_adaptor(option));
@@ -456,12 +462,6 @@ WX_OnAudioInterruptionEnd:function() {
 },
 WX_OffAudioInterruptionEnd:function() {
     window.WXWASMSDK.WX_OffAudioInterruptionEnd();
-},
-WX_OnBLECharacteristicValueChange:function() {
-    window.WXWASMSDK.WX_OnBLECharacteristicValueChange();
-},
-WX_OffBLECharacteristicValueChange:function() {
-    window.WXWASMSDK.WX_OffBLECharacteristicValueChange();
 },
 WX_OnBLEConnectionStateChange:function() {
     window.WXWASMSDK.WX_OnBLEConnectionStateChange();
@@ -531,12 +531,6 @@ WX_OnError:function() {
 },
 WX_OffError:function() {
     window.WXWASMSDK.WX_OffError();
-},
-WX_OnGyroscopeChange:function() {
-    window.WXWASMSDK.WX_OnGyroscopeChange();
-},
-WX_OffGyroscopeChange:function() {
-    window.WXWASMSDK.WX_OffGyroscopeChange();
 },
 WX_OnHide:function() {
     window.WXWASMSDK.WX_OnHide();
@@ -625,6 +619,12 @@ WX_OnNetworkWeakChange:function() {
 WX_OffNetworkWeakChange:function() {
     window.WXWASMSDK.WX_OffNetworkWeakChange();
 },
+WX_OnScreenRecordingStateChanged:function() {
+    window.WXWASMSDK.WX_OnScreenRecordingStateChanged();
+},
+WX_OffScreenRecordingStateChanged:function() {
+    window.WXWASMSDK.WX_OffScreenRecordingStateChanged();
+},
 WX_OnShareMessageToFriend:function() {
     window.WXWASMSDK.WX_OnShareMessageToFriend();
 },
@@ -633,30 +633,6 @@ WX_OnShow:function() {
 },
 WX_OffShow:function() {
     window.WXWASMSDK.WX_OffShow();
-},
-WX_OnTouchCancel:function() {
-    window.WXWASMSDK.WX_OnTouchCancel();
-},
-WX_OffTouchCancel:function() {
-    window.WXWASMSDK.WX_OffTouchCancel();
-},
-WX_OnTouchEnd:function() {
-    window.WXWASMSDK.WX_OnTouchEnd();
-},
-WX_OffTouchEnd:function() {
-    window.WXWASMSDK.WX_OffTouchEnd();
-},
-WX_OnTouchMove:function() {
-    window.WXWASMSDK.WX_OnTouchMove();
-},
-WX_OffTouchMove:function() {
-    window.WXWASMSDK.WX_OffTouchMove();
-},
-WX_OnTouchStart:function() {
-    window.WXWASMSDK.WX_OnTouchStart();
-},
-WX_OffTouchStart:function() {
-    window.WXWASMSDK.WX_OffTouchStart();
 },
 WX_OnUnhandledRejection:function() {
     window.WXWASMSDK.WX_OnUnhandledRejection();
@@ -888,6 +864,17 @@ WX_CreatePath2D:function(
     stringToUTF8(res, buffer, bufferSize);
     return buffer;
 },
+WX_IsPointerLocked:function(
+){
+    var res = window.WXWASMSDK.WX_IsPointerLocked();
+    return res;
+},
+WX_IsVKSupport:function(
+    version
+){
+    var res = window.WXWASMSDK.WX_IsVKSupport(_WXPointer_stringify_adaptor(version));
+    return res;
+},
 WX_SetCursor:function(
     path,x,y
 ){
@@ -985,6 +972,7 @@ WX_DownloadTaskOnProgressUpdate:function(id) {
 WXFeedbackButtonSetProperty: function(id, key, value) {
   window.WXWASMSDK.WXFeedbackButtonSetProperty(_WXPointer_stringify_adaptor(id), _WXPointer_stringify_adaptor(key), _WXPointer_stringify_adaptor(value));
 },
+
 
 
 

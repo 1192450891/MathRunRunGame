@@ -9,7 +9,10 @@ public class GameOverClass : Singleton<GameOverClass>
     public void GameOver()//点击返回主页或重新开始 一局游戏才真正结束了
     {
         CreateGameInfo();//创建玩家本局游戏信息记录
+
+#if !UNITY_EDITOR
         WxClass.GameOverUpload();
+#endif
         
         UIManager.Instance.HideAllPanel();
         QuestionController.Instance.ReStart();//重置参数

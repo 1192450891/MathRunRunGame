@@ -27,11 +27,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fcccf126f9cb7454b8e4ae991a54aff4
-    m_Address: Assets/Prebs/Camera/Main Camera.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: aaa2c939c0359ac4dbce3f49e8b90252
     m_Address: Assets/Conquerror/TopDownController/Joystick Pack/Prefabs/Fixed Joystick.prefab
     m_ReadOnly: 0
@@ -49,26 +44,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38246f7888f8ad5429adc196dd78f81d
     m_Address: Assets/Prebs/UI/MainPanel/MainPanel.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 12c689d498662c649b8c71f642b532b8
-    m_Address: Assets/Art/GUI/button.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 95a0d4acb48b7f14abfcbf5a4cac29a6
-    m_Address: Assets/Art/GUI/elements.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d07b2c169f881e9479057baee62b62cd
-    m_Address: Assets/Art/GUI/window.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 32b0f0986f241a744beca53fdd2e176d
-    m_Address: Assets/Art/GUI/window2.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

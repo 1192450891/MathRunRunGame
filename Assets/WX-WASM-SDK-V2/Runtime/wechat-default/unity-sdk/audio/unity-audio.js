@@ -1,9 +1,11 @@
 import { isAndroid, isPc, webAudioNeedResume, isSupportBufferURL, isSupportPlayBackRate, isSupportInnerAudio } from '../../check-version';
-import { WEBAudio, soundVolumeHandler } from './store';
+import { WEBAudio, unityAudioVolume } from './store';
 import { TEMP_DIR_PATH } from './const';
 import { createInnerAudio, destroyInnerAudio, printErrMsg, resumeWebAudio } from './utils';
 
 const defaultSoundLength = 441000;
+
+const needGetLength = false;
 function jsAudioCreateUncompressedSoundClip(buffer, error, length) {
     const soundClip = {
         buffer,
@@ -66,7 +68,7 @@ function jsAudioCreateUncompressedSoundClipFromCompressedAudio(audioData, ptr, l
 function jsAudioCreateCompressedSoundClip(audioData, ptr, length) {
     const soundClip = {
         error: false,
-        length: 441000,
+        length: needGetLength ? 0 : defaultSoundLength,
         url: undefined,
         release() {
             WEBAudio.audioBufferLength -= length;
@@ -116,6 +118,17 @@ function jsAudioCreateCompressedSoundClip(audioData, ptr, length) {
             });
         }
     }
+    if (needGetLength && soundClip.url) {
+        const { audio: getAudio } = createInnerAudio();
+        getAudio.src = soundClip.url;
+        getAudio.onCanplay(() => {
+            soundClip.length = getAudio.duration * 44100;
+            setTimeout(() => {
+                soundClip.length = getAudio.duration * 44100;
+                getAudio.destroy();
+            }, 0);
+        });
+    }
     return soundClip;
 }
 function jsAudioCreateUncompressedSoundClipFromPCM(channels, length, sampleRate, ptr) {
@@ -140,6 +153,10 @@ export class AudioChannelInstance {
     gain;
     callback = 0;
     userData = 0;
+    loop = false;
+    loopStart = 0;
+    loopEnd = 0;
+    deleyTime = 0; 
     constructor(callback, userData) {
         if (WEBAudio.audioContext) {
             this.gain = WEBAudio.audioContext.createGain();
@@ -156,6 +173,26 @@ export class AudioChannelInstance {
             this.gain.disconnect();
         }
     }
+    setLoop(loop) {
+        this.loop = loop;
+        if (!this.source || this.source.loop == loop) {
+            return;
+        }
+        this.source.loop = loop;
+    }
+    setLoopPoints(loopStart, loopEnd) {
+        this.loopStart = loopStart;
+        this.loopEnd = loopEnd;
+        if (!this.source) {
+            return;
+        }
+        if (this.source.loopStart !== loopStart) {
+            this.source.loopStart = loopStart;
+        }
+        if (this.source.loopEnd !== loopEnd) {
+            this.source.loopEnd = loopEnd;
+        }
+    }
     playUrl(startTime, url, startOffset, volume, soundClip) {
         try {
             this.setup(url);
@@ -164,6 +201,9 @@ export class AudioChannelInstance {
             }
             if (typeof volume !== 'undefined') {
                 this.source.mediaElement.volume = volume;
+            }
+            if (WEBAudio.isMute) {
+                this.source.mediaElement.volume = 0;
             }
             this.source.mediaElement.onPlay(() => {
                 if (typeof this.source !== 'undefined') {
@@ -249,6 +289,8 @@ export class AudioChannelInstance {
             }
             this.source.canPlayFnList.push(fn);
             this.source.mediaElement.onCanplay(fn);
+            this.source.mediaElement.loop = this.loop;
+            this.deleyTime = startTime;
             this.source.start(startTime, startOffset);
             this.source.playbackStartTime = startTime - startOffset / this.source.playbackRateValue;
         }
@@ -256,7 +298,7 @@ export class AudioChannelInstance {
             printErrMsg(`playUrl error. Exception: ${e}`);
         }
     }
-    playBuffer(startTime, buffer, startOffset) {
+    playBuffer(startTime, buffer, startOffset, channel) {
         try {
             this.setup();
             if (!this.source) {
@@ -269,6 +311,22 @@ export class AudioChannelInstance {
                     GameGlobal.unityNamespace.Module.dynCall_vi(this.callback, [this.userData]);
                 }
             };
+            if (this.gain && channel) {
+                let volume;
+                if (WEBAudio.isMute) {
+                    unityAudioVolume.set(channel, this.gain.gain.value || 1);
+                    volume = 0;
+                }
+                else {
+                    volume = unityAudioVolume.get(channel);
+                }
+                if (this.gain.gain.value !== volume && typeof volume === 'number') {
+                    this.gain.gain.value = volume;
+                }
+            }
+            this.source.loop = this.loop;
+            this.source.loopStart = this.loopStart;
+            this.source.loopEnd = this.loopEnd;
             this.source.start(startTime, startOffset);
             this.source.playbackStartTime = startTime - startOffset / this.source.playbackRateValue;
         }
@@ -326,7 +384,7 @@ export class AudioChannelInstance {
             return true;
         }
         if (this.source.mediaElement) {
-            return (this.source.mediaElement.paused || this.source.pauseRequested) ?? true;
+            return (!this.source.isPlaying || this.source.pauseRequested) ?? true;
         }
         return false;
     }
@@ -344,9 +402,9 @@ export class AudioChannelInstance {
         }
         const pausedSource = {
             isPausedMockNode: true,
-            loop: source.loop,
-            loopStart: source.loopStart,
-            loopEnd: source.loopEnd,
+            loop: this.loop,
+            loopStart: this.loopStart,
+            loopEnd: this.loopEnd,
             buffer: source.buffer,
             playbackRate: source.playbackRateValue,
             playbackPausedAtPosition: source.estimatePlaybackPosition(),
@@ -367,7 +425,8 @@ export class AudioChannelInstance {
             return;
         }
         if (this.source.mediaElement) {
-            this.source.start();
+            this.source.start(this.deleyTime);
+            delete this.deleyTime;
             return;
         }
         const pausedSource = this.source;
@@ -387,13 +446,21 @@ export class AudioChannelInstance {
             getSource.setPitch(pausedSource.playbackRate);
         }
     }
-    setVolume(volume) {
+        setVolume(volume, isDefault) {
         if (!WEBAudio.audioContext) {
+            return;
+        }
+        if (WEBAudio.isMute) {
+            volume = 0;
+        }
+        
+        if (isDefault && volume == 1) {
             return;
         }
         if (this.source) {
             if (this.source.buffer && this.gain) {
-                this.gain.gain.setValueAtTime(volume, WEBAudio.audioContext.currentTime);
+                
+                this.gain.gain.value = volume;
             }
             else if (this.source.mediaElement) {
                 this.source.mediaElement.volume = volume;
@@ -774,11 +841,8 @@ export default {
         if (!soundClip) {
             return defaultSoundLength;
         }
-        if (soundClip && soundClip.buffer) {
-            const sampleRateRatio = 44100 / soundClip.buffer.sampleRate;
-            return soundClip.buffer.length * sampleRateRatio;
-        }
-        return soundClip.length || defaultSoundLength;
+        const length = soundClip.getLength() || defaultSoundLength;
+        return length;
     },
     _JS_Sound_GetLoadState(bufferInstance) {
         if (WEBAudio.audioWebEnabled === 0) {
@@ -788,7 +852,10 @@ export default {
         if (!soundClip || soundClip.error) {
             return 2;
         }
-        if (soundClip.buffer || soundClip.url) {
+        if (soundClip.buffer) {
+            return 0;
+        }
+        if (soundClip.url && soundClip.length) {
             return 0;
         }
         return 1;
@@ -884,7 +951,7 @@ export default {
         const channel = WEBAudio.audioInstances[channelInstance];
         if (soundClip && soundClip.url) {
             try {
-                channel.playUrl(delay, soundClip.url, offset, soundVolumeHandler[channelInstance], soundClip);
+                channel.playUrl(delay, soundClip.url, offset, unityAudioVolume.get(channel), soundClip);
             }
             catch (e) {
                 printErrMsg(`playUrl error. Exception: ${e}`);
@@ -892,7 +959,7 @@ export default {
         }
         else if (soundClip && soundClip.buffer) {
             try {
-                channel.playBuffer(WEBAudio.audioContext.currentTime + delay, soundClip.buffer, offset);
+                channel.playBuffer(WEBAudio.audioContext.currentTime + delay, soundClip.buffer, offset, channel);
             }
             catch (e) {
                 printErrMsg(`playBuffer error. Exception: ${e}`);
@@ -1006,7 +1073,7 @@ export default {
         if (!channel.source) {
             return;
         }
-        channel.source.loop = loop > 0;
+        channel.setLoop(loop > 0);
     },
     _JS_Sound_SetLoopPoints(channelInstance, loopStart, loopEnd) {
         if (WEBAudio.audioWebEnabled === 0) {
@@ -1019,8 +1086,7 @@ export default {
         if (!channel.source) {
             return;
         }
-        channel.source.loopStart = loopStart;
-        channel.source.loopEnd = loopEnd;
+        channel.setLoopPoints(loopStart, loopEnd);
     },
     _JS_Sound_SetPaused(channelInstance, paused) {
         if (WEBAudio.audioWebEnabled === 0) {
@@ -1060,17 +1126,13 @@ export default {
         }
         try {
             const volume = Number(v.toFixed(2));
-            const cur = soundVolumeHandler[channelInstance];
+            const channel = WEBAudio.audioInstances[channelInstance];
+            const cur = unityAudioVolume.get(channel);
             if (cur === volume) {
                 return;
             }
-            
-            if (cur == undefined && v == 1) {
-                return;
-            }
-            soundVolumeHandler[channelInstance] = volume;
-            const channel = WEBAudio.audioInstances[channelInstance];
-            channel.setVolume(volume);
+            unityAudioVolume.set(channel, volume);
+            channel.setVolume(volume, cur == undefined);
         }
         catch (e) {
             printErrMsg(`Invalid audio volume ${v} specified to WebAudio backend!`);

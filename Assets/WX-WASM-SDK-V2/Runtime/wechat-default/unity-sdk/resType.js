@@ -187,7 +187,7 @@ export const ResType = {
         throughputKbps: 'number',
         transportRttEstimate: 'number',
     },
-    OnHeadersReceivedListenerResult: {
+    DownloadTaskOnHeadersReceivedListenerResult: {
         header: 'object',
     },
     DownloadTaskOnProgressUpdateListenerResult: {
@@ -553,16 +553,6 @@ export const ResType = {
         localip: 'string',
         netmask: 'string',
     },
-    GetLocationSuccessCallbackResult: {
-        accuracy: 'number',
-        altitude: 'number',
-        horizontalAccuracy: 'number',
-        latitude: 'number',
-        longitude: 'number',
-        speed: 'number',
-        verticalAccuracy: 'number',
-        errMsg: 'string',
-    },
     GetNetworkTypeSuccessCallbackResult: {
         hasSystemProxy: 'bool',
         networkType: 'string',
@@ -576,6 +566,10 @@ export const ResType = {
     },
     GetScreenBrightnessSuccessCallbackOption: {
         value: 'number',
+        errMsg: 'string',
+    },
+    GetScreenRecordingStateSuccessCallbackResult: {
+        state: 'string',
         errMsg: 'string',
     },
     GetSettingSuccessCallbackResult: {
@@ -661,13 +655,6 @@ export const ResType = {
         query: 'string',
         title: 'string',
     },
-    OnBLECharacteristicValueChangeListenerResult: {
-        characteristicId: 'string',
-        deviceId: 'string',
-        serviceId: 'string',
-        value: 'arrayBuffer',
-        arrayBufferLength: 'number',
-    },
     OnBLEConnectionStateChangeListenerResult: {
         connected: 'bool',
         deviceId: 'string',
@@ -718,14 +705,9 @@ export const ResType = {
     OnDeviceOrientationChangeListenerResult: {
         value: 'string',
     },
-    WxOnErrorCallbackResult: {
+    Error: {
         message: 'string',
         stack: 'string',
-    },
-    OnGyroscopeChangeListenerResult: {
-        x: 'number',
-        y: 'number',
-        z: 'number',
     },
     OnHandoffListenerResult: {
         query: 'string',
@@ -765,6 +747,9 @@ export const ResType = {
         networkType: 'string',
         weakNet: 'bool',
     },
+    OnScreenRecordingStateChangedListenerResult: {
+        state: 'string',
+    },
     OnShareTimelineListenerResult: {
         imageUrl: 'string',
         imagePreviewUrl: 'string',
@@ -784,19 +769,6 @@ export const ResType = {
     ResultReferrerInfo: {
         appId: 'string',
         extraData: 'object',
-    },
-    OnTouchStartListenerResult: {
-        changedTouches: 'Touch[]',
-        timeStamp: 'long',
-        touches: 'Touch[]',
-    },
-    Touch: {
-        clientX: 'number',
-        clientY: 'number',
-        force: 'number',
-        identifier: 'number',
-        pageX: 'number',
-        pageY: 'number',
     },
     OnUnhandledRejectionListenerResult: {
         promise: 'string',

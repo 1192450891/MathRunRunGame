@@ -25,6 +25,12 @@ import chat from './chat';
 import font from './font/index';
 import authorize from './authorize';
 import videoDecoder from './video/index';
+import mobileKeyboard from './mobileKeyboard/index';
+import touch from './touch/index';
+import TCPSocket from './TCPSocket/index';
+import UDPSocket from './UDPSocket/index';
+import bluetooth from './bluetooth/index';
+import gyroscope from './gyroscope/index';
 const unityVersion = '$unityVersion$';
 GameGlobal.unityNamespace = GameGlobal.unityNamespace || {};
 GameGlobal.unityNamespace.unityVersion = unityVersion;
@@ -98,5 +104,11 @@ const WXWASMSDK = {
     ...font,
     ...authorize,
     ...videoDecoder,
+    ...mobileKeyboard,
+    ...touch,
+    ...TCPSocket,
+    ...UDPSocket,
+    ...bluetooth,
+    ...gyroscope,
 };
 GameGlobal.WXWASMSDK = WXWASMSDK;

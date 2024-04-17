@@ -508,7 +508,11 @@ mergeInto(LibraryManager.library, {
         if (typeof TOTAL_MEMORY !== "undefined") {
             return TOTAL_MEMORY
         }
-        return buffer.byteLength;
+        if (wasmMemory && wasmMemory.buffer) {
+            return wasmMemory.buffer.byteLength;
+        }
+        console.error('Fail to find wasmMemory.buffer, TotalMemorySize is not correct.');
+        return 0;
     },
     WXGetTotalStackSize: function() {
         return TOTAL_STACK;
@@ -783,7 +787,11 @@ mergeInto(LibraryManager.library, {
         window.WXWASMSDK.WX_OperateGameRecorderVideo(_WXPointer_stringify_adaptor(option));
     },
     WXChatCreate: function (option) {
-        return window.WXWASMSDK.WXChatCreate(_WXPointer_stringify_adaptor(option));
+        var returnStr = window.WXWASMSDK.WXChatCreate(_WXPointer_stringify_adaptor(option));
+        var bufferSize = lengthBytesUTF8(returnStr || '') + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(returnStr, buffer, bufferSize);
+        return buffer;
     },
     WXChatHide: function () {
         window.WXWASMSDK.WXChatHide();
@@ -963,5 +971,30 @@ mergeInto(LibraryManager.library, {
     },
     WX_PrivacyAuthorizeResolve: function(option) {
         window.WXWASMSDK.WX_PrivacyAuthorizeResolve(_WXPointer_stringify_adaptor(option));
+    },
+    WXLaunchOperaBridge: function(req) {
+        var res = window.WXWASMSDK.WXLaunchOperaBridge(_WXPointer_stringify_adaptor(req));
+        if (res) {
+            var bufferSize = lengthBytesUTF8(res) + 1;
+            var buffer = _malloc(bufferSize);
+            stringToUTF8(res, buffer, bufferSize);
+            return buffer;
+        }
+    },
+    WXCanIUse: function(key) {
+        if (!key || !_WXPointer_stringify_adaptor(key)) {
+            return false;
+        }
+        const keyString = _WXPointer_stringify_adaptor(key);
+        return typeof wx[keyString[0].toLowerCase() + keyString.slice(1)] !== 'undefined';
+    },
+    WX_OnBLECharacteristicValueChange: function() {
+        window.WXWASMSDK.WX_OnBLECharacteristicValueChange();
+    },
+    WX_OffBLECharacteristicValueChange: function() {
+        window.WXWASMSDK.WX_OffBLECharacteristicValueChange();
+    },
+    WX_RegisterOnBLECharacteristicValueChangeCallback: function(callback) {
+        window.WXWASMSDK.WX_RegisterOnBLECharacteristicValueChangeCallback(callback);
     }
 });

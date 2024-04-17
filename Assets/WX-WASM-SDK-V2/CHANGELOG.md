@@ -6,28 +6,130 @@ Removed - 删除功能/接口
 Fixed - 修复问题
 Others - 其他 
 -->
+## 2024-3-28 【重要更新】
+包含重要bugfix、特性支持
+### Feature
+### Fixed
+* 重要：修复UDP接口处理buffer
+* 重要：修复unity-namespace.js部分环境变量丢失问题
+
+## 2024-3-28 【普通更新】
+* 普通：优化对团结版的导出支持
+### Fixed
+* 普通：兼容PlayDelayed播放
+* 普通：兼容FMOD2.02版本
+* 普通：修复FState偶现报错
+
+## 2024-3-5 【普通更新】
+* 普通：WXAssetBundle支持切换CDN
+* 普通：优化VideoPlayer组件
+* 普通：更新小游戏模板捕获全局错误
+* 普通：高性能+模式不再限制需要iOS>15.0
+### Fixed
+* 普通：修复wx.onBluetoothDeviceFound
+* 普通：修复wx.onUserCaptureScreen
+* 普通：修复wx.getAppAuthorizeSetting
+* 普通：修复fs.stat
+* 普通：修复截屏回调
+* 普通：unity21.3网络超时时间设置
+
+## 2024-1-18 【普通更新】
+* 普通：更新适配插件版本到1.2.38
+### Fixed
+* 普通：不支持WebGL2的旧Android微信版本提供升级指引
+
+## 2024-1-15 【普通更新】
+### Feature
+* 重要：增加iOS高性能+(iOSPerformancePlus)选项，请查阅[高性能+模式](https://developers.weixin.qq.com/minigame/dev/guide/performance/perf-high-performance-plus.html)，有助于提升渲染兼容性、降低WebContent进程内存
+* 普通：陀螺仪去json性能优化
+### Fixed
+* 普通：修复蓝牙数据传输问题
+* 普通：修复广告低版本微信ReportshareBehavior上报问题
+* 普通：修复2021.3.33 ContextMenu适配
+* 普通：修复开放域排行榜触控 
+
+## 2024-1-2 【重要更新】
+包含重要bugfix、特性支持
+### Feature
+* 普通：启动剧情新增Hash 、版本号兼容验证逻辑
+* 普通：转换配置新增iOS dpr选项
+* 普通：C# SDK支持文档注释
+### Fixed
+* 重要：修复Android系统代码分包Patch功能不生效的问题(需同时升级分包工具插件至1.1.12)
+* 普通：修复压缩纹理工具在一些特殊字符转义失败的bug
+
+## 2023-12-18 重要更新】
+包含重要bugfix、特性支持
+### Feature
+* 普通：TouchStart/TouchEnd去json性能优化
+### Fixed
+* 重要：修复TCP接口处理buffer
+
+## 2023-12-12
+【重要更新】包含重要bugfix、特性支持
+### Feature
+* 重要：优化TCP接口能力，使用请查阅[网络通信适配](https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/UsingNetworking.md)
+* 重要：优化UDP接口能力
+* 普通：优化启动剧情能力(Beta)
+* 普通：增加接口WX.CanIUse
+
+## 2023-12-08
+【重要更新】包含重要bugfix、特性支持
+### Feature
+* 重要：新增启动剧情能力(Beta)
+* 重要：新增TCP接口能力
+* 普通：更新适配插件版本到1.2.34
+### Fixed
+* 严重：修复TouchMove在<iOS 15.0系统BigUnit64Array兼容性问题
+* 严重：修复适配插件处理代码分包时序导致的一定概率启动失败
+
+## 2023-11-29
+【普通更新】
+### Fixed
+* 普通：修复TouchMove优化在2020之前版本产生的导出错误
+
+## 2023-11-28
+【重要更新】包含重要bugfix、特性支持
+### Feature
+* 普通：FileSystem Stat支持isDirectory和isFile
+* 普通：优化胶水层代码，删减多余代码
+* 重要：TouchMove触摸性能优化
+* 重要：优化微信字体所占用的MonoHeap临时内存
+### Fixed
+* 普通：修复IOS音频被打断无法重新播放
+* 普通：修复2022导出Video的BUG
+
+## 2023-11-10
+【普通更新】
+### Feature
+* 普通：支持2022 Input Field组件适配微信输入法
+* 普通：PC端和开发者工具支持Unity VideoPlayer组件
+
 ## 2023-11-02
+【普通更新】
 ### Fixed
 * 修复部分首资源包压缩异常问题
 
 ## 2023-10-20
+【普通更新】
 ### Feature
-* Unity2022 development build的导出支持
-* 更新小游戏云测试profile获取的性能数据
+* 重要：Unity2022 development build的导出支持
+* 普通：更新小游戏云测试profile获取的性能数据
 ### Fixed
-* 修复微信压缩纹理工具对音频ab包的处理bug问题
-* 修复微信压缩纹理工具在 MacOS M1系列芯片执行异常问题
+* 普通：修复微信压缩纹理工具对音频ab包的处理bug问题
+* 普通：修复微信压缩纹理工具在 MacOS M1系列芯片执行异常问题
 
-## 2023-10-11
+## 2023-10-11【普通更新】
 ### Feature
 * 适配Video Player, 安卓3.0.0基础库/IOS 3.1.1基础库且只支持播放一个视频
 
 ## 2023-9-26
+【重要更新】包含重要bugfix、特性支持
 ### Feature
 * 适配Application.targetFramerate，无需再调用小游戏的帧率设置API
 ### Fixed
-* 修复wasm分包patch未生效的问题
-* 修复WXAssetBundle在异常时上报错误
+* 重要：修复wasm分包patch未生效的问题
+* 重要：修复WXAssetBundle在异常时上报错误
 * 更新适配插件版本到1.2.31
 
 ## 2023-09-20

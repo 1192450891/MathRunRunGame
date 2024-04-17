@@ -56,9 +56,10 @@ export function formatIdentifier(identifier) {
 }
 export function formatTouchEvent(v) {
     return {
-        identifier: formatIdentifier(v.identifier),
         clientX: v.clientX * window.devicePixelRatio,
         clientY: (window.innerHeight - v.clientY) * window.devicePixelRatio,
+        force: v.force,
+        identifier: formatIdentifier(v.identifier),
         pageX: v.pageX * window.devicePixelRatio,
         pageY: (window.innerHeight - v.pageY) * window.devicePixelRatio,
     };
@@ -78,9 +79,14 @@ export function formatResponse(type, data, id) {
     Object.keys(conf).forEach((key) => {
         if (data[key] === null || typeof data[key] === 'undefined') {
             if (typeof typeMap[conf[key]] === 'undefined') {
-                data[key] = {};
-                if (ResType[conf[key]]) {
-                    formatResponse(conf[key], data[key]);
+                if (conf[key].indexOf('[]') > -1) {
+                    data[key] = [];
+                }
+                else {
+                    data[key] = {};
+                    if (ResType[conf[key]]) {
+                        formatResponse(conf[key], data[key]);
+                    }
                 }
             }
             else {
@@ -99,11 +105,20 @@ export function formatResponse(type, data, id) {
         else if (conf[key] === 'bool' && (typeof data[key] === 'number' || typeof data[key] === 'string')) {
             data[key] = !!data[key];
         }
-        else if (conf[key] === 'arrayBuffer' && id) {
-            
-            cacheArrayBuffer(id, data[key]);
-            data.arrayBufferLength = data[key].byteLength;
-            data[key] = [];
+        else if (conf[key] === 'arrayBuffer') {
+            if (id) {
+                
+                cacheArrayBuffer(id, data[key]);
+                data.arrayBufferLength = data[key].byteLength;
+                data[key] = [];
+            }
+            else if (data[key] instanceof ArrayBuffer) {
+                data[key] = new Uint8Array(data[key]);
+                data[key] = Array.from(data[key]);
+            }
+            else {
+                data[key] = [];
+            }
         }
         else if (typeof data[key] === 'object' && conf[key] === 'object') {
             Object.keys(data[key]).forEach((v) => {
@@ -154,25 +169,65 @@ export function formatResponse(type, data, id) {
     });
     return data;
 }
-export function formatJsonStr(str) {
+export function formatJsonStr(str, type) {
     if (!str) {
         return {};
     }
+    if (type === 'string|arrayBuffer') {
+        return convertBase64ToData(str);
+    }
     try {
-        const conf = JSON.parse(str);
-        const keys = Object.keys(conf);
-        keys.forEach((v) => {
-            if (conf[v] === null) {
-                delete conf[v];
+        const data = JSON.parse(str);
+        Object.keys(data).forEach((v) => {
+            if (data[v] === null) {
+                delete data[v];
             }
         });
-        return conf;
+        if (type) {
+            const conf = ResType[type];
+            if (!conf) {
+                return data;
+            }
+            Object.keys(conf).forEach((key) => {
+                if (data[key]) {
+                    if (conf[key] === 'arrayBuffer') { 
+                        data[key] = new Uint8Array(data[key]).buffer;
+                    }
+                    else if (conf[key] === 'string|arrayBuffer') { 
+                        data[key] = convertBase64ToData(data[key]);
+                    }
+                }
+            });
+        }
+        return data;
     }
     catch (e) {
         return str;
     }
 }
+function isBase64(str) {
+    const base64Pattern = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+    return base64Pattern.test(str);
+}
+function base64ToArrayBuffer(base64) {
+    const binaryString = atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+function convertBase64ToData(input) {
+    if (isBase64(input)) {
+        return base64ToArrayBuffer(input);
+    }
+    return input;
+}
 export function cacheArrayBuffer(callbackId, data) {
+    if (!callbackId || !data) {
+        return;
+    }
     tempCacheObj[callbackId] = data;
 }
 export function setArrayBuffer(buffer, offset, callbackId) {
@@ -211,4 +266,103 @@ export function offEventCallback(list, callback, id) {
     }
     list[id].forEach(callback);
     delete list[id];
+}
+function allocateAndSet(byteArray) {
+    const ptr = GameGlobal.Module._malloc(byteArray.length);
+    GameGlobal.Module.HEAPU8.set(byteArray, ptr);
+    return ptr;
+}
+
+function convertNumberToPointer(num, ArrayType = Float64Array) {
+    const byteArray = numberToUint8Array(num, ArrayType);
+    return allocateAndSet(byteArray);
+}
+function convertArrayBufferToPointer(arrayBuffer) {
+    const byteArray = new Uint8Array(arrayBuffer);
+    return allocateAndSet(byteArray);
+}
+function convertStringToPointer(str) {
+    const byteArray = GameGlobal.Module.lengthBytesUTF8(str) + 1;
+    const ptr = GameGlobal.Module._malloc(byteArray);
+    GameGlobal.Module.stringToUTF8(str, ptr, byteArray);
+    return ptr;
+}
+export function convertDataToPointer(data) {
+    if (typeof data === 'number') {
+        return convertNumberToPointer(data);
+    }
+    if (typeof data === 'string') {
+        return convertStringToPointer(data);
+    }
+    if (data instanceof ArrayBuffer || typeof data === 'object') {
+        return convertArrayBufferToPointer(data);
+    }
+    return 0;
+}
+
+function numberToUint8Array(num, ArrayType = Float64Array) {
+    return new Uint8Array(new ArrayType([num]).buffer);
+}
+function stringToUint8ArrayWithLength(str) {
+    const strPtr = convertStringToPointer(str);
+    const strBytesLength = GameGlobal.Module.lengthBytesUTF8(str);
+    const strBytes = new Uint8Array(GameGlobal.Module.HEAPU8.buffer, strPtr, strBytesLength);
+    const lengthBytes = new Uint8Array(4); 
+    new DataView(lengthBytes.buffer).setUint32(0, strBytes.length, true); 
+    const result = new Uint8Array(4 + strBytes.length);
+    result.set(lengthBytes);
+    result.set(strBytes, 4);
+    GameGlobal.Module._free(strPtr); 
+    return result;
+}
+function createUint8ArrayFromByteArrays(byteArrays) {
+    const totalLength = byteArrays.reduce((sum, byteArray) => sum + byteArray.length, 0);
+    const result = new Uint8Array(totalLength);
+    let offset = 0;
+    byteArrays.forEach((byteArray) => {
+        result.set(byteArray, offset);
+        offset += byteArray.length;
+    });
+    return result;
+}
+
+function touchToUint8Array(touch) {
+    return createUint8ArrayFromByteArrays([
+        numberToUint8Array(touch.clientX, Float32Array),
+        numberToUint8Array(touch.clientY, Float32Array),
+        numberToUint8Array(touch.force),
+        numberToUint8Array(touch.identifier, Uint32Array),
+        numberToUint8Array(touch.pageX, Float32Array),
+        numberToUint8Array(touch.pageY, Float32Array),
+    ]);
+}
+function touchesToUint8Array(touches) {
+    return createUint8ArrayFromByteArrays(touches.map(touchToUint8Array));
+}
+function onTouchStartListenerResultToUint8Array(result) {
+    return createUint8ArrayFromByteArrays([
+        touchesToUint8Array(result.touches),
+        touchesToUint8Array(result.changedTouches),
+        numberToUint8Array(result.timeStamp, Uint32Array),
+    ]);
+}
+export function convertOnTouchStartListenerResultToPointer(result) {
+    return allocateAndSet(onTouchStartListenerResultToUint8Array(result));
+}
+
+function infoToUint8Array(info) {
+    return createUint8ArrayFromByteArrays([
+        stringToUint8ArrayWithLength(info.address),
+        stringToUint8ArrayWithLength(info.family),
+        numberToUint8Array(info.port, Uint32Array)
+    ]);
+}
+export function convertInfoToPointer(info) {
+    return allocateAndSet(infoToUint8Array(info));
+}
+export function stringifyRes(obj) {
+    if (!obj) {
+        return '{}';
+    }
+    return JSON.stringify(obj);
 }

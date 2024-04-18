@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 9b32b6391ca21b84fae34d904c5bc386
   m_currentHash:
     serializedVersion: 2
-    Hash: 8856cd5c9c353bb1a222e057b8e66587
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: bbda644281d4e50469c9ace7dc6e811c, type: 2}
   - {fileID: 11400000, guid: 423a0c431f5ff604687c874917977e06, type: 2}
+  - {fileID: 11400000, guid: 1823f5398fe234246a0a8aef53870e72, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -87,6 +88,10 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - QuestionConfig
+    - TureOrFalseQuestion
+    - TwoAnswerQuestion
+    - ThreeAnswerQuestion
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: e9e4d187519d7184cb672314ccf14142, type: 2}

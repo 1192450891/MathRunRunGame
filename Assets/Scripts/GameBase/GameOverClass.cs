@@ -15,7 +15,13 @@ public class GameOverClass : Singleton<GameOverClass>
 #endif
         
         UIManager.Instance.HideAllPanel();
-        QuestionController.Instance.ReStart();//重置参数
+        GameReStartFun();
+    }
+
+    private void GameReStartFun()
+    {
+        QuestionController.Instance.ReStart();
+        
         Player.Instance.ReStart();
         GameStaticData.ReStart();
         ScoreManager.Instance.ReStart();

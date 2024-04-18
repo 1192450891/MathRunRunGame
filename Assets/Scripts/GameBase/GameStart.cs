@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using GameBase.Player;
 using Manager;
@@ -15,10 +16,13 @@ public class GameStart : MonoSingleton<GameStart>
     private UIManager uiManager;
     private new void Awake()
     {
-        GameStartFun();
+        CsvStaticData.SetCsvDataTable();
+        TimeTool.Instance.Delay(CsvStaticData.ReadCsvDataTime,GameStartFun);
         WxInit();
         awakeTest();
     }
+
+
 
     private void GameStartFun()
     {
@@ -42,7 +46,6 @@ public class GameStart : MonoSingleton<GameStart>
 
     private void InitQuestionController()
     {
-        questionController = new QuestionController();
         QuestionController.Instance.GetData();
         RunwayManager.Instance.InitRunways();
     }

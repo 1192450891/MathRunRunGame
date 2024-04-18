@@ -1,7 +1,11 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections;
+using System.Data;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class CSVController : MonoBehaviour
 {
@@ -118,5 +122,55 @@ public class CSVController : MonoBehaviour
 
             return dt;
         }
+        
+        public static void SetDataTable(string csvContent,DataTable dataTable)
+        {
+            DataTable dt = dataTable;
+            string[] splitCsvContent = csvContent.Split(Environment.NewLine);
+            string[] fixedCsvContentArray = new string[splitCsvContent.Length-1];
+            Array.Copy(splitCsvContent, fixedCsvContentArray, splitCsvContent.Length - 1);
+            //判断，若是第一次，建立表头
+            bool isFirst = true;
+
+            //列的个数
+            int dtColumns = 0;
+
+            int index = 0;
+            //逐行读取CSV文件
+            while (index<fixedCsvContentArray.Length)
+            {
+                var strLine = fixedCsvContentArray[index];
+                index++;
+                strLine = strLine.Trim(); //去除头尾空格
+                var arrayLine = strLine.Split(',');
+        
+                if (isFirst) //建立表头
+                {
+                    dtColumns = arrayLine.Length; //列的个数
+                    for (int i = 0; i < dtColumns; i++)
+                    {
+                        dt.Columns.Add(arrayLine[i]); //每一列名称
+                    }
+        
+                    isFirst = false;
+                }
+                else //表内容
+                {
+                    DataRow dataRow = dt.NewRow(); //新建一行
+                    for (int j = 0; j < dtColumns; j++)
+                    {
+                        if (arrayLine.Length > j)
+                        {
+                            dataRow[j] = arrayLine[j];
+                        }
+                    }
+        
+                    dt.Rows.Add(dataRow); //添加一行
+                }
+            }
+        }
+        
+        
+
     }
 }

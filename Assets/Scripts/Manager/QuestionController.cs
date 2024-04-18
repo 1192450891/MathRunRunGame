@@ -38,8 +38,13 @@ public class QuestionController : Singleton<QuestionController>
 #endif
         //======================================WX===================================================
 #if !UNITY_EDITOR
-        WxGetData wxGetData = new WxGetData();
-        wxGetData.GetData();
+        // WxGetData wxGetData = new WxGetData();
+        // wxGetData.GetData();
+        currentPanelQuestionIndex = -1;
+        //**********读取问题配置****************//
+        GetQuestionConfig();
+        //**********读取所有问题表的数据****************//
+        GetALlQuestionData();
 #endif
         hasGetData = true;
     }

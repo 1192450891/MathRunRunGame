@@ -20,7 +20,7 @@ namespace Wx
         {
             WX.cloud.Init(new CallFunctionInitParam()
             {
-                env = "mathrunruncsv-0gppeloj57600df4"
+                env = "mathrunruncloud-9gio3fjz9fc0f7c1"
             });
         }
 

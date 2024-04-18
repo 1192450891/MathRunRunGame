@@ -8,7 +8,7 @@ using Manager;
 using Module.Enum;
 using Struct;
 
-public class QuestionController : MonoSingleton<QuestionController>
+public class QuestionController : Singleton<QuestionController>
 {
     public int QuestionAmount;//各类型问题数量总和 即玩家过关需要通过的问题数量
     

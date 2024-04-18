@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class CSVController : MonoBehaviour
+public class CSVController 
 {
     public class CSVHelper
     {

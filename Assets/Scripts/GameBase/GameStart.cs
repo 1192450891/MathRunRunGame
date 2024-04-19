@@ -16,8 +16,7 @@ public class GameStart : MonoSingleton<GameStart>
     private UIManager uiManager;
     private new void Awake()
     {
-        CsvStaticData.SetCsvDataTable();
-        TimeTool.Instance.Delay(CsvStaticData.ReadCsvDataTime,GameStartFun);
+        CsvStaticData.SetCsvStaticData(GameStartFun);
         WxInit();
         awakeTest();
     }
@@ -28,7 +27,6 @@ public class GameStart : MonoSingleton<GameStart>
     {
         InitQuestionController();
         InitSpawnAndCharacter();
-        //InitCamera();
         InitUIManager();
     }
     

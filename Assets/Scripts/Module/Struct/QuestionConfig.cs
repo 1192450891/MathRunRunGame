@@ -32,22 +32,9 @@ namespace Struct
             QuestionKey = questionKey;
             Score = score;
             
-            string str = null;
-            switch (questionType)
-            {
-                case QuestionTypeEnum.TrueOrFalse:
-                    str = StaticString.TrueOrFalseQuestionImage;
-                    break;
-                case QuestionTypeEnum.TwoAnswerQuestion:
-                    str = StaticString.TwoAnswerQuestionImage;
-                    break;
-                case QuestionTypeEnum.ThreeAnswerQuestion:
-                    str = StaticString.ThreeAnswerQuestionImage;
-                    break;
-            }
             if (question==StaticString.NullStr)
             {
-                QuestionImagePath = StaticString.CsvDataPath + str + $"/{id}.jpeg";
+                QuestionImagePath = $"{id}";
             }
             else
             {

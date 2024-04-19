@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using Struct;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -29,5 +30,14 @@ public class LoadManager:MonoSingleton<LoadManager>
             CSVController.CSVHelper.SetDataTable(csvContent, dt);
             callback?.Invoke();  
         });  
+    }
+
+    public void LoadTextureAssetAsync()
+    {
+        var textureLabel = "Texture";
+        Addressables.LoadAssetsAsync<Texture2D>(textureLabel, (t) =>
+        {
+            CsvStaticData.Texture2DDic.Add(t.name,t);
+        });
     }
 }

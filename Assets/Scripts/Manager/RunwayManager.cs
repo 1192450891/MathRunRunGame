@@ -161,23 +161,7 @@ namespace Manager
                     suffix = 'c';
                     break;
             }
-
-            string typeStr;
-            switch (levelData.QuestionType)
-            {
-                case QuestionTypeEnum.TrueOrFalse:
-                    typeStr = StaticString.TrueOrFalseQuestionImage;
-                    break;
-                case QuestionTypeEnum.TwoAnswerQuestion:
-                    typeStr = StaticString.TwoAnswerQuestionImage;
-                    break;
-                case QuestionTypeEnum.ThreeAnswerQuestion:
-                    typeStr = StaticString.ThreeAnswerQuestionImage;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            return StaticString.CsvDataPath + typeStr + $"/{levelData.ID + suffix}.jpeg";
+            return $"{levelData.ID + suffix}";
         }
         public bool IsAllQuestionHasCreated()
         {

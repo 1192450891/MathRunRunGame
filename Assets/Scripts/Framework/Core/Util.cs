@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Struct;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -46,16 +47,7 @@ namespace Framework.Core
         }
         public Texture2D LoadPNG(string path)
         {
-            Texture2D texture = null;
-            byte[] fileData;
- 
-            if (File.Exists(path))
-            {
-                fileData = File.ReadAllBytes(path);
-                texture = new Texture2D(2, 2); // 创建Texture2D实例
-                texture.LoadImage(fileData); // 加载图片数据
-            }
- 
+            Texture2D texture = CsvStaticData.Texture2DDic[path];
             return texture;
         }
 

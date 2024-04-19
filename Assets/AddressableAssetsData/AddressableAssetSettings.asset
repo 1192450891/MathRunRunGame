@@ -47,6 +47,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bbda644281d4e50469c9ace7dc6e811c, type: 2}
   - {fileID: 11400000, guid: 423a0c431f5ff604687c874917977e06, type: 2}
   - {fileID: 11400000, guid: 1823f5398fe234246a0a8aef53870e72, type: 2}
+  - {fileID: 11400000, guid: 385a7e60b289b5447b864cdbe288c7c8, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -87,11 +88,11 @@ MonoBehaviour:
     m_ProfileVersion: 1
   m_LabelTable:
     m_LabelNames:
-    - default
     - QuestionConfig
     - TureOrFalseQuestion
     - TwoAnswerQuestion
     - ThreeAnswerQuestion
+    - Texture
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: e9e4d187519d7184cb672314ccf14142, type: 2}

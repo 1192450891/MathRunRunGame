@@ -14,9 +14,15 @@ public class GameStart : MonoSingleton<GameStart>
     private QuestionController questionController;
     private Player player;
     private UIManager uiManager;
+    
+    [SerializeField]
+    public AnimationClip openAnimation;
+    [SerializeField]
+    public AnimationClip closeAnimation;
     private new void Awake()
     {
-        CsvStaticData.SetCsvStaticData(GameStartFun);
+        LoadManager.Instance.GameStartPreload(GameStartFun);
+        
         WxInit();
         awakeTest();
     }

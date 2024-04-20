@@ -17,14 +17,8 @@ namespace Struct
         public static readonly DataTable ThreeAnswerQuestionTable=new DataTable();
 
         public static readonly Dictionary<string, Texture2D> Texture2DDic = new Dictionary<string, Texture2D>();
-
-        public static void SetCsvStaticData(Action csvDataTableCallback = null)
-        {
-            SetCsvDataTable(csvDataTableCallback);
-            SetTexture2DDic();
-        }
         
-        private static void SetCsvDataTable(Action callback = null)//进入游戏时读一次存起来
+        public static void SetCsvDataTable(Action callback = null)//进入游戏时读一次存起来
         {
             LoadManager.Instance.LoadCsvAssetAsync("QuestionConfig",ConfigTable,(() =>
             {
@@ -44,9 +38,5 @@ namespace Struct
             
         }
 
-        private static void SetTexture2DDic()
-        {
-            LoadManager.Instance.LoadTextureAssetAsync();
-        }
     }
 }

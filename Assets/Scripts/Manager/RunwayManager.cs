@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using BrokenVector.LowPolyFencePack;
 using Framework.Core;
 using Module.Enum;
 using Struct;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Wx;
@@ -96,72 +98,7 @@ namespace Manager
 
         private void InitFence(Transform transform, LevelData runwayData)
         {
-            FillFenceAnswer(transform,runwayData);
-            if (runwayData.QuestionType == QuestionTypeEnum.TrueOrFalse)return;//判断题不需要调整答案位置
-            AdjustAnswerPosition(transform,runwayData);
-        }
-
-        private void FillFenceAnswer(Transform transform,LevelData runwayData)
-        {
-            for (int i = 0; i < runwayData.Answers.Count; i++)
-            {
-                if (runwayData.Answers[i] == "null")//图片类型
-                {
-
-                    Transform canvasTransform = TransformUtil.Find(transform,$"{i} RawImage");
-                    canvasTransform.gameObject.SetActive(true);
-                    var rawImageComponent = canvasTransform.GetChild(0).GetComponent<RawImage>();
-                    rawImageComponent.texture = Util.Instance.LoadPNG(GetRawImageSourcePath(runwayData,i));
-                }
-                else//文字类型
-                {
-                    Transform textTransform = TransformUtil.Find(transform,$"{i} Text");
-                    textTransform.gameObject.SetActive(true);
-                    var textMeshComponent = textTransform.GetComponent<TMP_Text>();
-                    textMeshComponent.text = runwayData.Answers[i];
-                }
-            }
-        }
-
-        private void AdjustAnswerPosition(Transform transform,LevelData runwayData)
-        {
-            //判断题的T在位置0 F在位置1
-            int correctWay = runwayData.Way; //正确的答案 从左往右 从0开始 每次交换0号和目标位置的木板
-            
-            if (correctWay != 0)
-            {
-                var zeroTextTransform = TransformUtil.Find(transform,"0 Text").transform;
-                var targetTextTransform = TransformUtil.Find(transform,$"{correctWay} Text").transform;
-                Util.Instance.SwapParent(zeroTextTransform,targetTextTransform);
-
-                (zeroTextTransform.position, targetTextTransform.position) =
-                    (targetTextTransform.position, zeroTextTransform.position);
-                
-                var zeroRawImageTransform = TransformUtil.Find(transform,"0 RawImage").transform;
-                var targetRawImageTransform = TransformUtil.Find(transform,$"{correctWay} RawImage").transform;
-                Util.Instance.SwapParent(zeroRawImageTransform,targetRawImageTransform);
-
-                (zeroRawImageTransform.position, targetRawImageTransform.position) =
-                    (targetRawImageTransform.position, zeroRawImageTransform.position);
-            }
-        }
-        
-        private string GetRawImageSourcePath(LevelData levelData,int i)
-        {
-            char suffix = ' ';
-            switch (i)
-            {
-                case 0:
-                    suffix = 'a';
-                    break;
-                case 1:
-                    suffix = 'b';
-                    break;
-                case 2:
-                    suffix = 'c';
-                    break;
-            }
-            return $"{levelData.ID + suffix}";
+            var newFence = new Fence(transform,runwayData);
         }
         public bool IsAllQuestionHasCreated()
         {

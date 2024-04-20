@@ -56,7 +56,7 @@ using UnityEngine;
         
         private void PlayFenceAni(Collider other)
         {
-            other.transform.GetComponentInParent<DoorController>().OpenDoor();
+            other.transform.GetComponent<FenceAni>().ToggleFence();
         }
         private void OnTriggerEnterFinishLine(LayerMask layer)
         {

@@ -19,7 +19,7 @@ MonoBehaviour:
     assetLoadType: 1
     compressDataPackage: 0
     VideoUrl: 
-    DST: D:/MathRunRun
+    DST: "D:/\u5FAE\u4FE1\u5C0F\u6E38\u620F/MathRunRun"
     StreamCDN: 
     bundleHashLength: 32
     bundlePathIdentifier: StreamingAssets;

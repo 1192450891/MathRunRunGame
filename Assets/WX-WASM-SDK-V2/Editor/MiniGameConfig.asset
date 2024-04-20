@@ -15,7 +15,7 @@ MonoBehaviour:
   ProjectConf:
     projectName: MathRunRun
     Appid: wxa22e2eb76bb25b34
-    CDN: 
+    CDN: https://mathrunruncloud-9gio3fjz9fc0f7c1-1317479052.tcloudbaseapp.com
     assetLoadType: 1
     compressDataPackage: 0
     VideoUrl: 
@@ -51,9 +51,9 @@ MonoBehaviour:
     ScriptOnly: 0
     Il2CppOptimizeSize: 1
     profilingFuncs: 0
-    Webgl2: 0
+    Webgl2: 1
     fbslim: 1
-    DeleteStreamingAssets: 0
+    DeleteStreamingAssets: 1
     ProfilingMemory: 0
     CleanBuild: 0
     CustomNodePath: 

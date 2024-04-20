@@ -15,7 +15,7 @@ public class Font : MonoBehaviour
         {
             // fallbackFont作为旧版本微信或者无法获得系统字体文件时的备选CDN URL
             // 「注意」需要替换成游戏真实的字体URL！！
-            var fallbackFont = "https://www.unicode.org/charts/PDF/U0000.pdf" + "fallback.ttf";
+            var fallbackFont = "https://www.unicode.org/charts/PDF/U0000.pdf" + "fallback.ttf"; 
             WX.GetWXFont(fallbackFont, (font) =>
             {
                 text.font = font;

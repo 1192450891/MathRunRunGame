@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using Manager;
 using Struct;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -25,7 +27,8 @@ public class LoadManager:MonoSingleton<LoadManager>
     public void GameStartPreload(Action callback = null)
     {
         LoadArtAsset();
-        
+
+        SetListObjAsset();
         LoadQuestionTextureAssetAsync();
         CsvStaticData.SetCsvDataTable((() =>
         {
@@ -63,6 +66,22 @@ public class LoadManager:MonoSingleton<LoadManager>
         public string loadLabel;
     }
 
+    private void SetListObjAsset()
+    {
+        Addressables.LoadAssetsAsync<GameObject>("LeftObj", (leftObj) =>
+        {
+            RunwayBackgroundEnvironmentManager.Left_ObjList.Add(leftObj);
+        });
+        Addressables.LoadAssetsAsync<GameObject>("RightObj", (rightObj) =>
+        {
+            RunwayBackgroundEnvironmentManager.Right_ObjList.Add(rightObj);
+        });
+        Addressables.LoadAssetsAsync<GameObject>("FinishLineObj", (finishLineObj) =>
+        {
+            RunwayManager.FinishLine_ObjList.Add(finishLineObj);
+        });
+    }
+
     private void LoadArtAsset()
     {
         var loadList = new List<LoadNode>
@@ -72,7 +91,8 @@ public class LoadManager:MonoSingleton<LoadManager>
             new LoadNode(LoadAssetType.GameObject,"ArtModel"),
             new LoadNode(LoadAssetType.Shader,"ArtShader"),
             new LoadNode(LoadAssetType.GameObject,"ArtPreb"),
-            new LoadNode(LoadAssetType.Texture2D, "ArtTexture")
+            new LoadNode(LoadAssetType.Texture2D, "ArtTexture"),
+            new LoadNode(LoadAssetType.TMP_FontAsset, "Font")
         };
         foreach (var node in loadList)
         {
@@ -85,7 +105,8 @@ public class LoadManager:MonoSingleton<LoadManager>
         GameObject,
         Material,
         Shader,
-        Texture2D
+        Texture2D,
+        TMP_FontAsset
     }
     private void LoadArtAssetAsync(LoadNode node)
     {
@@ -102,6 +123,9 @@ public class LoadManager:MonoSingleton<LoadManager>
                 break;
             case LoadAssetType.Texture2D:
                 Addressables.LoadAssetsAsync<Texture2D>(node.loadLabel,null);
+                break;
+            case LoadAssetType.TMP_FontAsset:
+                Addressables.LoadAssetsAsync<TMP_FontAsset>(node.loadLabel,null);
                 break;
             default:
                 Debug.Log("not find loadType");

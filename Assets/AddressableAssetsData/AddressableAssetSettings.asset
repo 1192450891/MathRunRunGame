@@ -53,6 +53,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d6e94e121975265459c86ef4ffdcb672, type: 2}
   - {fileID: 11400000, guid: 0846fb31f73c01d4788922a62d4c9dd0, type: 2}
   - {fileID: 11400000, guid: efe4c2f3751dd2a4ba5aad0a6c00c578, type: 2}
+  - {fileID: 11400000, guid: 0b20c021cc4eee942885792688d66078, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -79,16 +80,16 @@ MonoBehaviour:
       m_Name: BuildTarget
       m_InlineUsage: 0
     - m_Id: 7cf9a8f2870c7874093668c5f2b626ef
-      m_Name: LocalBuildPath
+      m_Name: Local.BuildPath
       m_InlineUsage: 0
     - m_Id: d6eb2cfdfd2a92c42ba3793fdb48f127
-      m_Name: LocalLoadPath
+      m_Name: Local.LoadPath
       m_InlineUsage: 0
     - m_Id: 47c5a322c0e0c554b8468c9cacbdbc6d
-      m_Name: RemoteBuildPath
+      m_Name: Remote.BuildPath
       m_InlineUsage: 0
     - m_Id: 9a3e69d56e8c7cc47b4ca646e84b3716
-      m_Name: RemoteLoadPath
+      m_Name: Remote.LoadPath
       m_InlineUsage: 0
     m_ProfileVersion: 1
   m_LabelTable:
@@ -104,6 +105,10 @@ MonoBehaviour:
     - ArtShader
     - ArtPreb
     - ArtAni
+    - LeftObj
+    - RightObj
+    - Font
+    - FinishLineObj
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: e9e4d187519d7184cb672314ccf14142, type: 2}

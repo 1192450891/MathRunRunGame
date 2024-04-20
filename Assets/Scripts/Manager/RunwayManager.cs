@@ -6,6 +6,7 @@ using Framework.Core;
 using Module.Enum;
 using Struct;
 using TMPro;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,11 +32,10 @@ namespace Manager
         private bool hasEndLine;//是否已经生成终点
 
         private const string runwayAddressablePath = "Assets/Prebs/Environment/Runway.prefab";
-        private const string finishLineAddressablePath =     "Assets/Prebs/Environment/Finish Line.prefab";
         private const string twoAnswerFenceAddressablePath ="Assets/Prebs/Environment/Fence/2AnswerFence.prefab" ;
         private const string threeAnswerFenceAddressablePath = "Assets/Prebs/Environment/Fence/3AnswerFence.prefab";
         
-        private static string finishLine_PATH="Assets/Prebs/Environment/FinishLine";
+        public static List<GameObject> FinishLine_ObjList = new List<GameObject>();
 
         public void InitRunways()
         {
@@ -118,16 +118,11 @@ namespace Manager
 
         private void CreateFinishLine()
         {
-            int count = Util.Instance.GetFilesCount(finishLine_PATH);
-            int index = Util.Instance.GetRandomNum(count);
-            var str = finishLine_PATH+$"/FinishLine{index}.prefab";
-            LoadManager.Instance.LoadAndShowPrefabAsync("FinishLine",str ,runwaysGameObjectRoot.transform,
-                (o =>
-                {
-                    o.transform.position = new Vector3(0, 0,
-                        levelDataIndex * 60 * RunwayManager.RUNWAY_LENGTH_MAGNIFICATION + 60);
-                    finishLine = o;
-                }));
+            int count = FinishLine_ObjList.Count;
+            int index = Util.Instance.GetRandomNum(count)-1;
+            Vector3 newObjPos=new Vector3(0, 0,
+                levelDataIndex * 60 * RunwayManager.RUNWAY_LENGTH_MAGNIFICATION + 60);
+            finishLine=Object.Instantiate(FinishLine_ObjList[index],newObjPos,quaternion.identity,runwaysGameObjectRoot.transform);
         }
 
         public void DestroyFinishLine()

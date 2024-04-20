@@ -6,6 +6,7 @@ using Manager;
 using Struct;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using WeChatWASM;
 using Wx;
 
 public class GameStart : MonoSingleton<GameStart>
@@ -33,12 +34,15 @@ public class GameStart : MonoSingleton<GameStart>
     {
         InitQuestionController();
         InitSpawnAndCharacter();
-        InitUIManager();
+        InitUIManager(); 
     }
     
     private void WxInit()
     {
 #if !UNITY_EDITOR
+        // 无直接的API能力调用可使用读取系统信息等API
+        WX.GetSystemInfo(new GetSystemInfoOption());  // 读取SystemInfo
+
         WxClass.InitSDK();
 #endif
     }

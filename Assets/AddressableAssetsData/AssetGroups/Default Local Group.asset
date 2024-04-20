@@ -27,11 +27,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: aaa2c939c0359ac4dbce3f49e8b90252
-    m_Address: Assets/Conquerror/TopDownController/Joystick Pack/Prefabs/Fixed Joystick.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 22899ce58d6ee1948827e27fa8ac7c31
     m_Address: Assets/Prebs/Environment/Runway.prefab
     m_ReadOnly: 0
@@ -90,7 +85,8 @@ MonoBehaviour:
   - m_GUID: 8c699616821493343833c64e6d3fa0f5
     m_Address: Assets/Prebs/Environment/FinishLine/FinishLine1.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - FinishLineObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bbf7b004e56321349914977bec50706e
     m_Address: Assets/Prebs/UI/SettingPanel/SettingPanel.prefab
@@ -105,72 +101,86 @@ MonoBehaviour:
   - m_GUID: 511fabe49747df242a5e18b76c0df757
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left2.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LeftObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6b85f5b803bf20d45917c77b2bfbdafc
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right1.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - RightObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: efcf41c8c80f6764cad395dca3d24f0f
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left1.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LeftObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 331b5a93e2b17e84f93963e17896097e
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left3.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LeftObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6db20e5bbeff96847b4541c96eb430b1
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left4.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LeftObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2d1d028d66456e34d94385a412718d86
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left5.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LeftObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4f9509d423794f3459c1a929722e7b4c
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left6.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LeftObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4e0329cf86665e1428f22680b8185365
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Left/Left7.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LeftObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2acae493a1e80ec45b9c80cd9d77a674
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right2.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - RightObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 50c39b346e5ad2245b3475974f5979bf
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right3.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - RightObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ea92b12534db8634cb7818a3a1e9a807
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right4.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - RightObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5232fe2359ff02e4884e88f82d237c9c
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right7.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - RightObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5816198c5eaa9af44bf8b972af1981e2
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right5.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - RightObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dba7687617fab424480ba729952701d4
     m_Address: Assets/Prebs/Environment/BackgroundEnvironment/Right/Right6.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - RightObj
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 27cb864c84c64f54c8361e666ca03632
     m_Address: Assets/Prebs/UI/FreeMovePanel/FreeMovePanel.prefab
@@ -180,7 +190,8 @@ MonoBehaviour:
   - m_GUID: 62e87288681f4264a9a0520f7162326b
     m_Address: Assets/Prebs/Environment/FinishLine/FinishLine2.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - FinishLineObj
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 35e84590a99a71948bea196e60367b02, type: 2}

@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameBase;
+using Struct;
 using UnityEngine;
 using WeChatWASM;
 using Wx;
 
 public class PlayerDataReporter
 {
-    public void UpPlayerInfoDataToRank(string scoreValue)
+    public void UpPlayerInfoDataToRank(PlayerGameInfo playerGameInfo)
     {
         KVData kvData=new KVData
         {
             key = "score",
-            value = "1234"
+            value = playerGameInfo.Score.ToString()
         };
         
         var setUserCloudStorageOption = new SetUserCloudStorageOption
@@ -48,7 +50,12 @@ public class PlayerDataReporter
     
     public void UpPlayerInfoDataToQuestionData(PlayerGameInfo playerGameInfo)
     {
-        // WxCloudHelper wxCloudHelper = new WxCloudHelper();
-        // wxCloudHelper.SetUserData(playerGameInfo);
+        WxCloudHelper wxCloudHelper = new WxCloudHelper();
+        var questionIdData = new QuestionIdData
+        {
+            CorrectQuestionIdList = playerGameInfo.CorrectQuestionIdList,
+            WrongQuestionIdList = playerGameInfo.WrongQuestionIdList
+        };
+        wxCloudHelper.SetQuestionData(questionIdData);
     }
 }

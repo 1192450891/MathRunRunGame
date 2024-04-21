@@ -29,18 +29,18 @@ namespace Wx
         public static void GameOverUpload(PlayerGameInfo playerGameInfo)
         {
             var reporter = new PlayerDataReporter();
-            UploadWxRankData(reporter);
+            UploadWxRankData(reporter,playerGameInfo);
             UploadGameInfo(reporter,playerGameInfo);
         }
 
-        private static void UploadWxRankData(PlayerDataReporter reporter)//排行榜数据写入
+        private static void UploadWxRankData(PlayerDataReporter reporter,PlayerGameInfo playerGameInfo)//排行榜数据写入
         {
-            // reporter.UpPlayerInfoDataToRank(ScoreManager.Instance.Score.ToString());
+            reporter.UpPlayerInfoDataToRank(playerGameInfo);
         }
         private static void UploadGameInfo(PlayerDataReporter reporter,PlayerGameInfo playerGameInfo)//提交玩家数据 更新数据库
         {
             reporter.UpPlayerInfoDataToUserData(playerGameInfo);//添加本局游戏记录
-            reporter.UpPlayerInfoDataToQuestionData(playerGameInfo);//更新题目总表数据
+            // reporter.UpPlayerInfoDataToQuestionData(playerGameInfo);//更新题目总表数据
         }
 
         public static void DownloadQuestionInfo()//下载题库数据

@@ -1,5 +1,6 @@
 using Framework.Core;
 using Struct;
+using WeChatWASM;
 
 public class MainPanel:PanelBase
 {
@@ -29,7 +30,7 @@ public class MainPanel:PanelBase
 
     private void ShareButtonOnClick()
     {
-        UIManager.Instance.ShowTipsPanel("还没好");
+        UIManager.Instance.ShowTipsPanel("功能还没有开发完成噢");
     }
 
     private void StartButtonOnClick()

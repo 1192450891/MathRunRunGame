@@ -1,5 +1,7 @@
+using GameBase;
 using LitJson;
 using Manager;
+using Struct;
 using UnityEngine;
 using WeChatWASM;
 
@@ -9,7 +11,7 @@ namespace Wx
     {
         public static void InitSDK()
         {
-            WX.InitSDK((int code) =>
+            WXBase.InitSDK((int code) =>
             {
                 System.Console.WriteLine("WXInitSDKComplete");
                 InitCloud();
@@ -18,29 +20,29 @@ namespace Wx
 
         private static void InitCloud()
         {
-            WX.cloud.Init(new CallFunctionInitParam()
+            WXBase.cloud.Init(new CallFunctionInitParam()
             {
                 env = "mathrunruncloud-9gio3fjz9fc0f7c1"
             });
         }
 
-        public static void GameOverUpload()
-        {
-            UploadWxRankData();
-            UploadGameInfo();
-        }
-
-        private static void UploadWxRankData()//排行榜数据写入
+        public static void GameOverUpload(PlayerGameInfo playerGameInfo)
         {
             var reporter = new PlayerDataReporter();
-            reporter.UpPlayerInfoDataToRank(ScoreManager.Instance.Score.ToString());
+            UploadWxRankData(reporter);
+            UploadGameInfo(reporter,playerGameInfo);
         }
-        private static void UploadGameInfo()//玩家数据存储至数据库
+
+        private static void UploadWxRankData(PlayerDataReporter reporter)//排行榜数据写入
         {
-            
+            // reporter.UpPlayerInfoDataToRank(ScoreManager.Instance.Score.ToString());
         }
-        
-        
+        private static void UploadGameInfo(PlayerDataReporter reporter,PlayerGameInfo playerGameInfo)//提交玩家数据 更新数据库
+        {
+            reporter.UpPlayerInfoDataToUserData(playerGameInfo);//添加本局游戏记录
+            reporter.UpPlayerInfoDataToQuestionData(playerGameInfo);//更新题目总表数据
+        }
+
         public static void DownloadQuestionInfo()//下载题库数据
         {
             var cloudFunctionName = "levelDataHelper";

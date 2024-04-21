@@ -8,10 +8,9 @@ public class GameOverClass : Singleton<GameOverClass>
 {
     public void GameOver()//点击返回主页或重新开始 一局游戏才真正结束了
     {
-        CreateGameInfo();//创建玩家本局游戏信息记录
-
+        var gameInfo = CreateGameInfo();//创建玩家本局游戏信息记录
 #if !UNITY_EDITOR
-        WxClass.GameOverUpload();
+        WxClass.GameOverUpload(gameInfo);
 #endif
         
         UIManager.Instance.HideAllPanel();
@@ -30,18 +29,18 @@ public class GameOverClass : Singleton<GameOverClass>
         RunwayManager.Instance.DestroyFinishLine();
     }
 
-    private void CreateGameInfo()
+    private PlayerGameInfo CreateGameInfo()
     {
         var info =new PlayerGameInfo
         {
-            PlayerID = null,
+            // PlayerID = null,
             Score = ScoreManager.Instance.Score,
             MaxSpeed = GameStaticData.MaxWalkSpeed,
             CorrectNum=GameStaticData.HasCorrectNum,
-            Difficulty = null,
             CorrectQuestionIdList=GameStaticData.CorrectQuestionIdList,
             WrongQuestionIdList= GameStaticData.WrongQuestionIdList,
         };
+        return info;
     }
 
 }

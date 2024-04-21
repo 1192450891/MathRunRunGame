@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameBase;
 using Manager;
 
 namespace Struct

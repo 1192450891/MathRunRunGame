@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameBase;
 using UnityEngine;
 using WeChatWASM;
+using Wx;
 
 public class PlayerDataReporter
 {
@@ -36,6 +38,17 @@ public class PlayerDataReporter
         };
 
         WX.SetUserCloudStorage(setUserCloudStorageOption);
+    }
 
+    public void UpPlayerInfoDataToUserData(PlayerGameInfo playerGameInfo)
+    {
+        WxCloudHelper wxCloudHelper = new WxCloudHelper();
+        wxCloudHelper.SetUserData(playerGameInfo);
+    }
+    
+    public void UpPlayerInfoDataToQuestionData(PlayerGameInfo playerGameInfo)
+    {
+        // WxCloudHelper wxCloudHelper = new WxCloudHelper();
+        // wxCloudHelper.SetUserData(playerGameInfo);
     }
 }

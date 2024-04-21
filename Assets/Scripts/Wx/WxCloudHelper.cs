@@ -1,38 +1,35 @@
+using GameBase;
+using UnityEngine;
 using WeChatWASM;
 
 namespace Wx
 {
     public class WxCloudHelper
     {
-        public void w()
+        public void SetUserData(PlayerGameInfo playerGameInfo)
         {
-            var downloadFileOption = new DownloadFileOption
-            {
-                url = null,
-                complete = null,
-                fail = null,
-                filePath = null,
-                header = null,
-                success = null,
-                timeout = null
-            };
-            WX.DownloadFile(downloadFileOption);
+            WXBase.cloud.CallFunction(new CallFunctionParam()
+                {
+                    name = "setUserData",// 此处设置云函数名称，并非JS文件名
+            
+                    data = JsonUtility.ToJson(playerGameInfo),
+            
+                    success = (res) =>
+                    {
+                        Debug.Log("setUserDataSuccess");
+                        Debug.Log(res.result);
+                    },
+                    fail = (res) =>
+                    {
+                        Debug.Log("setUserDataFail");
+                        Debug.Log(res.errMsg);
+                    },
+                    complete = (res) =>
+                    {
+                        Debug.Log("setUserDataComplete");
+                        Debug.Log(res.result);
+                    }
+                });
         }
-
-        // 下载云存储文件到本地临时文件
-        // wx.cloud.downloadFile({fileID:'your-file-id',
-        //     success:res =>{
-        //         //  获取本地临时文件的文件信息
-        //     wx.getFileInfo({
-        //         filePath: res.tempFilePath,
-        //         success:fileInfo =>{
-        //             console.log('文件大小:'，fileInfo.size)console.log('创建时间:”,fileInfo.createTime)/! 使用获取到的文件信息进行下一步操作
-        //         }，
-        //         fail:err =>{
-        //             console.error('获取文件信息失败:'’err
-        //             子)
-        //             fail:err =>{
-        //                 console.error('下载文件失败:'，err)
-        // }
     }
 }

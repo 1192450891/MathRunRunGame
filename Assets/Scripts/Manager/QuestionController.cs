@@ -61,9 +61,9 @@ public class QuestionController : Singleton<QuestionController>
     
     private void GetQuestionData(DataTable dataTable,int questionCount,QuestionTypeEnum questionType)
     {
-        ListNodeUtil.ListNode head = ListNodeUtil.Instance.GenerateRandomLinkedList(questionCount - 1);
+        ListNodeUtil.ListNode head = ListNodeUtil.Instance.GenerateRandomLinkedList(dataTable.Rows.Count - 1);
         DataTable dt = dataTable;
-        while (head!=null)//已经把当前题型所需数量遍历了一遍
+        for (int i = 0; i < questionCount; i++)
         {
             int val = CurrentPanelQuestionIndexHead.val;
             int j = 0;//列数下标
@@ -79,7 +79,22 @@ public class QuestionController : Singleton<QuestionController>
             CurrentPanelQuestionIndexHead = CurrentPanelQuestionIndexHead.next;
             head = head.next;
         }
-        
+        // while (head!=null)//已经把当前题型所需数量遍历了一遍
+        // {
+        //     int val = currentPanelQuestionIndexHead.val;
+        //     int j = 0;//列数下标
+        //     LevelData[val] = new LevelData(
+        //         questionType,
+        //         dt.Rows[head.val][j++].ToString(),
+        //         dt.Rows[head.val][j++].ToString(),
+        //         int.Parse(dt.Rows[head.val][j++].ToString()),
+        //         int.Parse(dt.Rows[head.val][j++].ToString()),
+        //         dt.Rows[head.val][j++].ToString(),
+        //         dt.Rows[head.val].ItemArray.ToArray().Skip(j).Cast<string>().ToList()
+        //     );
+        //     currentPanelQuestionIndexHead = currentPanelQuestionIndexHead.next;
+        //     head = head.next;
+        // }
     }
     public void ManualStart()
     {

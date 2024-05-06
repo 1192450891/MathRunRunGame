@@ -79,22 +79,6 @@ public class QuestionController : Singleton<QuestionController>
             CurrentPanelQuestionIndexHead = CurrentPanelQuestionIndexHead.next;
             head = head.next;
         }
-        // while (head!=null)//已经把当前题型所需数量遍历了一遍
-        // {
-        //     int val = currentPanelQuestionIndexHead.val;
-        //     int j = 0;//列数下标
-        //     LevelData[val] = new LevelData(
-        //         questionType,
-        //         dt.Rows[head.val][j++].ToString(),
-        //         dt.Rows[head.val][j++].ToString(),
-        //         int.Parse(dt.Rows[head.val][j++].ToString()),
-        //         int.Parse(dt.Rows[head.val][j++].ToString()),
-        //         dt.Rows[head.val][j++].ToString(),
-        //         dt.Rows[head.val].ItemArray.ToArray().Skip(j).Cast<string>().ToList()
-        //     );
-        //     currentPanelQuestionIndexHead = currentPanelQuestionIndexHead.next;
-        //     head = head.next;
-        // }
     }
     public void ManualStart()
     {

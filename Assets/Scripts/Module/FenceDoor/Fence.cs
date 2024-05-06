@@ -24,9 +24,6 @@ namespace BrokenVector.LowPolyFencePack
             TransformUtil.Find(transform, "0 Fence Type1 Door").AddComponent<FenceAni>();
             TransformUtil.Find(transform, "1 Fence Type1 Door").AddComponent<FenceAni>();
             if(levelData.QuestionType==QuestionTypeEnum.ThreeAnswerQuestion)TransformUtil.Find(transform, "2 Fence Type1 Door").AddComponent<FenceAni>();
-            // fenceAni0 = new FenceAni();
-            // fenceAni1 = new FenceAni(TransformUtil.Find(transform,"1 Fence Type1 Door"));
-            // fenceAni2 = new FenceAni(TransformUtil.Find(transform,"2 Fence Type1 Door"));
             FillFenceAnswer(transform,levelData);
             if (levelData.QuestionType == QuestionTypeEnum.TrueOrFalse)return;//判断题不需要调整答案位置
             AdjustAnswerPosition(transform,levelData);

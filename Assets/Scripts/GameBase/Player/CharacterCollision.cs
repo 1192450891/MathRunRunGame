@@ -15,33 +15,31 @@ using UnityEngine;
         public void OnTriggerEnter(Collider other)
         {
             LayerMask layer = other.gameObject.layer;
-            OnTriggerEnterFence(layer, other);
+            if (layer==11)
+            {
+                OnTriggerEnterFence(other);
+            }
             OnTriggerEnterFinishLine(layer);
         }
-        private void OnTriggerEnterFence(LayerMask layer, Collider other)
+        private void OnTriggerEnterFence(Collider other)
         {
-            int layerValue = layer.value - 10;
-            if (layerValue == 0 || layerValue == 1)
+            int mode = -1;
+            if (other.name[0]-'0' == QuestionController.Instance.CurLevelData.Way)
             {
-                int mode = -1;
-                if (layerValue == QuestionController.Instance.CurLevelData.Way)
-                {
-                    
-                    mode = 1;//加速
-                    ChooseCorrectWay();
-                }
-                else
-                {
-                    mode = 0;//減速
-                    ChooseWrongWay();
-                }
-                PlayFenceAni(other);
-                player.ChangeSpeed(mode);
-                QuestionController.Instance.NextQuestion();//最后去切换问题
+                mode = 1;//加速
+                ChooseCorrectWay();
             }
+            else
+            {
+                mode = 0;//減速
+                ChooseWrongWay();
+            }
+            PlayFenceAni(other);
+            player.ChangeSpeed(mode);
+            QuestionController.Instance.NextQuestion();//最后去切换问题
+            
             void ChooseCorrectWay()
             {
-                // ChangeFenceColor(other, 1);
                 GameStaticData.HasCorrectNum++;
                 ScoreManager.Instance.AddScore();
                 GameStaticData.CorrectQuestionIdList.Add(QuestionController.Instance.CurLevelData.ID);
@@ -50,7 +48,6 @@ using UnityEngine;
             void ChooseWrongWay()
             {
                 GameStaticData.WrongQuestionIdList.Add(QuestionController.Instance.CurLevelData.ID);
-                // ChangeFenceColor(other, 0);
             }
         }
         

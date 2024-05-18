@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0964ad77a8cb75545ab4153a45527c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DevelopToggle: 1
+  DevelopToggle: 0
   openAnimation: {fileID: 7400000, guid: 3bd29fe4ed3569940ac7518a56a0adfe, type: 3}
   closeAnimation: {fileID: 7400002, guid: 3bd29fe4ed3569940ac7518a56a0adfe, type: 3}
 --- !u!4 &1652795253

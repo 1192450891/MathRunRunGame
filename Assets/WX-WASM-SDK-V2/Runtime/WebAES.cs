@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿#if WEIXINMINIGAME && TUANJIE_2022_3_OR_NEWER
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using AOT;
@@ -30,7 +31,7 @@ namespace WeChatWASM
         public static extern void WebAesDecrypt(System.IntPtr encryptedBytesPtr, int size, int needStrip);
 
         // TODO: consider passing a unique id so that we can initialize multiple instances.
-        public static void Initialize(System.Security.Cryptography.CipherMode mode, byte[] key, 
+        public static void Initialize(System.Security.Cryptography.CipherMode mode, byte[] key,
             byte[] iv, int counter = 0, int segmentSize = 0)
         {
             if (initialized)
@@ -47,7 +48,7 @@ namespace WeChatWASM
             int keySize = key.Length;
             keyPtr = Marshal.AllocHGlobal(keySize);
             Marshal.Copy(key, 0, keyPtr, keySize);
-            
+
             int ivSize = iv.Length;
             ivPtr = Marshal.AllocHGlobal(ivSize);
             Marshal.Copy(iv, 0, ivPtr, ivSize);
@@ -58,7 +59,7 @@ namespace WeChatWASM
                 counter, segmentSize);
             initialized = true;
         }
-        
+
         [MonoPInvokeCallback(typeof(AesCallback))]
         public static void OnAecCrypto(int enc, System.IntPtr resPtr, int resSize)
         {
@@ -84,13 +85,13 @@ namespace WeChatWASM
             initialized = false;
             WebAesFinalize();
         }
-        
+
         // Use UTF-8 as it is used as default format for StreamReader
         public static byte[] Encode(string plainStr, bool needPad = true)
         {
             var bytes = Encoding.UTF8.GetBytes(plainStr);
             var bytesPtr = Marshal.AllocHGlobal(bytes.Length);
-            Marshal.Copy(bytes, 0, bytesPtr, bytes.Length); 
+            Marshal.Copy(bytes, 0, bytesPtr, bytes.Length);
             WebAesEncrypt(bytesPtr, bytes.Length, needPad ? 1 : 0);
             Marshal.FreeHGlobal(bytesPtr);
             return EncryptedBytes;
@@ -99,10 +100,11 @@ namespace WeChatWASM
         public static string Decode(byte[] bytes, bool needStrip = true)
         {
             var bytesPtr = Marshal.AllocHGlobal(bytes.Length);
-            Marshal.Copy(bytes, 0, bytesPtr, bytes.Length); 
+            Marshal.Copy(bytes, 0, bytesPtr, bytes.Length);
             WebAesDecrypt(bytesPtr, bytes.Length, needStrip ? 1 : 0);
             Marshal.FreeHGlobal(bytesPtr);
             return Encoding.UTF8.GetString(DecryptedBytes);
         }
     }
 }
+#endif

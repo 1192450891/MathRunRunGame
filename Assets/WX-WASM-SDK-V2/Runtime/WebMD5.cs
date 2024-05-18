@@ -1,11 +1,12 @@
-﻿using System;
+﻿#if WEIXINMINIGAME && TUANJIE_2022_3_OR_NEWER
+using System;
 using System.Runtime.InteropServices;
 
 namespace WeChatWASM
 {
     public class WebMD5
     {
-       
+
         [DllImport("__Internal", EntryPoint = "_WebMD5")]
         private static extern void getMD5Bytes(IntPtr byteArray, int length, IntPtr result);
 
@@ -26,6 +27,7 @@ namespace WeChatWASM
             Marshal.FreeHGlobal(resultPtr);
 
             return result;
-        } 
+        }
     }
 }
+#endif

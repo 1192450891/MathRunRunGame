@@ -36,8 +36,8 @@ namespace Struct
         public static float InitSpeedNum=40;//玩家开局初始速度
         public static float CurSpeedNum;//玩家当前速度
         
-        public static float MinWalkSpeed=40;//速度下限
-        public static float MaxWalkSpeed=100;//速度上限
+        public static float MinWalkSpeed=30;//速度下限
+        public static float MaxWalkSpeed=60;//速度上限
 
         private static float historyMaxWalkSpeed;
         public static float HistoryMaxWalkSpeed{
@@ -58,9 +58,6 @@ namespace Struct
             GameHasEnd = false;
             sumJourneyLength = 0;
             CanOperate = false;
-            InitSpeedNum = 40;
-            MinWalkSpeed = 40;
-            MaxWalkSpeed = 100;
             historyMaxWalkSpeed = 0;
             HasPassedNum = 0;
             HasCorrectNum = 0;

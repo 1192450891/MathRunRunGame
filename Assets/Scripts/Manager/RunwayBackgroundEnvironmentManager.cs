@@ -3,7 +3,6 @@ using System.IO;
 using Framework.Core;
 using GameBase.Player;
 using Struct;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Manager
@@ -54,7 +53,7 @@ namespace Manager
             var newObjOriginal = Left_ObjList[index];
             float selfZOffset=GetObjZLength(newObjOriginal.transform,"Left"+index);//自身带来的偏移长度
             var newObjPos= new Vector3(pos.x,0,pos.z+selfZOffset/2);
-            var newObj=Object.Instantiate(newObjOriginal,newObjPos,quaternion.identity,root.transform);
+            var newObj=Object.Instantiate(newObjOriginal,newObjPos,Quaternion.identity,root.transform);
             backgroundQueue.Enqueue(newObj);
             leftPosZOffest += selfZOffset;//加上此次生成的背景物体的z长度 作为新的偏移
             leftPosZOffest -= 2;
@@ -70,7 +69,7 @@ namespace Manager
             var newObjOriginal = Right_ObjList[index];
             float selfZOffset=GetObjZLength(newObjOriginal.transform,"Right"+index);//自身带来的偏移长度
             var newObjPos= new Vector3(pos.x,0,pos.z+selfZOffset/2);
-            var newObj=Object.Instantiate(newObjOriginal,newObjPos,quaternion.identity,root.transform);
+            var newObj=Object.Instantiate(newObjOriginal,newObjPos,Quaternion.identity,root.transform);
             backgroundQueue.Enqueue(newObj);
             rightPosZOffest += selfZOffset;//加上此次生成的背景物体的z长度 作为新的偏移
             rightPosZOffest -= 2;

@@ -1,16 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using BrokenVector.LowPolyFencePack;
 using Framework.Core;
 using Module.Enum;
 using Struct;
-using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-using Wx;
 using Object = UnityEngine.Object;
 
 namespace Manager
@@ -122,7 +115,7 @@ namespace Manager
             int index = Util.Instance.GetRandomNum(count)-1;
             Vector3 newObjPos=new Vector3(0, 0,
                 levelDataIndex * 60 * RunwayManager.RUNWAY_LENGTH_MAGNIFICATION + 60);
-            finishLine=Object.Instantiate(FinishLine_ObjList[index],newObjPos,quaternion.identity,runwaysGameObjectRoot.transform);
+            finishLine=Object.Instantiate(FinishLine_ObjList[index],newObjPos,Quaternion.identity,runwaysGameObjectRoot.transform);
         }
 
         public void DestroyFinishLine()

@@ -126,7 +126,7 @@ public class CSVController
         public static void SetDataTable(string csvContent,DataTable dataTable)
         {
             DataTable dt = dataTable;
-            string[] splitCsvContent = csvContent.Split(Environment.NewLine);
+            string[] splitCsvContent = csvContent.Split(new[] {"\r\n", "\n", "\r"},StringSplitOptions.None);
             string[] fixedCsvContentArray = new string[splitCsvContent.Length-1];
             Array.Copy(splitCsvContent, fixedCsvContentArray, splitCsvContent.Length - 1);
             //判断，若是第一次，建立表头
